@@ -1,0 +1,549 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		15FC21342681B49F4B301DBA /* Pods_TLStoryCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9422C59A5198DD0D677E8D /* Pods_TLStoryCamera.framework */; };
+		4B3647C11ED017F3002B17FC /* TLStoryTextEditerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3647C01ED017F3002B17FC /* TLStoryTextEditerView.swift */; };
+		4B40E5701ED91FC900CAE2AC /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E56F1ED91FC900CAE2AC /* TabBarViewController.swift */; };
+		4B40E5721ED9251000CAE2AC /* FristViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E5711ED9251000CAE2AC /* FristViewController.swift */; };
+		4B40E5741ED926E700CAE2AC /* FristSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E5731ED926E700CAE2AC /* FristSubViewController.swift */; };
+		4B46B8EB1ED7226E00CEFFF4 /* TLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B8EA1ED7226E00CEFFF4 /* TLButton.swift */; };
+		4B46B8ED1ED8555200CEFFF4 /* TLAuthorizedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B8EC1ED8555200CEFFF4 /* TLAuthorizedManager.swift */; };
+		4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */; };
+		4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */; };
+		4B8682821ECB475E00C6BB53 /* TLStoryDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8682811ECB475E00C6BB53 /* TLStoryDrawView.swift */; };
+		4B8682871ECB4ECE00C6BB53 /* TLColorPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8682861ECB4ECE00C6BB53 /* TLColorPaletteView.swift */; };
+		4BB1A66B1ED3DF7400B1397A /* TLPhotoLibraryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB1A66A1ED3DF7400B1397A /* TLPhotoLibraryPickerView.swift */; };
+		4BB1A66D1ED3E48000B1397A /* WBStoryTextColor.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */; };
+		4BC059D21ECDD1BF00D68800 /* TLStickerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC059D11ECDD1BF00D68800 /* TLStickerTextView.swift */; };
+		C61582B01EC021C2003C82AC /* UIView+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */; };
+		C63FA4D21EC07A41003690DB /* TLStoryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FA4D11EC07A41003690DB /* TLStoryConfiguration.swift */; };
+		C64E77501EC00D9C005B09B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E774F1EC00D9C005B09B6 /* AppDelegate.swift */; };
+		C64E77571EC00D9C005B09B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C64E77561EC00D9C005B09B6 /* Assets.xcassets */; };
+		C64E775A1EC00D9C005B09B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C64E77581EC00D9C005B09B6 /* LaunchScreen.storyboard */; };
+		C64E77681EC01052005B09B6 /* TLStoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E77671EC01052005B09B6 /* TLStoryViewController.swift */; };
+		C64E776D1EC01FB6005B09B6 /* TLHoopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E776C1EC01FB6005B09B6 /* TLHoopButton.swift */; };
+		C65241A21ECAF7D800A78E3D /* TLStickerStageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65241A11ECAF7D800A78E3D /* TLStickerStageView.swift */; };
+		C65241A41ECAF99A00A78E3D /* TLStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65241A31ECAF99A00A78E3D /* TLStickerView.swift */; };
+		C657F0591EC94D5000246393 /* TLStickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C657F0581EC94D5000246393 /* TLStickerPickerView.swift */; };
+		C657F05E1EC955A500246393 /* WBStoryStickers.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C657F05D1EC955A500246393 /* WBStoryStickers.bundle */; };
+		C657F0601EC959FF00246393 /* UIImage+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */; };
+		C690DB431EC0213F00320D90 /* UIColor+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */; };
+		C69A2D851EC05AA10028244D /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */; };
+		C6A77E1E1EC2BA86008BC6BD /* TLStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A77E1D1EC2BA86008BC6BD /* TLStoryPreviewView.swift */; };
+		C6A77E231EC2D704008BC6BD /* TLStoryPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A77E221EC2D704008BC6BD /* TLStoryPlayerView.swift */; };
+		C6A77E251EC2D712008BC6BD /* TLStoryPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A77E241EC2D712008BC6BD /* TLStoryPhotoView.swift */; };
+		C6DA55EB1EC05A1300961DAF /* TLCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA55EA1EC05A1300961DAF /* TLCameraView.swift */; };
+		C6F7052A1ECD732A0069C1FF /* TLStorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		325AFAF6849D5513C06F53DD /* Pods-TLStoryCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TLStoryCamera.release.xcconfig"; path = "Pods/Target Support Files/Pods-TLStoryCamera/Pods-TLStoryCamera.release.xcconfig"; sourceTree = "<group>"; };
+		4B3647C01ED017F3002B17FC /* TLStoryTextEditerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryTextEditerView.swift; sourceTree = "<group>"; };
+		4B40E56F1ED91FC900CAE2AC /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		4B40E5711ED9251000CAE2AC /* FristViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FristViewController.swift; sourceTree = "<group>"; };
+		4B40E5731ED926E700CAE2AC /* FristSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FristSubViewController.swift; sourceTree = "<group>"; };
+		4B46B8EA1ED7226E00CEFFF4 /* TLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLButton.swift; sourceTree = "<group>"; };
+		4B46B8EC1ED8555200CEFFF4 /* TLAuthorizedManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAuthorizedManager.swift; sourceTree = "<group>"; };
+		4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryAuthorizationController.swift; sourceTree = "<group>"; };
+		4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBStoryStickers.plist; sourceTree = "<group>"; };
+		4B8682811ECB475E00C6BB53 /* TLStoryDrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryDrawView.swift; sourceTree = "<group>"; };
+		4B8682861ECB4ECE00C6BB53 /* TLColorPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColorPaletteView.swift; sourceTree = "<group>"; };
+		4BB1A66A1ED3DF7400B1397A /* TLPhotoLibraryPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPhotoLibraryPickerView.swift; sourceTree = "<group>"; };
+		4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBStoryTextColor.plist; sourceTree = "<group>"; };
+		4BC059D11ECDD1BF00D68800 /* TLStickerTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStickerTextView.swift; sourceTree = "<group>"; };
+		ABCCF2CB56002C86AF5BAED1 /* Pods-TLStoryCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TLStoryCamera.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TLStoryCamera/Pods-TLStoryCamera.debug.xcconfig"; sourceTree = "<group>"; };
+		BD9422C59A5198DD0D677E8D /* Pods_TLStoryCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TLStoryCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+TLStory.swift"; sourceTree = "<group>"; };
+		C63FA4D11EC07A41003690DB /* TLStoryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryConfiguration.swift; sourceTree = "<group>"; };
+		C64E774C1EC00D9C005B09B6 /* TLStoryCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TLStoryCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C64E774F1EC00D9C005B09B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C64E77561EC00D9C005B09B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C64E77591EC00D9C005B09B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C64E775B1EC00D9C005B09B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C64E77671EC01052005B09B6 /* TLStoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryViewController.swift; sourceTree = "<group>"; };
+		C64E776C1EC01FB6005B09B6 /* TLHoopButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLHoopButton.swift; sourceTree = "<group>"; };
+		C65241A11ECAF7D800A78E3D /* TLStickerStageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStickerStageView.swift; sourceTree = "<group>"; };
+		C65241A31ECAF99A00A78E3D /* TLStickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStickerView.swift; sourceTree = "<group>"; };
+		C657F0581EC94D5000246393 /* TLStickerPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStickerPickerView.swift; sourceTree = "<group>"; };
+		C657F05D1EC955A500246393 /* WBStoryStickers.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WBStoryStickers.bundle; sourceTree = "<group>"; };
+		C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+TLStory.swift"; sourceTree = "<group>"; };
+		C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+TLStory.swift"; sourceTree = "<group>"; };
+		C69A2D831EC05AA10028244D /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
+		C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
+		C69A2D861EC05AE10028244D /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		C6A77E1D1EC2BA86008BC6BD /* TLStoryPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryPreviewView.swift; sourceTree = "<group>"; };
+		C6A77E221EC2D704008BC6BD /* TLStoryPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryPlayerView.swift; sourceTree = "<group>"; };
+		C6A77E241EC2D712008BC6BD /* TLStoryPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryPhotoView.swift; sourceTree = "<group>"; };
+		C6DA55EA1EC05A1300961DAF /* TLCameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCameraView.swift; sourceTree = "<group>"; };
+		C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStorySliderView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C64E77491EC00D9C005B09B6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15FC21342681B49F4B301DBA /* Pods_TLStoryCamera.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		406AAAAEE566219E033A5B0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD9422C59A5198DD0D677E8D /* Pods_TLStoryCamera.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8623CF3DA9E60BC3BC9E8AF2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ABCCF2CB56002C86AF5BAED1 /* Pods-TLStoryCamera.debug.xcconfig */,
+				325AFAF6849D5513C06F53DD /* Pods-TLStoryCamera.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C64E77431EC00D9C005B09B6 = {
+			isa = PBXGroup;
+			children = (
+				C64E774E1EC00D9C005B09B6 /* TLStoryCamera */,
+				C64E774D1EC00D9C005B09B6 /* Products */,
+				8623CF3DA9E60BC3BC9E8AF2 /* Pods */,
+				406AAAAEE566219E033A5B0B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C64E774D1EC00D9C005B09B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C64E774C1EC00D9C005B09B6 /* TLStoryCamera.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C64E774E1EC00D9C005B09B6 /* TLStoryCamera */ = {
+			isa = PBXGroup;
+			children = (
+				C64E77631EC0103B005B09B6 /* Class */,
+				C64E774F1EC00D9C005B09B6 /* AppDelegate.swift */,
+				4B40E56F1ED91FC900CAE2AC /* TabBarViewController.swift */,
+				4B40E5711ED9251000CAE2AC /* FristViewController.swift */,
+				4B40E5731ED926E700CAE2AC /* FristSubViewController.swift */,
+				C69A2D861EC05AE10028244D /* Bridging-Header.h */,
+				C64E77561EC00D9C005B09B6 /* Assets.xcassets */,
+				C64E77581EC00D9C005B09B6 /* LaunchScreen.storyboard */,
+				C64E775B1EC00D9C005B09B6 /* Info.plist */,
+			);
+			path = TLStoryCamera;
+			sourceTree = "<group>";
+		};
+		C64E77631EC0103B005B09B6 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				C657F05C1EC955A500246393 /* Resource */,
+				C690DB411EC0212200320D90 /* Tools */,
+				C64E77641EC0103B005B09B6 /* Controllers */,
+				C64E77651EC0103B005B09B6 /* Models */,
+				C64E77661EC0103B005B09B6 /* Views */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		C64E77641EC0103B005B09B6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C64E77671EC01052005B09B6 /* TLStoryViewController.swift */,
+				4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C64E77651EC0103B005B09B6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C63FA4D11EC07A41003690DB /* TLStoryConfiguration.swift */,
+				4B46B8EC1ED8555200CEFFF4 /* TLAuthorizedManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C64E77661EC0103B005B09B6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C64E776C1EC01FB6005B09B6 /* TLHoopButton.swift */,
+				C6DA55EA1EC05A1300961DAF /* TLCameraView.swift */,
+				C6A77E1D1EC2BA86008BC6BD /* TLStoryPreviewView.swift */,
+				C6A77E221EC2D704008BC6BD /* TLStoryPlayerView.swift */,
+				C6A77E241EC2D712008BC6BD /* TLStoryPhotoView.swift */,
+				C657F0581EC94D5000246393 /* TLStickerPickerView.swift */,
+				C65241A11ECAF7D800A78E3D /* TLStickerStageView.swift */,
+				C65241A31ECAF99A00A78E3D /* TLStickerView.swift */,
+				4BC059D11ECDD1BF00D68800 /* TLStickerTextView.swift */,
+				4B8682811ECB475E00C6BB53 /* TLStoryDrawView.swift */,
+				4B8682861ECB4ECE00C6BB53 /* TLColorPaletteView.swift */,
+				C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */,
+				4B3647C01ED017F3002B17FC /* TLStoryTextEditerView.swift */,
+				4BB1A66A1ED3DF7400B1397A /* TLPhotoLibraryPickerView.swift */,
+				4B46B8EA1ED7226E00CEFFF4 /* TLButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C657F05C1EC955A500246393 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */,
+				4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */,
+				C657F05D1EC955A500246393 /* WBStoryStickers.bundle */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		C690DB411EC0212200320D90 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				C69A2D821EC05AA10028244D /* GPUImageBeautifyFilter */,
+				C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */,
+				C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */,
+				C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		C69A2D821EC05AA10028244D /* GPUImageBeautifyFilter */ = {
+			isa = PBXGroup;
+			children = (
+				C69A2D831EC05AA10028244D /* GPUImageBeautifyFilter.h */,
+				C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */,
+			);
+			path = GPUImageBeautifyFilter;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C64E774B1EC00D9C005B09B6 /* TLStoryCamera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C64E775E1EC00D9C005B09B6 /* Build configuration list for PBXNativeTarget "TLStoryCamera" */;
+			buildPhases = (
+				CB10A619EE1C11E08BAA8AE6 /* [CP] Check Pods Manifest.lock */,
+				C64E77481EC00D9C005B09B6 /* Sources */,
+				C64E77491EC00D9C005B09B6 /* Frameworks */,
+				C64E774A1EC00D9C005B09B6 /* Resources */,
+				BEC38989858CC4DC829B0871 /* [CP] Embed Pods Frameworks */,
+				288CFDEBCF9F0EBDFA1ED36D /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TLStoryCamera;
+			productName = TLStoryCamera;
+			productReference = C64E774C1EC00D9C005B09B6 /* TLStoryCamera.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C64E77441EC00D9C005B09B6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = com.garry;
+				TargetAttributes = {
+					C64E774B1EC00D9C005B09B6 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = HLFH2Z48FU;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C64E77471EC00D9C005B09B6 /* Build configuration list for PBXProject "TLStoryCamera" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C64E77431EC00D9C005B09B6;
+			productRefGroup = C64E774D1EC00D9C005B09B6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C64E774B1EC00D9C005B09B6 /* TLStoryCamera */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C64E774A1EC00D9C005B09B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C64E775A1EC00D9C005B09B6 /* LaunchScreen.storyboard in Resources */,
+				4BB1A66D1ED3E48000B1397A /* WBStoryTextColor.plist in Resources */,
+				4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */,
+				C64E77571EC00D9C005B09B6 /* Assets.xcassets in Resources */,
+				C657F05E1EC955A500246393 /* WBStoryStickers.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		288CFDEBCF9F0EBDFA1ED36D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TLStoryCamera/Pods-TLStoryCamera-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BEC38989858CC4DC829B0871 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TLStoryCamera/Pods-TLStoryCamera-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB10A619EE1C11E08BAA8AE6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C64E77481EC00D9C005B09B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C69A2D851EC05AA10028244D /* GPUImageBeautifyFilter.m in Sources */,
+				4BB1A66B1ED3DF7400B1397A /* TLPhotoLibraryPickerView.swift in Sources */,
+				C6A77E251EC2D712008BC6BD /* TLStoryPhotoView.swift in Sources */,
+				4B40E5721ED9251000CAE2AC /* FristViewController.swift in Sources */,
+				4B8682871ECB4ECE00C6BB53 /* TLColorPaletteView.swift in Sources */,
+				4B8682821ECB475E00C6BB53 /* TLStoryDrawView.swift in Sources */,
+				4B46B8EB1ED7226E00CEFFF4 /* TLButton.swift in Sources */,
+				C61582B01EC021C2003C82AC /* UIView+TLStory.swift in Sources */,
+				4B46B8ED1ED8555200CEFFF4 /* TLAuthorizedManager.swift in Sources */,
+				C6DA55EB1EC05A1300961DAF /* TLCameraView.swift in Sources */,
+				C6A77E231EC2D704008BC6BD /* TLStoryPlayerView.swift in Sources */,
+				4BC059D21ECDD1BF00D68800 /* TLStickerTextView.swift in Sources */,
+				C6F7052A1ECD732A0069C1FF /* TLStorySliderView.swift in Sources */,
+				C657F0601EC959FF00246393 /* UIImage+TLStory.swift in Sources */,
+				4B40E5701ED91FC900CAE2AC /* TabBarViewController.swift in Sources */,
+				C64E776D1EC01FB6005B09B6 /* TLHoopButton.swift in Sources */,
+				C64E77681EC01052005B09B6 /* TLStoryViewController.swift in Sources */,
+				4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */,
+				C64E77501EC00D9C005B09B6 /* AppDelegate.swift in Sources */,
+				C6A77E1E1EC2BA86008BC6BD /* TLStoryPreviewView.swift in Sources */,
+				C657F0591EC94D5000246393 /* TLStickerPickerView.swift in Sources */,
+				4B40E5741ED926E700CAE2AC /* FristSubViewController.swift in Sources */,
+				C63FA4D21EC07A41003690DB /* TLStoryConfiguration.swift in Sources */,
+				C690DB431EC0213F00320D90 /* UIColor+TLStory.swift in Sources */,
+				4B3647C11ED017F3002B17FC /* TLStoryTextEditerView.swift in Sources */,
+				C65241A21ECAF7D800A78E3D /* TLStickerStageView.swift in Sources */,
+				C65241A41ECAF99A00A78E3D /* TLStickerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C64E77581EC00D9C005B09B6 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C64E77591EC00D9C005B09B6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C64E775C1EC00D9C005B09B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C64E775D1EC00D9C005B09B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C64E775F1EC00D9C005B09B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ABCCF2CB56002C86AF5BAED1 /* Pods-TLStoryCamera.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HLFH2Z48FU;
+				INFOPLIST_FILE = TLStoryCamera/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.garry.TLStoryCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/TLStoryCamera/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		C64E77601EC00D9C005B09B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 325AFAF6849D5513C06F53DD /* Pods-TLStoryCamera.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HLFH2Z48FU;
+				INFOPLIST_FILE = TLStoryCamera/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.garry.TLStoryCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/TLStoryCamera/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C64E77471EC00D9C005B09B6 /* Build configuration list for PBXProject "TLStoryCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C64E775C1EC00D9C005B09B6 /* Debug */,
+				C64E775D1EC00D9C005B09B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C64E775E1EC00D9C005B09B6 /* Build configuration list for PBXNativeTarget "TLStoryCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C64E775F1EC00D9C005B09B6 /* Debug */,
+				C64E77601EC00D9C005B09B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C64E77441EC00D9C005B09B6 /* Project object */;
+}
