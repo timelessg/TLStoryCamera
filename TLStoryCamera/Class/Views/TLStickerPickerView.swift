@@ -45,17 +45,7 @@ class TLStickerPickerView: UIVisualEffectView {
     init(frame:CGRect) {
         super.init(effect: UIBlurEffect.init(style: .light))
         self.frame = frame
-        
-        let path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft,.topRight], cornerRadii: CGSize.init(width: 10, height: 10))
-        let maskLayer = CAShapeLayer.init()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        
-        let maskView = UIView(frame: self.bounds)
-        maskView.backgroundColor = UIColor.black
-        maskView.layer.mask = maskLayer
-        self.mask = maskView
-        
+                
         let layout = UICollectionViewFlowLayout.init()
         layout.itemSize = CGSize.init(width: self.width / 3 - 20, height: self.width / 3)
         layout.minimumLineSpacing = 10
