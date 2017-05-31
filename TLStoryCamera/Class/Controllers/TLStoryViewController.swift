@@ -107,6 +107,7 @@ public class TLStoryViewController: UIViewController {
             if cameraAuthorization {
                 cameraView!.initCamera()
                 cameraView!.configVideoRecording()
+                cameraView?.startCapture()
             }
             if micAuthorization {
                 cameraView!.configAudioRecording()

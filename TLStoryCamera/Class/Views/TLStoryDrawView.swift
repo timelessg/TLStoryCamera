@@ -147,7 +147,10 @@ class TLStoryDrawView: UIView {
                 return self.layer.render(in: context.cgContext)
             }
         } else {
-            // Fallback on earlier versions
+            UIGraphicsBeginImageContext(size)
+            let context = UIGraphicsGetCurrentContext()
+            self.layer.render(in: context!)
+            UIGraphicsEndImageContext()
         }
         
         self.setNeedsDisplay(drawBox)
