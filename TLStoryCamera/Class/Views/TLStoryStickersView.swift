@@ -107,6 +107,7 @@ extension TLStoryStickersView: TLStoryStickerDelegate {
                 self.removeSub(textSticker: sticker)
                 self.isPrepareDelete = false
             })
+            self.deleteIcon(zoomIn: false)
         }
         
         self.deleteIco.isHidden = isEnd
