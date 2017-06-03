@@ -104,8 +104,7 @@ class TLStoryCameraButton: UIControl {
     
     
     @objc fileprivate func complete() {
-        timer?.invalidate()
-        timer = nil
+        self.stopTimer()
         self.delegete?.cameraComplete(hoopButton: self, type: self.progress < CGFloat(TLStoryConfiguration.minRecordingTime) ? .photo : .video)
         percent = 0
         progress = 0
@@ -157,6 +156,12 @@ class TLStoryCameraButton: UIControl {
         timer?.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
     }
     
+    fileprivate func stopTimer() {
+        timer?.isPaused = true
+        timer?.invalidate()
+        timer = nil
+    }
+    
     @objc fileprivate func draggedAction(sender:UIButton, event:UIEvent) {
         let touch = (event.allTouches! as NSSet).anyObject() as! UITouch
         let point = touch.location(in: self)
@@ -171,7 +176,7 @@ class TLStoryCameraButton: UIControl {
         percent = totalPercent * progress
         
         if progress > CGFloat(TLStoryConfiguration.maxRecordingTime) {
-            self.complete()
+            self.cancelTracking(with: nil)
         }
         self.setNeedsDisplay()
     }
