@@ -46,6 +46,7 @@ class TLStoryDoodleView: UIView {
     public func erase() {
         isUndo = true
         lines.removeAll()
+        purePoints.removeAll()
         setNeedsDisplay()
     }
     
