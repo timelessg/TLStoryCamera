@@ -79,6 +79,8 @@ class TLStoryOverlayTextStickerView: UIView {
         
         if let s = sticker {
             editingSticker = s
+            self.lastPosition = s.center
+            self.lastTransform = s.transform
             isNew = false
         }else {
             editingSticker = TLStoryTextSticker.init(frame: CGRect.init(x: 0, y: 0, width: self.width - 20, height: TLStoryConfiguration.defaultTextWeight + 20))
@@ -131,15 +133,13 @@ class TLStoryOverlayTextStickerView: UIView {
         let colorPickerCenter = CGPoint.init(x: self.width / 2, y: self.height - frame.height - colorPicker!.height / 2)
         self.colorPicker?.center = colorPickerCenter
         
-        self.lastTransform = self.editingSticker!.transform
-
         if isNew {
             self.lastPosition = toPoint
+            self.lastTransform = self.editingSticker!.transform
             UIView.animate(withDuration: 0.25, animations: {
                 self.editingSticker?.center = toPoint
             })
         } else {
-            self.lastPosition = editingSticker!.center
             UIView.animate(withDuration: 0.25) {
                 self.editingSticker?.center = toPoint
                 self.editingSticker?.transform = CGAffineTransform.init(rotationAngle: 0)
@@ -154,15 +154,17 @@ class TLStoryOverlayTextStickerView: UIView {
             self.editingSticker?.center = self.lastPosition!
             self.editingSticker?.transform = self.lastTransform!
         }) { (x) in
-            self.editingSticker?.removeFromSuperview()
-            self.editingSticker?.isUserInteractionEnabled = true
-            if !self.isEmpty(str: self.editingSticker!.textView.text) {
-                self.delegate?.textEditerDidCompleteEdited(sticker: self.editingSticker!)
-            }else {
-                self.delegate?.textEditerDidCompleteEdited(sticker: nil)
+            if x {
+                self.editingSticker?.removeFromSuperview()
+                self.editingSticker?.isUserInteractionEnabled = true
+                if !self.isEmpty(str: self.editingSticker!.textView.text) {
+                    self.delegate?.textEditerDidCompleteEdited(sticker: self.editingSticker!)
+                }else {
+                    self.delegate?.textEditerDidCompleteEdited(sticker: nil)
+                }
+                self.editingSticker = nil
+                self.isHidden = true
             }
-            self.editingSticker = nil
-            self.isHidden = true
         }
         self.colorPicker?.set(hidden: true)
     }
