@@ -44,6 +44,7 @@ class TLStoryOutput: NSObject {
                 callback(false)
                 return
             }
+            SVProgressHUD.show()
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: u!)
             }, completionHandler: { (x, e) in
@@ -62,10 +63,12 @@ class TLStoryOutput: NSObject {
                 callback(false)
                 return
             }
+            SVProgressHUD.show()
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: u!)
             }, completionHandler: { (x, e) in
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     SVProgressHUD.showSuccess(withStatus: "已保存到相册")
                     callback(true)
                 }
@@ -85,10 +88,9 @@ class TLStoryOutput: NSObject {
             
             let filePath = TLStoryConfiguration.photoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.png")
             
-            SVProgressHUD.dismiss()
-            
             guard let p = filePath else {
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     callback(nil, .photo)
                 }
                 return
@@ -99,6 +101,7 @@ class TLStoryOutput: NSObject {
             do {
                 try imgData?.write(to: resultUrl)
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     callback(resultUrl, .photo)
                 }
             } catch {

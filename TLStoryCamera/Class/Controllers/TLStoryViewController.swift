@@ -252,7 +252,9 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
             return
         }
         
+        self.editView?.dismiss()
         self.output.output(container: container) { [weak self] (url, type) in
+            self?.editView?.dispaly()
             self?.delegate?.storyViewDidPublish(type: type, url: url)
             self?.previewDismiss()
         }
@@ -264,8 +266,9 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
                 return
             }
             
+            self.editView?.dismiss()
             self.output.saveToAlbum(container: container) { (x) in
-                
+                self.editView?.dispaly()
             }
         }
         
