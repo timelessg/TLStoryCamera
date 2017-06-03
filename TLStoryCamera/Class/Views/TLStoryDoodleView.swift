@@ -22,6 +22,7 @@ class TLStoryDoodleView: UIView {
     fileprivate let distanceForDraw:CGFloat = 25
     fileprivate var isEnd = false
     fileprivate var isUndo = false
+    fileprivate var isErase = false
     public      var lineWidth:CGFloat = TLStoryConfiguration.defaultDrawLineWeight
     public      var lineColor:UIColor = UIColor.white
     
@@ -44,7 +45,7 @@ class TLStoryDoodleView: UIView {
     }
     
     public func erase() {
-        isUndo = true
+        isErase = true
         lines.removeAll()
         purePoints.removeAll()
         setNeedsDisplay()
@@ -67,6 +68,11 @@ class TLStoryDoodleView: UIView {
             }
             
             return
+        }
+        
+        if isErase {
+            isErase = false
+            context?.clear(self.bounds)
         }
         
         guard purePoints.count != 0 else {
