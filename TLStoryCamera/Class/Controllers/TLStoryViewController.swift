@@ -14,89 +14,147 @@ public enum TLStoryType {
 }
 
 public protocol TLStoryViewDelegate: NSObjectProtocol {
-    func storyRecording(complete:Bool)
-    func storyDidPublish(type:TLStoryType, url:URL?)
+    func storyViewRecording(running:Bool)
+    func storyViewDidPublish(type:TLStoryType, url:URL?)
 }
 
 public class TLStoryViewController: UIViewController {
-    fileprivate var cameraView:TLCameraView?
+    public weak var delegate:TLStoryViewDelegate?
+
+    fileprivate var containerView = UIView.init()
     
-    fileprivate lazy var startBtn = TLHoopButton.init(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
+    fileprivate var bottomImagePicker:TLStoryBottomImagePickerView?
     
-    fileprivate lazy var flashBtn:TLButton = {
-        let btn = TLButton.init(type: UIButtonType.custom)
-        btn.showsTouchWhenHighlighted = true
-        btn.setImage(#imageLiteral(resourceName: "story_publish_icon_flashlight_auto"), for: .normal)
-        btn.addTarget(self, action: #selector(flashAction), for: .touchUpInside)
-        return btn
-    }()
+    fileprivate var captureView:TLStoryCapturePreviewView?
     
-    fileprivate lazy var switchBtn:TLButton = {
-        let btn = TLButton.init(type: UIButtonType.custom)
-        btn.showsTouchWhenHighlighted = true
-        btn.setImage(#imageLiteral(resourceName: "story_publish_icon_cam_turn"), for: .normal)
-        btn.addTarget(self, action: #selector(switchAction), for: .touchUpInside)
-        return btn
-    }()
+    fileprivate var outputView:TLStoryOverlayOutputView?
     
-    fileprivate var photoLibraryHintView:TLPhotoLibraryHintView?
+    fileprivate var editContainerView:TLStoryEditContainerView?
     
-    fileprivate var photoLibraryPicker:TLPhotoLibraryPickerView?
+    fileprivate var controlView:TLStoryOverlayControlView?
+    
+    fileprivate var editView:TLStoryOverlayEditView?
+    
+    fileprivate var textStickerView:TLStoryOverlayTextStickerView?
+    
+    fileprivate var imageStickerView:TLStoryOverlayImagePicker?
+    
+    fileprivate var blurCoverView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .light))
     
     fileprivate var swipeUp:UISwipeGestureRecognizer?
     
     fileprivate var swipeDown:UISwipeGestureRecognizer?
     
-    fileprivate var albumBlurCoverView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .light))
-    
-    fileprivate var cameraBlurCoverView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .light))
-    
-    public weak var delegate:TLStoryViewDelegate?
-    
-    public override func loadView() {
-        self.view = TLStoryBgView.init(frame: UIScreen.main.bounds)
-    }
+    fileprivate var output = TLStoryOutput.init()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.black
         self.view.isUserInteractionEnabled = true
         
-        cameraView = TLCameraView.init(frame: self.view.bounds)
-        view.addSubview(cameraView!)
+        bottomImagePicker = TLStoryBottomImagePickerView.init(frame: CGRect.init(x: 0, y: self.view.height - 165, width: self.view.width, height: 165))
+        bottomImagePicker?.delegate = self
+        self.view.addSubview(bottomImagePicker!)
         
-        startBtn.center = CGPoint.init(x: view.center.x, y: view.bounds.height - 52 - 40)
-        startBtn.delegete = self
-        view.addSubview(startBtn)
+        view.addSubview(containerView)
+        containerView.frame = self.view.bounds
         
-        flashBtn.sizeToFit()
-        flashBtn.center = CGPoint.init(x: startBtn.centerX - 100, y: startBtn.centerY)
-        view.addSubview(flashBtn)
+        captureView = TLStoryCapturePreviewView.init(frame: self.view.bounds)
+        containerView.addSubview(captureView!)
         
-        switchBtn.sizeToFit()
-        switchBtn.center = CGPoint.init(x: startBtn.centerX + 100, y: startBtn.centerY)
-        view.addSubview(switchBtn)
+        outputView = TLStoryOverlayOutputView.init(frame: self.view.bounds)
+        outputView!.isHidden = true
+        containerView.addSubview(outputView!)
         
-        photoLibraryHintView = TLPhotoLibraryHintView.init(frame: CGRect.init(x: 0, y: 0, width: 200, height: 50))
-        photoLibraryHintView?.center = CGPoint.init(x: self.view.width / 2, y: self.view.height - 25)
-        view.addSubview(photoLibraryHintView!)
+        editContainerView = TLStoryEditContainerView.init(frame: self.view.bounds)
+        editContainerView!.delegate = self
+        outputView!.addSubview(editContainerView!)
         
-        photoLibraryPicker = TLPhotoLibraryPickerView.init(frame: CGRect.init(x: 0, y: self.view.height, width: self.view.width, height: 165))
-        photoLibraryPicker?.delegate = self
-        view.addSubview(photoLibraryPicker!)
+        controlView = TLStoryOverlayControlView.init(frame: self.view.bounds)
+        controlView!.delegate = self
+        controlView!.isHidden = true
+        containerView.addSubview(controlView!)
         
-        self.view.addSubview(albumBlurCoverView)
-        albumBlurCoverView.frame = self.view.bounds
-        albumBlurCoverView.isHidden = true
-        albumBlurCoverView.isUserInteractionEnabled = true
+        editView = TLStoryOverlayEditView.init(frame: self.view.bounds)
+        editView!.delegate = self
+        editView!.isHidden = true
+        containerView.addSubview(editView!)
         
-        self.view.addSubview(cameraBlurCoverView)
-        cameraBlurCoverView.frame = self.view.bounds
+        textStickerView = TLStoryOverlayTextStickerView.init(frame: self.view.bounds)
+        textStickerView!.delegate = self
+        textStickerView!.isHidden = true
+        containerView.addSubview(textStickerView!)
+        
+        imageStickerView = TLStoryOverlayImagePicker.init(frame: self.view.bounds)
+        imageStickerView?.delegate = self
+        imageStickerView!.isHidden = true
+        containerView.addSubview(imageStickerView!)
+        
+        containerView.addSubview(blurCoverView)
+        blurCoverView.isUserInteractionEnabled = true
+        blurCoverView.frame = self.view.bounds
         
         swipeUp = UISwipeGestureRecognizer.init(target: self, action: #selector(swipeAction))
-        swipeUp?.direction = .up
+        swipeUp!.direction = .up
+        self.controlView?.addGestureRecognizer(swipeUp!)
         
         self.checkAuthorized()
+    }
+    
+    public func resumeCamera(open:Bool) {
+        self.captureView!.cameraSwitch(open: open)
+
+        if open {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.blurCoverView.alpha = 0
+            }, completion: { (x) in
+                if x {
+                    self.blurCoverView.isHidden = true
+                }
+            })
+        }else {
+            self.blurCoverView.alpha = 1
+            self.blurCoverView.isHidden = false
+        }
+    }
+    
+    @objc fileprivate func swipeAction(sender:UISwipeGestureRecognizer) {
+        if sender.direction == .up && self.containerView.y == 0 {
+            self.bottomImagePicker(hidden: false)
+            return
+        }
+        
+        if sender.direction == .down {
+            self.bottomImagePicker(hidden: true)
+            return
+        }
+    }
+    
+    fileprivate func bottomImagePicker(hidden:Bool) {
+        if !hidden {
+            blurCoverView.isHidden = false
+            blurCoverView.alpha = 0
+            UIView.animate(withDuration: 0.25, animations: {
+                self.blurCoverView.alpha = 1
+                self.containerView.y -= 165
+            }) { (x) in
+                self.swipeDown = UISwipeGestureRecognizer.init(target: self, action: #selector(self.swipeAction))
+                self.swipeDown!.direction = .down
+                self.blurCoverView.addGestureRecognizer(self.swipeDown!)
+                self.bottomImagePicker?.loadPhotos()
+            }
+        }else {
+            blurCoverView.alpha = 1
+            UIView.animate(withDuration: 0.25, animations: {
+                self.blurCoverView.alpha = 0
+                self.containerView.y = 0
+            }, completion: { (x) in
+                self.blurCoverView.isHidden = true
+                self.blurCoverView.alpha = 1
+                self.blurCoverView.removeGestureRecognizer(self.swipeDown!)
+            })
+        }
+        self.delegate?.storyViewRecording(running: !hidden)
     }
     
     fileprivate func checkAuthorized() {
@@ -105,117 +163,46 @@ public class TLStoryViewController: UIViewController {
         
         if cameraAuthorization && micAuthorization {
             if cameraAuthorization {
-                cameraView!.initCamera()
-                cameraView!.configVideoRecording()
-                cameraView?.startCapture()
+                self.cameraStart()
             }
             if micAuthorization {
-                cameraView!.configAudioRecording()
+                captureView!.configAudioRecording()
             }
-            self.swipeUp(enable: true)
+            controlView!.isHidden = false
         }else {
             let authorizedVC = TLStoryAuthorizationController()
             authorizedVC.view.frame = self.view.bounds
             authorizedVC.delegate = self
             self.view.addSubview(authorizedVC.view)
             self.addChildViewController(authorizedVC)
-            self.swipeUp(enable: false)
         }
     }
     
-    @objc fileprivate func flashAction(sender: UIButton) {
-        let mode = self.cameraView!.flashStatusChange()
-        let imgs = [AVCaptureTorchMode.on:#imageLiteral(resourceName: "story_publish_icon_flashlight_on"),
-                    AVCaptureTorchMode.off:#imageLiteral(resourceName: "story_publish_icon_flashlight_off"),
-                    AVCaptureTorchMode.auto:#imageLiteral(resourceName: "story_publish_icon_flashlight_auto")]
-        sender.setImage(imgs[mode], for: .normal)
+    fileprivate func cameraStart() {
+        captureView!.initCamera()
+        captureView!.configVideoRecording()
+        captureView!.startCapture()
     }
     
-    @objc fileprivate func switchAction(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
-            sender.transform = sender.transform.rotated(by: CGFloat(Double.pi))
-        }) { (x) in
-            self.cameraView?.rotateCamera()
-        }
+    fileprivate func previewDispay(url:URL, type:TLStoryType) {
+        self.outputView!.isHidden = false
+        self.output.type = type
+        self.output.url = url
+        self.editView?.dispaly()
+        self.controlView?.dismiss()
+        self.outputView?.display(with: url, type: type)
+        self.delegate?.storyViewRecording(running: true)
     }
     
-    @objc fileprivate func swipeAction(sender:UISwipeGestureRecognizer) {
-        self.photoLibraryPicker(hidden: sender.direction == .down)
-    }
-    
-    public func openCamera(open:Bool) {
-        self.cameraBlurCoverView.isHidden = open
-        self.cameraView?.cameraSwitch(open: open)
-    }
-    
-    fileprivate func photoLibraryPicker(hidden:Bool) {
-        if hidden {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.albumBlurCoverView.alpha = 0
-                self.view.y += 165
-            }, completion: { (x) in
-                self.albumBlurCoverView.isHidden = true
-            })
-            
-            if let swip = swipeDown {
-                self.view.removeGestureRecognizer(swip)
-            }
-        }else {
-            self.photoLibraryPicker?.loadPhotos()
-            albumBlurCoverView.isHidden = false
-            albumBlurCoverView.alpha = 0
-            UIView.animate(withDuration: 0.25, animations: {
-                self.albumBlurCoverView.alpha = 1
-                self.view.y -= 165
-            })
-            
-            swipeDown = UISwipeGestureRecognizer.init(target: self, action: #selector(swipeAction))
-            swipeDown!.direction = .down
-            self.view.addGestureRecognizer(swipeDown!)
-        }
-    }
-    
-    fileprivate func showPreview(type:TLStoryType, url:URL?) -> Void {
-        guard let u = url else {
-            return
-        }
-        if type == .photo {
-            self.showPhotoPreview(url: u)
-        }else {
-            self.showVideoPreview(url: u)
-        }
-    }
-    
-    fileprivate func showPhotoPreview(url:URL) {
-        let photoView = TLStoryPhotoView.init(frame: view.bounds, url: url)
-        photoView.delegate = self
-        self.view.addSubview(photoView)
-        self.cameraView?.pauseCamera()
-        self.delegate?.storyRecording(complete: true)
-    }
-    
-    fileprivate func showPhotoPreview(imgData:Data) {
-        let photoView = TLStoryPhotoView.init(frame: view.bounds, imgData: imgData)
-        photoView.delegate = self
-        self.view.addSubview(photoView)
-        self.cameraView?.pauseCamera()
-        self.delegate?.storyRecording(complete: true)
-    }
-    
-    fileprivate func showVideoPreview(url:URL) {
-        let videoView = TLStoryPlayerView.init(frame: view.bounds, url: url)
-        videoView.delegate = self
-        self.view.addSubview(videoView)
-        self.cameraView?.pauseCamera()
-        self.delegate?.storyRecording(complete: true)
-    }
-    
-    fileprivate func swipeUp(enable:Bool) {
-        if enable {
-            self.view.addGestureRecognizer(swipeUp!)
-        }else {
-            self.view.removeGestureRecognizer(swipeUp!)
-        }
+    fileprivate func previewDismiss() {
+        self.outputView!.isHidden = true
+        self.editView?.dismiss()
+        self.outputView?.reset()
+        self.editContainerView?.reset()
+        self.textStickerView?.reset()
+        self.controlView?.display()
+        self.captureView?.resumeCamera()
+        self.delegate?.storyViewRecording(running: false)
     }
     
     override public var prefersStatusBarHidden: Bool {
@@ -223,90 +210,155 @@ public class TLStoryViewController: UIViewController {
     }
 }
 
-extension TLStoryViewController : TLHoopButtonDelegate {
-    internal func hoopStart(hoopButton: TLHoopButton) {
-        cameraView?.configVideoRecording()
-        cameraView?.configAudioRecording()
-        cameraView?.startRecording()
-        photoLibraryHintView?.isHidden = true
-        self.swipeUp(enable: false)
+extension TLStoryViewController: TLStoryOverlayControlDelegate {
+    internal func storyOverlayCameraRecordingStart() {
+        captureView!.configVideoRecording()
+        captureView!.configAudioRecording()
+        captureView!.startRecording()
     }
     
-    internal func hoopDrag(hoopButton: TLHoopButton, offsetY: CGFloat) {
-        self.cameraView?.cameraZoom(offseY: offsetY)
+    internal func storyOverlayCameraSwitch() {
+        captureView!.rotateCamera()
     }
     
-    internal func hoopComplete(hoopButton: TLHoopButton, type: TLStoryType) {
+    internal func storyOverlayCameraZoom(distance: CGFloat) {
+        captureView!.camera(distance: distance)
+    }
+    
+    internal func storyOverlayCameraRecordingFinish(type: TLStoryType) {
         if type == .photo {
-            self.cameraView?.capturePhoto(complete: { [weak self] (x) in
-                self?.showPreview(type: .photo, url: x)
+            self.captureView!.capturePhoto(complete: { [weak self] (x) in
+                if let url = x {
+                    self?.previewDispay(url: url, type: .photo)
+                }
             })
         }else {
-            self.cameraView?.finishRecording(complete: { [weak self] (x) in
-                self?.showPreview(type: .video, url: x)
+            self.captureView!.finishRecording(complete: { [weak self] (x) in
+                if let url = x {
+                    self?.previewDispay(url: url, type: .video)
+                }
             })
         }
+    }
+    internal func storyOverlayCameraFlashChange() -> AVCaptureTorchMode {
+        return self.captureView!.flashStatusChange()
+    }
+}
+
+extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
+    internal func storyOverlayEditPublish() {
+        guard let container = self.editContainerView?.getScreenshot() else {
+            return
+        }
         
-        UIView.animate(withDuration: 0.25) {
-            self.flashBtn.alpha = 0
-            self.switchBtn.alpha = 0
+        self.output.output(container: container) { [weak self] (url, type) in
+            self?.delegate?.storyViewDidPublish(type: type, url: url)
+            self?.previewDismiss()
         }
-    }
-}
-
-extension TLStoryViewController : TLStoryPreviewDelegate {
-    func storyPreviewDidPublish(type: TLStoryType, url: URL?) {
-        self.delegate?.storyDidPublish(type: type, url: url)
-    }
-
-    internal func storyPreviewClose() {
-        cameraView?.resumeCamera()
-        UIView.animate(withDuration: 0.25) {
-            self.flashBtn.alpha = 1
-            self.switchBtn.alpha = 1
-        }
-        self.startBtn.show()
-        photoLibraryHintView?.isHidden = false
-        self.swipeUp(enable: true)
-        self.delegate?.storyRecording(complete: false)
-    }
-}
-
-extension TLStoryViewController: TLPhotoLibraryPickerViewDelegate {
-    internal func photoLibraryPickerDidSelectPhoto(imgData: Data) {
-        self.photoLibraryPicker(hidden: true)
-        self.startBtn.reset()
-        self.showPhotoPreview(imgData: imgData)
     }
     
-    internal func photoLibraryPickerDidSelectVideo(url: URL) {
-        self.photoLibraryPicker(hidden: true)
-        self.startBtn.reset()
-        self.showPreview(type: .video, url: url)
+    internal func storyOverlayEditSave() {
+        let block:((Void) -> Void) = { () in
+            guard let container = self.editContainerView?.getScreenshot() else {
+                return
+            }
+            
+            self.output.saveToAlbum(container: container) { (x) in
+                
+            }
+        }
+        
+        guard TLAuthorizedManager.checkAuthorization(with: .album) else {
+            TLAuthorizedManager.requestAuthorization(with: .album, callback: { (type, success) in
+                if success {
+                    block()
+                }
+            })
+            return
+        }
+        
+        block()
+    }
+    
+    internal func storyOverlayEditTextEditerDisplay() {
+        textStickerView?.show(sticker: nil)
+    }
+    
+    internal func storyOverlayEditStickerPickerDisplay() {
+        imageStickerView?.isHidden = false
+        imageStickerView?.display()
+    }
+    
+    internal func storyOverlayEditDoodleEditable() {
+        self.editContainerView?.benginDrawing()
+    }
+    
+    internal func storyOverlayEditClose() {
+        self.previewDismiss()
+    }
+    
+    internal func storyOverlayEditAudio(enable: Bool) {
+        self.output.audioEnable = enable
+        self.outputView?.playerAudio(enable: enable)
+    }
+}
+
+extension TLStoryViewController: TLStoryOverlayTextStickerViewDelegate {
+    internal func textEditerDidCompleteEdited(sticker: TLStoryTextSticker?) {
+        if let s = sticker {
+            self.editContainerView?.add(textSticker: s)
+        }
+        editView?.dispaly()
+    }
+}
+
+extension TLStoryViewController: TLStoryOverlayImagePickerDelegate {
+    internal func storyOverlayImagePickerDismiss() {
+        self.imageStickerView?.isHidden = true
+        editView?.dispaly()
+    }
+
+    internal func storyOverlayImagePickerDidSelected(img: UIImage) {
+        self.editContainerView?.add(img: img)
+    }
+}
+
+extension TLStoryViewController: TLStoryEditContainerViewDelegate {
+    internal func storyEditContainerSticker(editing: Bool) {
+        if editing {
+            self.editView?.dismiss()
+        }else {
+            self.editView?.dispaly()
+        }
+    }
+
+    internal func storyEditContainerEndDrawing() {
+        self.editView?.dispaly()
+    }
+
+    internal func storyEditContainerTextStickerBeEditing(sticker: TLStoryTextSticker) {
+        self.editView?.dismiss()
+        self.textStickerView?.show(sticker: sticker)
+    }
+}
+
+extension TLStoryViewController: TLStoryBottomImagePickerViewDelegate {
+    internal func photoLibraryPickerDidSelect(url: URL, type:TLStoryType) {
+        self.bottomImagePicker(hidden: true)
+        self.previewDispay(url: url, type: type)
     }
 }
 
 extension TLStoryViewController: TLStoryAuthorizedDelegate {
-    func requestMicAuthorizeSuccess() {
-        cameraView?.configAudioRecording()
+    internal func requestMicAuthorizeSuccess() {
+        captureView!.configAudioRecording()
     }
     
-    func requestCameraAuthorizeSuccess() {
-        cameraView!.initCamera()
-        cameraView!.configVideoRecording()
-        cameraView!.startCapture()
+    internal func requestCameraAuthorizeSuccess() {
+        self.cameraStart()
     }
     
-    func requestAllAuthorizeSuccess() {
-        self.swipeUp(enable: true)
-    }
-}
-
-class TLStoryBgView: UIView {
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        if point.y < self.height + 165 {
-            return true
-        }
-        return super.point(inside: point, with: event)
+    internal func requestAllAuthorizeSuccess() {
+        self.controlView!.isHidden = false
     }
 }

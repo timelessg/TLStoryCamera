@@ -1,34 +1,28 @@
 //
-//  TLStickerTextView.swift
+//  TLStoryImageSticker.swift
 //  TLStoryCamera
 //
-//  Created by GarryGuo on 2017/5/10.
+//  Created by GarryGuo on 2017/6/1.
 //  Copyright © 2017年 GarryGuo. All rights reserved.
 //
 
 import UIKit
 
-protocol TLStickerTextViewDelegate: TLStickerViewDelegate {
-    func stickerTextViewEditing(sticker:TLStickerTextView)
-}
+class TLStoryImageSticker: UIImageView, TLStoryStickerProtocol {
+    public weak var delegate:TLStoryStickerDelegate?
 
-class TLStickerTextView: UILabel, TLStickerViewZoomProtocol {
-    public weak var delegate:TLStickerTextViewDelegate?
+    fileprivate let DefaultWidth = 100
     
-    fileprivate var lastPosition:CGPoint = CGPoint.zero
+    fileprivate var minWidth:CGFloat = 0
+    
+    fileprivate var minHeight:CGFloat = 0
     
     fileprivate var lastScale:CGFloat = 1.0
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.font = UIFont.boldSystemFont(ofSize: TLStoryConfiguration.defaultTextWeight)
-        self.textColor = UIColor.white
-        self.backgroundColor = UIColor.clear
-        self.textAlignment = .center
-        self.isUserInteractionEnabled = true
-        self.numberOfLines = 0
-        
+    init(img:UIImage) {
+        super.init(frame: CGRect.init(x: 0, y: 0, width: self.DefaultWidth, height: self.DefaultWidth))
+        self.image = img
+                
         let panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(pan))
         panGesture.delegate = self
         self.addGestureRecognizer(panGesture)
@@ -44,6 +38,11 @@ class TLStickerTextView: UILabel, TLStickerViewZoomProtocol {
         let rotateGesture = UIRotationGestureRecognizer.init(target: self, action: #selector(rotate))
         rotateGesture.delegate = self
         self.addGestureRecognizer(rotateGesture)
+        
+        self.isUserInteractionEnabled = true
+        
+        minWidth = self.bounds.width * 0.5
+        minHeight = self.bounds.height * 0.5
     }
     
     @objc fileprivate func pan(gesture:UIPanGestureRecognizer) {
@@ -52,17 +51,16 @@ class TLStickerTextView: UILabel, TLStickerViewZoomProtocol {
         self.center = newP
         gesture.setTranslation(CGPoint.zero, in: superview)
         
-        self.delegate?.stickerViewDraggingDelete(point: newP, sticker: self, isEnd: gesture.state == .ended)
+        self.delegate?.stickerViewDraggingDelete(point: newP, sticker: self, isEnd: gesture.state == .ended || gesture.state == .cancelled)
+        self.delegate?.stickerView(handing: gesture.state == .began || gesture.state == .changed)
     }
     
-    @objc fileprivate func tap(tap:UITapGestureRecognizer) {
+    @objc fileprivate func tap(gesture:UITapGestureRecognizer) {
+        self.beginScaleAnim()
         self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
-        self.delegate?.stickerTextViewEditing(sticker: self)
     }
     
     @objc fileprivate func pinche(pinche:UIPinchGestureRecognizer) {
-        self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
-        
         if(pinche.state == .ended) {
             lastScale = 1.0
             return
@@ -75,15 +73,20 @@ class TLStickerTextView: UILabel, TLStickerViewZoomProtocol {
         
         self.transform = newTransform
         lastScale = pinche.scale
+        
+        self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
+        self.delegate?.stickerView(handing: pinche.state == .began || pinche.state == .changed)
     }
     
     @objc fileprivate func rotate(rotate:UIRotationGestureRecognizer) {
-        self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
         self.transform = self.transform.rotated(by: rotate.rotation)
         rotate.rotation = 0
+        
+        self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
+        self.delegate?.stickerView(handing: rotate.state == .began || rotate.state == .changed)
     }
     
-    internal override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
@@ -92,8 +95,8 @@ class TLStickerTextView: UILabel, TLStickerViewZoomProtocol {
     }
 }
 
-extension TLStickerTextView: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+extension TLStoryImageSticker: UIGestureRecognizerDelegate {
+    internal func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) && otherGestureRecognizer.isKind(of: UISwipeGestureRecognizer.self) || gestureRecognizer.isKind(of: UITapGestureRecognizer.self) && otherGestureRecognizer.isKind(of: UITapGestureRecognizer.self) {
             return false
         }

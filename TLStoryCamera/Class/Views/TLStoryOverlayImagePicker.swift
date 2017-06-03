@@ -1,26 +1,75 @@
 //
-//  TLStickerPickerView.swift
+//  TLStoryOverlayImagePicker.swift
 //  TLStoryCamera
 //
-//  Created by GarryGuo on 2017/5/10.
+//  Created by GarryGuo on 2017/6/1.
 //  Copyright © 2017年 GarryGuo. All rights reserved.
 //
 
 import UIKit
 
-protocol TLStickerPickerViewDelegate: NSObjectProtocol {
-    func stickerPickerDidSelectedStickers(img:UIImage) -> Void
-    func stickerPickerHidden(view:TLStickerPickerView) -> Void
+protocol TLStoryOverlayImagePickerDelegate: NSObjectProtocol {
+    func storyOverlayImagePickerDidSelected(img:UIImage) -> Void
+    func storyOverlayImagePickerDismiss()
 }
 
-class TLStickerPickerView: UIVisualEffectView {
+class TLStoryOverlayImagePicker: UIView {
+    public weak var delegate:TLStoryOverlayImagePickerDelegate?
+    
+    fileprivate var imagePicker:TLStoryImagePickerView?
+    
+    fileprivate var tap:UITapGestureRecognizer?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        imagePicker = TLStoryImagePickerView.init(frame: CGRect.init(x: 0, y: self.height, width: self.width, height: self.height), callback: { [weak self] (img) -> (Void) in
+            if let i = img {
+                self?.delegate?.storyOverlayImagePickerDidSelected(img: i)
+            }
+            self?.delegate?.storyOverlayImagePickerDismiss()
+        })
+        self.addSubview(imagePicker!)
+        
+        tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        tap!.delegate = self
+        self.addGestureRecognizer(tap!)
+    }
+    
+    @objc fileprivate func tapAction() {
+        self.imagePicker?.dismiss()
+    }
+    
+    public func display() {
+        UIView.animate(withDuration: 0.25) { 
+            self.imagePicker!.y = self.height - 380
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension TLStoryOverlayImagePicker: UIGestureRecognizerDelegate {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let point = gestureRecognizer.location(in: self)
+        if self.imagePicker!.frame.contains(point) {
+            return false
+        }
+        return true
+    }
+}
+
+
+class TLStoryImagePickerView: UIView {
+    fileprivate var blurBgView:UIVisualEffectView?
+    
     fileprivate var handleView = UIView.init()
     
     fileprivate var handleBgView = UIView.init()
     
     fileprivate var collectionView:UICollectionView?
-    
-    public weak var delegate:TLStickerPickerViewDelegate?
     
     fileprivate var stickers:[UIImage] = {
         var array = [UIImage]()
@@ -42,10 +91,16 @@ class TLStickerPickerView: UIVisualEffectView {
     
     fileprivate var offsetY:CGFloat = 0
     
-    init(frame:CGRect) {
-        super.init(effect: UIBlurEffect.init(style: .light))
-        self.frame = frame
-                
+    fileprivate var callback:((UIImage?) -> (Void))?
+    
+    init(frame:CGRect, callback:@escaping ((UIImage?) -> (Void))) {
+        super.init(frame: frame)
+        self.callback = callback
+        
+        self.blurBgView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .light))
+        self.blurBgView!.frame = self.bounds
+        self.addSubview(blurBgView!)
+        
         let layout = UICollectionViewFlowLayout.init()
         layout.itemSize = CGSize.init(width: self.width / 3 - 20, height: self.width / 3)
         layout.minimumLineSpacing = 10
@@ -56,9 +111,9 @@ class TLStickerPickerView: UIVisualEffectView {
         collectionView!.dataSource = self;
         collectionView!.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: self.height - 380, right: 10)
         collectionView!.register(TLStickerCell.self, forCellWithReuseIdentifier: "cell")
-        self.addSubview(collectionView!)
+        blurBgView!.addSubview(collectionView!)
         
-        self.addSubview(handleBgView)
+        blurBgView!.addSubview(handleBgView)
         handleBgView.frame = CGRect.init(x: 0, y: 0, width: self.width, height: 30)
         handleBgView.isUserInteractionEnabled = true
         
@@ -71,6 +126,18 @@ class TLStickerPickerView: UIVisualEffectView {
         
         pincheGesture = UIPanGestureRecognizer.init(target: self, action: #selector(pincheAction))
         handleBgView.addGestureRecognizer(pincheGesture!)
+        
+        let maskPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft,.topRight], cornerRadii: CGSize.init(width: 5, height: 5))
+        
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = maskPath.cgPath
+        maskLayer.fillRule = kCAFillRuleEvenOdd
+
+        let maskView = UIView(frame: self.bounds)
+        maskView.backgroundColor = UIColor.black
+        maskView.layer.mask = maskLayer
+        
+        blurBgView?.mask = maskView
     }
     
     @objc fileprivate func pincheAction(sender:UIPanGestureRecognizer) -> Void {
@@ -114,8 +181,8 @@ class TLStickerPickerView: UIVisualEffectView {
         }, completion: { (x) in
             self.collectionView?.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: self.height - 380, right: 10)
             self.collectionView?.removeGestureRecognizer(self.pincheGesture!)
-            if let delegate = self.delegate {
-                delegate.stickerPickerHidden(view: self)
+            if let c = self.callback {
+                c(nil)
             }
         })
     }
@@ -124,7 +191,7 @@ class TLStickerPickerView: UIVisualEffectView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-extension TLStickerPickerView:UICollectionViewDelegate, UICollectionViewDataSource {
+extension TLStoryImagePickerView: UICollectionViewDelegate, UICollectionViewDataSource {
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! TLStickerCell
         cell.imgView.image = stickers[indexPath.row]
@@ -141,16 +208,14 @@ extension TLStickerPickerView:UICollectionViewDelegate, UICollectionViewDataSour
         }, completion: { (x) in
             self.collectionView?.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: self.height - 380, right: 10)
             self.collectionView?.removeGestureRecognizer(self.pincheGesture!)
-            if let delegate = self.delegate {
-                delegate.stickerPickerDidSelectedStickers(img: cell.imgView.image!)
-                delegate.stickerPickerHidden(view: self)
+            if let c = self.callback {
+                c(cell.imgView.image)
             }
         })
     }
-    
 }
 
-extension TLStickerPickerView: UIScrollViewDelegate {
+extension TLStoryImagePickerView: UIScrollViewDelegate {
     internal func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y <= -20 {
             if let gesture = pincheGesture {

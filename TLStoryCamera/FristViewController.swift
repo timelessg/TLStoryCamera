@@ -36,7 +36,7 @@ class FristViewController: UIViewController {
         scrollView.scrollsToTop = false
         scrollView.delegate = self
         
-        storyVc.view.frame = CGRect.init(x: 0, y: -64, width: screenWidth, height: screenHeight)
+        storyVc.view.frame = CGRect.init(x: 0, y: -44, width: screenWidth, height: screenHeight)
         storyVc.delegate = self
         scrollView.addSubview(storyVc.view)
         self.addChildViewController(storyVc)
@@ -68,15 +68,15 @@ class FristViewController: UIViewController {
 }
 
 extension FristViewController:TLStoryViewDelegate {
-    func storyDidPublish(type: TLStoryType, url: URL?) {
+    func storyViewRecording(running complete: Bool) {
+        self.scrollView.isScrollEnabled = !complete
+    }
+
+    func storyViewDidPublish(type: TLStoryType, url: URL?) {
         guard let u = url else {
             return
         }
         print("\(type)-----\(u)")
-    }
-
-    func storyRecording(complete: Bool) {
-        self.scrollView.isScrollEnabled = !complete
     }
 }
 
@@ -86,8 +86,7 @@ extension FristViewController: UIScrollViewDelegate {
         if (self.lastPage == page) {
             return;
         }
-        
         self.lastPage = page;
-        self.storyVc.openCamera(open: page == 0)
+        self.storyVc.resumeCamera(open: page == 0)
     }
 }

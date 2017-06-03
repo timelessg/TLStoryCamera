@@ -1,5 +1,5 @@
 //
-//  TLCameraView.swift
+//  TLStoryCapturePreviewView.swift
 //  TLStoryCamera
 //
 //  Created by GarryGuo on 2017/5/10.
@@ -9,7 +9,7 @@
 import UIKit
 import GPUImage
 
-class TLCameraView: GPUImageView {
+class TLStoryCapturePreviewView: GPUImageView {
     fileprivate var videoCamera:GPUImageStillCamera?
     
     fileprivate var filterView:GPUImageView?
@@ -77,11 +77,11 @@ class TLCameraView: GPUImageView {
         open ? videoCamera?.startCapture() : videoCamera?.stopCapture()
     }
     
-    public func cameraZoom(offseY:CGFloat) {
+    public func camera(distance:CGFloat) {
         let maxZoomFactor = videoCamera?.inputCamera.activeFormat.videoMaxZoomFactor ?? 1
         let max = maxZoomFactor > TLStoryConfiguration.maxVideoZoomFactor ? TLStoryConfiguration.maxVideoZoomFactor : maxZoomFactor
         let per = MaxDragOffset / max
-        let zoom = offseY / per
+        let zoom = distance / per
         self.setVideoZoomFactor(zoom: zoom)
     }
     
@@ -161,16 +161,23 @@ class TLCameraView: GPUImageView {
         self.setVideoZoomFactor(zoom: 0)
     }
     
-    public func finishRecording(complete:@escaping ((URL) -> Void)) {
+    public func finishRecording(complete:@escaping ((URL?) -> Void)) {
         movieWriter?.finishRecording(completionHandler: { [weak self] in
             DispatchQueue.main.async {
                 self?.beautifyFilter.removeTarget(self?.movieWriter!)
                 self?.videoCamera?.pauseCapture()
                 self?.movieWriter = nil
                 
-                if let path = self?.currentVideoPath {
-                    complete(path)
+                guard let strongSelf = self else {
+                    return
                 }
+                
+                guard let path = strongSelf.currentVideoPath else {
+                    complete(nil)
+                    return
+                }
+                
+                complete(path)
             }
         })
     }
@@ -279,8 +286,8 @@ class TLCameraView: GPUImageView {
     }
 }
 
-extension TLCameraView: CAAnimationDelegate {
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+extension TLStoryCapturePreviewView: CAAnimationDelegate {
+    internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if !flag {
             return
         }

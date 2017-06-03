@@ -15,6 +15,8 @@ protocol TLStoryAuthorizedDelegate: NSObjectProtocol {
 }
 
 class TLStoryAuthorizationController: UIViewController {
+    public weak var delegate:TLStoryAuthorizedDelegate?
+
     fileprivate var bgBlurView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .dark))
     
     fileprivate var titleLabel:UILabel = {
@@ -46,8 +48,6 @@ class TLStoryAuthorizationController: UIViewController {
     }()
     
     fileprivate var authorizedManager = TLAuthorizedManager()
-    
-    public weak var delegate:TLStoryAuthorizedDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +100,7 @@ class TLStoryAuthorizationController: UIViewController {
         }
     }
     
-    func dismiss() {
+    fileprivate func dismiss() {
         if TLAuthorizedManager.checkAuthorization(with: .camera) && TLAuthorizedManager.checkAuthorization(with: .mic) {
             UIView.animate(withDuration: 0.25, animations: {
                 self.view.alpha = 0

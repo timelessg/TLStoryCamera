@@ -1,5 +1,5 @@
 //
-//  TLHoopButton.swift
+//  TLStoryCameraButton.swift
 //  TLStoryCamera
 //
 //  Created by GarryGuo on 2017/5/10.
@@ -10,14 +10,14 @@ import UIKit
 
 let MaxDragOffset:CGFloat = 300;
 
-protocol TLHoopButtonDelegate : NSObjectProtocol {
-    func hoopStart(hoopButton:TLHoopButton) -> Void
-    func hoopComplete(hoopButton:TLHoopButton, type:TLStoryType) -> Void
-    func hoopDrag(hoopButton:TLHoopButton,offsetY:CGFloat) -> Void
+protocol TLStoryCameraButtonDelegate : NSObjectProtocol {
+    func cameraStart(hoopButton:TLStoryCameraButton) -> Void
+    func cameraComplete(hoopButton:TLStoryCameraButton, type:TLStoryType) -> Void
+    func cameraDrag(hoopButton:TLStoryCameraButton,offsetY:CGFloat) -> Void
 }
 
-class TLHoopButton: UIControl {
-    public weak var delegete : TLHoopButtonDelegate?
+class TLStoryCameraButton: UIControl {
+    public weak var delegete : TLStoryCameraButtonDelegate?
     
     public var centerPoint:CGPoint {
         return CGPoint.init(x: self.width / 2.0, y: self.width / 2.0)
@@ -106,11 +106,10 @@ class TLHoopButton: UIControl {
     @objc fileprivate func complete() {
         timer?.invalidate()
         timer = nil
-        self.delegete?.hoopComplete(hoopButton: self, type: self.progress < CGFloat(TLStoryConfiguration.minRecordingTime) ? .photo : .video)
+        self.delegete?.cameraComplete(hoopButton: self, type: self.progress < CGFloat(TLStoryConfiguration.minRecordingTime) ? .photo : .video)
         percent = 0
         progress = 0
         self.setNeedsDisplay()
-        self.reset()
     }
     
     public func reset() {
@@ -140,7 +139,7 @@ class TLHoopButton: UIControl {
     }
     
     @objc fileprivate func startAction(sender:UIButton) {
-        self.delegete?.hoopStart(hoopButton: self)
+        self.delegete?.cameraStart(hoopButton: self)
         self.bounds = CGRect.init(x: 0, y: 0, width: zoomInSize.width, height: zoomInSize.height)
         self.center = CGPoint.init(x: superview!.width / 2, y: superview!.bounds.height - 30 - 60)
         self.insideCircleView.center = centerPoint
@@ -163,7 +162,7 @@ class TLHoopButton: UIControl {
         let point = touch.location(in: self)
         let offsetY = point.y < 0 ? -point.y : 0;
         if offsetY < MaxDragOffset && offsetY > 0 {
-            delegete?.hoopDrag(hoopButton: self, offsetY: offsetY)
+            delegete?.cameraDrag(hoopButton: self, offsetY: offsetY)
         }
     }
     
@@ -218,7 +217,7 @@ class TLHoopButton: UIControl {
     }
 }
 
-extension TLHoopButton: CAAnimationDelegate {
+extension TLStoryCameraButton: CAAnimationDelegate {
     internal func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if let a = insideCircleView.layer.animation(forKey: "insideCircleAnim"), a.isEqual(anim) {
             if flag {

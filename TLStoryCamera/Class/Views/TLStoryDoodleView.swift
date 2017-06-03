@@ -1,18 +1,19 @@
 //
-//  TLStoryDrawView.swift
+//  TLStoryDoodleView.swift
 //  TLStoryCamera
 //
-//  Created by GarryGuo on 2017/5/10.
+//  Created by GarryGuo on 2017/5/31.
 //  Copyright © 2017年 GarryGuo. All rights reserved.
 //
 
 import UIKit
 
-protocol TLStoryDrawViewDelegate: NSObjectProtocol {
-    func drawView(drawing:Bool)
+protocol TLStoryDoodleViewDelegate: NSObjectProtocol{
+    func storyDoodleView(drawing:Bool)
 }
 
-class TLStoryDrawView: UIView {
+class TLStoryDoodleView: UIView {
+    public weak var delegate:TLStoryDoodleViewDelegate?
     fileprivate var lines = [[Any]]()
     fileprivate var purePoints = [Any]()
     fileprivate var previousPoint:CGPoint?
@@ -23,7 +24,6 @@ class TLStoryDrawView: UIView {
     fileprivate var isUndo = false
     public      var lineWidth:CGFloat = TLStoryConfiguration.defaultDrawLineWeight
     public      var lineColor:UIColor = UIColor.white
-    weak public var delegate:TLStoryDrawViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -169,7 +169,7 @@ class TLStoryDrawView: UIView {
         
         isEnd = false
         
-        self.delegate?.drawView(drawing: true)
+        self.delegate?.storyDoodleView(drawing: true)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -247,58 +247,7 @@ class TLStoryDrawView: UIView {
         
         getCurImageFromBounds(path_.boundingBox)
         
-        self.delegate?.drawView(drawing: false)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-
-protocol TLStoryDrawToolBarDelegate: NSObjectProtocol {
-    func undo()
-    func confrim()
-}
-
-class TLStoryDrawToolBar: UIView {
-    fileprivate var confrimBtn:TLButton = {
-        let btn = TLButton.init(type: UIButtonType.custom)
-        btn.setTitle("确定", for: .normal)
-        btn.showsTouchWhenHighlighted = true
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        btn.addTarget(self, action: #selector(confrimAction), for: .touchUpInside)
-        return btn
-    }()
-    
-    fileprivate var undoBtn:TLButton = {
-        let btn = TLButton.init(type: UIButtonType.custom)
-        btn.showsTouchWhenHighlighted = true
-        btn.setImage(#imageLiteral(resourceName: "story_publish_icon_drawing_cancel"), for: .normal)
-        btn.addTarget(self, action: #selector(undoAction), for: .touchUpInside)
-        return btn
-    }()
-    
-    public weak var delegate:TLStoryDrawToolBarDelegate?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.addSubview(confrimBtn)
-        confrimBtn.bounds = CGRect.init(x: 0, y: 0, width: 55, height: 55)
-        confrimBtn.center = CGPoint.init(x: self.width - confrimBtn.width / 2, y:confrimBtn.height / 2)
-        
-        self.addSubview(self.undoBtn)
-        undoBtn.bounds = CGRect.init(x: 0, y: 0, width: 55, height: 55)
-        undoBtn.center = CGPoint.init(x: self.undoBtn.width / 2, y: confrimBtn.centerY)
-    }
-    
-    public func undoAction() {
-        self.delegate?.undo()
-    }
-    
-    public func confrimAction() {
-        self.delegate?.confrim()
+        self.delegate?.storyDoodleView(drawing: false)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  TLStoryCamera
 //
-//  Created by gg on 2017/5/8.
-//  Copyright © 2017年 com.garry. All rights reserved.
+//  Created by GarryGuo on 2017/5/8.
+//  Copyright © 2017年 GarryGuo. All rights reserved.
 //
 
 import UIKit

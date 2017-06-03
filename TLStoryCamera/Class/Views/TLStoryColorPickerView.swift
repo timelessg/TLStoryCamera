@@ -1,24 +1,21 @@
 //
-//  TLColorPaletteView.swift
+//  TLStoryColorPickerView.swift
 //  TLStoryCamera
 //
-//  Created by GarryGuo on 2017/5/10.
+//  Created by GarryGuo on 2017/6/1.
 //  Copyright © 2017年 GarryGuo. All rights reserved.
 //
 
 import UIKit
 
-enum TLStoryDeployType {
-    case text
-    case draw
+protocol TLStoryColorPickerViewDelegate: NSObjectProtocol {
+    func storyColorPickerDidChange(color:UIColor)
+    func storyColorPickerDidChange(percent:CGFloat)
 }
 
-protocol TLColorPaletteViewDelegate: NSObjectProtocol {
-    func colorPaletteDidSelected(color:UIColor)
-    func colorPaletteSliderView(hidden:Bool)
-}
-
-class TLColorPaletteView: UIView {
+class TLStoryColorPickerView: UIView {
+    public weak var delegate:TLStoryColorPickerViewDelegate?
+    
     fileprivate lazy var pageControl:UIPageControl = {
         let control = UIPageControl.init()
         control.currentPage = 1
@@ -36,6 +33,8 @@ class TLColorPaletteView: UIView {
         return btn
     }()
     
+    fileprivate var sliderView:TLStorySliderView?
+    
     fileprivate var collectionView:UICollectionView?
     
     fileprivate var colors:[UIColor] = {
@@ -51,49 +50,67 @@ class TLColorPaletteView: UIView {
         return array
     }()
     
-    public weak var delegate:TLColorPaletteViewDelegate?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        sliderBtn.addTarget(self, action: #selector(sliderAction), for: .touchUpInside)
+        self.addSubview(sliderBtn)
+        sliderBtn.bounds = CGRect.init(x: 0, y: 0, width: 28, height: 28)
+        sliderBtn.center = CGPoint.init(x: 20, y: 30)
+        
+        let collectionViewX = sliderBtn.x + sliderBtn.width + 6
+        
         let layout = UICollectionViewFlowLayout.init()
-        layout.itemSize = CGSize.init(width: (self.width - 40) / 9, height: 30)
+        layout.itemSize = CGSize.init(width: (self.width - collectionViewX) / 9, height: 30)
         layout.minimumLineSpacing = 0.01
         layout.scrollDirection = .horizontal
         
-        collectionView = UICollectionView.init(frame: CGRect.init(x: 40, y: 15, width: self.width - 40, height: 30), collectionViewLayout: layout)
+        collectionView = UICollectionView.init(frame: CGRect.init(x: collectionViewX, y: 18, width: self.width - collectionViewX, height: 24), collectionViewLayout: layout)
         collectionView!.backgroundColor = UIColor.clear
         collectionView!.delegate = self
         collectionView!.dataSource = self;
         collectionView!.isPagingEnabled = true
         collectionView!.showsHorizontalScrollIndicator = false
         collectionView!.register(TLColorPaletteCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView!.contentSize = CGSize.init(width: self.width - 45, height: 30)
+        collectionView!.contentSize = CGSize.init(width: self.width - 25, height: 24)
         self.addSubview(collectionView!)
         
         self.addSubview(pageControl)
-        pageControl.frame = CGRect.init(x: 0, y: 0, width: 100, height: 20)
+        pageControl.frame = CGRect.init(x: 0, y: 0, width: self.width, height: 20)
         pageControl.center = CGPoint.init(x: self.width / 2, y: self.height - pageControl.height / 2)
         
-        sliderBtn.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-        sliderBtn.center = CGPoint.init(x: 5 + sliderBtn.width / 2, y: self.height / 2)
-        sliderBtn.addTarget(self, action: #selector(sliderAction), for: .touchUpInside)
-        self.addSubview(sliderBtn)
+        sliderView = TLStorySliderView.init(frame: CGRect.init(x: 0, y: -196, width: 40, height: 200))
+        sliderView?.delegate = self
+        sliderView?.isHidden = true
+        self.addSubview(sliderView!)
     }
     
-    public func setDefault(color:UIColor?) {
-        if let c = color, let index = colors.index(of: c) {
-            collectionView?.scrollToItem(at: IndexPath.init(row: index, section: 0), at: .left, animated: false)
-            sliderBtn.backgroundColor = c
-        }else {
-            collectionView?.scrollToItem(at: IndexPath.init(row: 0, section: 0), at: .left, animated: false)
-            sliderBtn.backgroundColor = UIColor.white
+    public func set(hidden:Bool) {
+        if !hidden {
+            sliderView?.isHidden = true
         }
+        self.isHidden = hidden
+    }
+    
+    public func reset() {
+        self.collectionView?.selectItem(at: IndexPath.init(row: 0, section: 0), animated: false, scrollPosition: .left)
+    }
+    
+    public func hiddenSlider() {
+        sliderBtn.isSelected = false
+        sliderView?.set(hidden: true, anim: true)
     }
     
     @objc fileprivate func sliderAction(sender:UIButton) {
         sender.isSelected = !sender.isSelected
-        self.delegate?.colorPaletteSliderView(hidden: !sender.isSelected)
+        sliderView?.set(hidden: !sender.isSelected, anim: true)
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        if self.sliderView!.frame.contains(point) {
+            return true
+        }
+        return super.point(inside: point, with: event)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -101,7 +118,8 @@ class TLColorPaletteView: UIView {
     }
 }
 
-extension TLColorPaletteView: UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout {
+
+extension TLStoryColorPickerView: UICollectionViewDelegate, UICollectionViewDataSource {
     internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colors.count
     }
@@ -116,13 +134,20 @@ extension TLColorPaletteView: UICollectionViewDelegate, UICollectionViewDataSour
         cell.selectedAnim()
         let color = colors[indexPath.row]
         self.sliderBtn.backgroundColor = color
-        self.delegate?.colorPaletteDidSelected(color: color)
+        self.delegate?.storyColorPickerDidChange(color: color)
     }
     
     internal func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.width)
     }
 }
+
+extension TLStoryColorPickerView: TLSliderDelegate {
+    func sliderDragging(ratio: CGFloat) {
+        self.delegate?.storyColorPickerDidChange(percent: ratio)
+    }
+}
+
 
 class TLColorPaletteCell: UICollectionViewCell {
     fileprivate lazy var colorView = UIView.init()

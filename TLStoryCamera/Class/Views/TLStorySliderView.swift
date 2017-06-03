@@ -36,6 +36,8 @@ class TLStorySliderView: UIView {
     
     fileprivate var isBeginAnim = false
     
+    fileprivate var lastOffsetY:CGFloat = 0
+    
     public      var ratio:CGFloat = 50 / 180
     
     override init(frame: CGRect) {
@@ -67,25 +69,37 @@ class TLStorySliderView: UIView {
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
         self.addGestureRecognizer(tap)
+        
+        self.lastOffsetY = self.y
+    }
+    
+    public func set(hidden:Bool, anim:Bool) {
+        if hidden {
+            if self.isHidden {
+                return
+            }
+            UIView.animate(withDuration: anim ? 0.25 : 0, animations: {
+                self.y = self.lastOffsetY + 30
+                self.alpha = 0
+            }, completion: { (x) in
+                self.isHidden = true
+            })
+        }else {
+            if !self.isHidden {
+                return
+            }
+            self.isHidden = false
+            self.alpha = 0
+            UIView.animate(withDuration: anim ? 0.25 : 0, animations: {
+                self.y = self.lastOffsetY
+                self.alpha = 1
+            })
+        }
     }
     
     public func updateRatio(centerY:CGFloat) {
         self.ratio = (self.height - centerY) / (self.height)
         self.delegate?.sliderDragging(ratio: self.ratio)
-    }
-    
-    public func setDefaultValue(type:TLStoryDeployType) {
-        if type == .text {
-            let ratio = (TLStoryConfiguration.defaultTextWeight - TLStoryConfiguration.minTextWeight) / (TLStoryConfiguration.maxTextWeight - TLStoryConfiguration.minTextWeight)
-            self.blockView.centerY = (self.height - 30) * (1 - ratio)
-            self.delegate?.sliderDragging(ratio: self.ratio)
-        }
-        
-        if type == .draw {
-            let ratio = (TLStoryConfiguration.defaultDrawLineWeight - TLStoryConfiguration.minDrawLineWeight) / (TLStoryConfiguration.maxDrawLineWeight - TLStoryConfiguration.minDrawLineWeight)
-            self.blockView.centerY = (self.height - 30) * (1 - ratio)
-            self.delegate?.sliderDragging(ratio: self.ratio)
-        }
     }
     
     fileprivate func beginTouchAnim(autoreverses:Bool, isBegin:Bool) {
