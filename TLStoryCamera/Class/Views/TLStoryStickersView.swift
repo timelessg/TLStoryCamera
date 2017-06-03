@@ -22,8 +22,6 @@ class TLStoryStickersView: UIView {
     
     fileprivate var isPrepareDelete:Bool = false
     
-    fileprivate var lastTransform:CGAffineTransform?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -58,13 +56,12 @@ class TLStoryStickersView: UIView {
     
     fileprivate func deleteIcon(zoomIn:Bool) {
         if zoomIn {
-            self.lastTransform = self.deleteIco.transform
             UIView.animate(withDuration: 0.25) {
-                self.deleteIco.transform = self.deleteIco.transform.scaledBy(x: 1.2, y: 1.2)
+                self.deleteIco.transform = CGAffineTransform.init(scaleX: 1.2, y: 1.2)
             }
         }else {
             UIView.animate(withDuration: 0.25) {
-                self.deleteIco.transform = self.lastTransform!
+                self.deleteIco.transform = CGAffineTransform.init(scaleX: 1, y: 1)
             }
         }
     }

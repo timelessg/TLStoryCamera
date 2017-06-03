@@ -165,6 +165,10 @@ class TLStoryOverlayEditView: UIView {
         }
     }
     
+    public func setAudioEnableBtn(hidden:Bool) {
+        self.audioEnableBtn.isHidden = hidden
+    }
+    
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if self.closeBtn.frame.contains(point) || self.audioEnableBtn.frame.contains(point) || self.tagsBtn.frame.contains(point) || self.textBtn.frame.contains(point) || self.doodleBtn.frame.contains(point) || self.saveBtn.frame.contains(point) || self.publishBtn.frame.contains(point) {
             return true
