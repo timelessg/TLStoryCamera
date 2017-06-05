@@ -112,6 +112,7 @@ public class TLStoryViewController: UIViewController {
                     self.blurCoverView.isHidden = true
                 }
             })
+            self.controlView?.beginHintAnim()
         }else {
             self.blurCoverView.alpha = 1
             self.blurCoverView.isHidden = false

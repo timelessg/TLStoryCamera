@@ -27,6 +27,10 @@ extension TLStoryOverlayEditViewDelegate {
 class TLStoryOverlayEditView: UIView {
     public weak var delegate:TLStoryOverlayEditViewDelegate?
     
+    fileprivate var topGradientView:TLStoryFullScreenDarkGradientView?
+    
+    fileprivate var bottomGradientView:TLStoryFullScreenDarkGradientView?
+    
     fileprivate lazy var closeBtn:UIButton = {
         let btn = UIButton.init(type: UIButtonType.custom)
         btn.showsTouchWhenHighlighted = true
@@ -86,6 +90,12 @@ class TLStoryOverlayEditView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        topGradientView = TLStoryFullScreenDarkGradientView.init(frame: CGRect.init(x: 0, y: 0, width: self.width, height: 85), direction: .top)
+        self.addSubview(topGradientView!)
+        
+        bottomGradientView = TLStoryFullScreenDarkGradientView.init(frame: CGRect.init(x: 0, y: self.height - 85, width: self.width, height: 85), direction: .bottom)
+        self.addSubview(bottomGradientView!)
+        
         addSubview(closeBtn)
         closeBtn.bounds = CGRect.init(x: 0, y: 0, width: 45, height: 45)
         closeBtn.origin = CGPoint.init(x: 0, y: 0)
@@ -106,13 +116,13 @@ class TLStoryOverlayEditView: UIView {
         audioEnableBtn.bounds = CGRect.init(x: 0, y: 0, width: 45, height: 45)
         audioEnableBtn.center = CGPoint.init(x: tagsBtn.centerX - 45, y: closeBtn.centerY)
         
-        addSubview(saveBtn)
-        saveBtn.bounds = CGRect.init(x: 0, y: 0, width: 45, height: 45)
-        saveBtn.origin = CGPoint.init(x: 0, y: self.height - saveBtn.height)
-        
         addSubview(publishBtn)
         publishBtn.sizeToFit()
         publishBtn.origin = CGPoint.init(x: self.width - publishBtn.width - 15, y: self.height - publishBtn.height - 15)
+        
+        addSubview(saveBtn)
+        saveBtn.bounds = CGRect.init(x: 0, y: 0, width: 45, height: 45)
+        saveBtn.center = CGPoint.init(x: closeBtn.centerX, y: publishBtn.centerY)
     }
     
     @objc fileprivate func closeAction() {
@@ -174,6 +184,39 @@ class TLStoryOverlayEditView: UIView {
             return true
         }
         return false
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+class TLStoryFullScreenDarkGradientView: UIView {
+    public enum Direction {
+        case top
+        case bottom
+    }
+    
+    fileprivate lazy var gradientLayer:CAGradientLayer = {
+        var gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.init(colorHex: 0x000000, alpha: 0.3).cgColor, UIColor.init(colorHex: 0x000000, alpha: 0.1).cgColor,UIColor.init(colorHex: 0x000000, alpha: 0).cgColor]
+        return gradientLayer
+    }()
+    
+    init(frame: CGRect, direction:Direction) {
+        super.init(frame: frame)
+        
+        gradientLayer.frame = self.bounds
+        
+        if direction == .top {
+            gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 0)
+            gradientLayer.endPoint = CGPoint.init(x: 0.5, y: 1)
+        }else {
+            gradientLayer.startPoint = CGPoint.init(x: 0.5, y: 1)
+            gradientLayer.endPoint = CGPoint.init(x: 0.5, y: 0)
+        }
+        self.layer.addSublayer(gradientLayer)
     }
     
     required init?(coder aDecoder: NSCoder) {

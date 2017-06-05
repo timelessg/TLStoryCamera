@@ -86,6 +86,10 @@ class TLStoryOverlayControlView: UIView {
         self.cameraBtn.show()
     }
     
+    public func beginHintAnim () {
+        photoLibraryHintView?.startAnim()
+    }
+    
     @objc fileprivate func tapAction(sender:UITapGestureRecognizer) {
         let point = sender.location(in: self)
         self.delegate?.storyOverlayCameraFocused(point: point)
@@ -168,7 +172,9 @@ class TLPhotoLibraryHintView: UIView {
         self.addSubview(arrowIco)
         arrowIco.sizeToFit()
         arrowIco.center = CGPoint.init(x: self.width / 2, y: 10 + arrowIco.height / 2)
-        
+    }
+    
+    public func startAnim() {
         UIView.animate(withDuration: 0.8, delay: 0, options: [.repeat,.autoreverse], animations: {
             self.arrowIco.centerY = 5 + self.arrowIco.height / 2
         }, completion: nil)
