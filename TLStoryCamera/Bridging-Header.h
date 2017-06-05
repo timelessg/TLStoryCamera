@@ -10,5 +10,6 @@
 #define Bridging_Header_h
 
 #import "GPUImageBeautifyFilter.h"
+#import "TLGPUImageAlphaBlendFilter.h"
 
 #endif /* Bridging_Header_h */

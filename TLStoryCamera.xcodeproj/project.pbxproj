@@ -23,6 +23,7 @@
 		4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */; };
 		4B47245E1EE04ED5006F755B /* TLStoryImageSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47245D1EE04ED5006F755B /* TLStoryImageSticker.swift */; };
 		4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */; };
+		4B7126FA1EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */; };
 		4B8845941EDFFA5000710F4C /* TLStoryTextSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8845931EDFFA5000710F4C /* TLStoryTextSticker.swift */; };
 		4B8E81F41EDE955500ADD56D /* TLStoryOverlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F31EDE955500ADD56D /* TLStoryOverlayControlView.swift */; };
 		4B8E81F61EDEA4A400ADD56D /* TLStoryOverlayEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F51EDEA4A400ADD56D /* TLStoryOverlayEditView.swift */; };
@@ -62,6 +63,8 @@
 		4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryAuthorizationController.swift; sourceTree = "<group>"; };
 		4B47245D1EE04ED5006F755B /* TLStoryImageSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryImageSticker.swift; sourceTree = "<group>"; };
 		4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBStoryStickers.plist; sourceTree = "<group>"; };
+		4B7126F81EE554140022BD28 /* TLGPUImageAlphaBlendFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGPUImageAlphaBlendFilter.h; sourceTree = "<group>"; };
+		4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageAlphaBlendFilter.m; sourceTree = "<group>"; };
 		4B8845931EDFFA5000710F4C /* TLStoryTextSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryTextSticker.swift; sourceTree = "<group>"; };
 		4B8E81F31EDE955500ADD56D /* TLStoryOverlayControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayControlView.swift; sourceTree = "<group>"; };
 		4B8E81F51EDEA4A400ADD56D /* TLStoryOverlayEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayEditView.swift; sourceTree = "<group>"; };
@@ -108,6 +111,15 @@
 				BD9422C59A5198DD0D677E8D /* Pods_TLStoryCamera.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4B7126F11EE5522F0022BD28 /* GPUImageFilter */ = {
+			isa = PBXGroup;
+			children = (
+				4B7126F81EE554140022BD28 /* TLGPUImageAlphaBlendFilter.h */,
+				4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */,
+			);
+			path = GPUImageFilter;
 			sourceTree = "<group>";
 		};
 		8623CF3DA9E60BC3BC9E8AF2 /* Pods */ = {
@@ -221,6 +233,7 @@
 		C690DB411EC0212200320D90 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				4B7126F11EE5522F0022BD28 /* GPUImageFilter */,
 				C69A2D821EC05AA10028244D /* GPUImageBeautifyFilter */,
 				C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */,
 				C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */,
@@ -387,6 +400,7 @@
 				4B4497ED1EDFB4F300FD47BE /* TLStoryBottomImagePickerView.swift in Sources */,
 				4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */,
 				C64E77501EC00D9C005B09B6 /* AppDelegate.swift in Sources */,
+				4B7126FA1EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m in Sources */,
 				4B4497F11EDFB93A00FD47BE /* TLStoryOverlayTextStickerView.swift in Sources */,
 				4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */,
 				4B40E5741ED926E700CAE2AC /* FristSubViewController.swift in Sources */,

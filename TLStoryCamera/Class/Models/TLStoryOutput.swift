@@ -137,7 +137,7 @@ class TLStoryOutput: NSObject {
         
         let uielement = GPUImageUIElement.init(view: UIImageView.init(image: container))
         
-        let landBlendFilter = GPUImageAlphaBlendFilter.init()
+        let landBlendFilter = TLGPUImageAlphaBlendFilter.init()
         landBlendFilter.mix = 1
         
         let progressFilter = GPUImageFilter.init()

@@ -16,7 +16,7 @@ extension UIImage {
     }
     
     public func imageMontage(img:UIImage) -> UIImage {
-        UIGraphicsBeginImageContext(self.size)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, UIScreen.main.scale)
         let rect = CGRect.init(x: 0, y: 0, width: self.size.width, height: self.size.height)
         self.draw(in: rect)
         img.draw(in: rect)
