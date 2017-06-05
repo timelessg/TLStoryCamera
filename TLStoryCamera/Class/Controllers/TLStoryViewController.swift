@@ -192,6 +192,7 @@ public class TLStoryViewController: UIViewController {
         self.editView?.dispaly()
         self.editView?.setAudioEnableBtn(hidden: type == .photo)
         self.controlView?.dismiss()
+        self.captureView?.pauseCamera()
         self.outputView?.display(with: url, type: type)
         self.delegate?.storyViewRecording(running: true)
     }

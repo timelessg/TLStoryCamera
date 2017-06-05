@@ -151,7 +151,6 @@ class TLStoryCapturePreviewView: GPUImageView {
         movieWriter?.finishRecording(completionHandler: { [weak self] in
             DispatchQueue.main.async {
                 self?.beautifyFilter.removeTarget(self?.movieWriter!)
-                self?.videoCamera?.pauseCapture()
                 self?.movieWriter = nil
                 
                 guard let strongSelf = self else {
@@ -172,7 +171,6 @@ class TLStoryCapturePreviewView: GPUImageView {
         videoCamera?.capturePhotoAsImageProcessedUp(toFilter: beautifyFilter, with: .up, withCompletionHandler: { [weak self] (image, error) in
             DispatchQueue.main.async {
                 self?.beautifyFilter.removeTarget(self?.movieWriter!)
-                self?.videoCamera?.pauseCapture()
                 self?.movieWriter = nil
                 
                 guard let strongSelf = self else {

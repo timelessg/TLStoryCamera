@@ -24,7 +24,8 @@ class TLStoryOverlayOutputView: UIView {
         
     public func display(with url:URL, type:TLStoryType) {
         if type == .photo {
-            photoPreview = UIImageView.init()
+            photoPreview = UIImageView.init(frame: self.bounds)
+            photoPreview?.contentMode = .scaleAspectFill
             self.insertSubview(photoPreview!, at: 0)
             if let d = try? Data.init(contentsOf: url) {
                 photoPreview?.image = UIImage.init(data: d)

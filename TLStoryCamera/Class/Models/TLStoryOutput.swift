@@ -118,14 +118,17 @@ class TLStoryOutput: NSObject {
         let asset = AVAsset.init(url: url)
         movieFile = GPUImageMovie.init(asset: asset)
         movieFile?.runBenchmark = true
-        movieFile?.playAtActualSpeed = true
+//        movieFile?.playAtActualSpeed = true
         
         let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
         let size = self.getVideoSize(asset: asset)
         
+        var img:UIImage? = nil
+        
         movieWriter = GPUImageMovieWriter.init(movieURL: URL.init(fileURLWithPath: filePath!), size: size)
         if let t = self.getVideoRotation(asset: asset) {
             movieWriter?.transform = t
+            img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
         }
         
         if audioEnable {
@@ -135,7 +138,9 @@ class TLStoryOutput: NSObject {
         
         movieFile?.enableSynchronizedEncoding(using: movieWriter)
         
-        let uielement = GPUImageUIElement.init(view: UIImageView.init(image: container))
+        let imgview = UIImageView.init(image: img!)
+        
+        let uielement = GPUImageUIElement.init(view: imgview)
         
         let landBlendFilter = TLGPUImageAlphaBlendFilter.init()
         landBlendFilter.mix = 1
