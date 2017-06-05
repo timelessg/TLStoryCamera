@@ -27,6 +27,7 @@ class TLStoryOverlayImagePicker: UIView {
             if let i = img {
                 self?.delegate?.storyOverlayImagePickerDidSelected(img: i)
             }
+            self?.isHidden = true
             self?.delegate?.storyOverlayImagePickerDismiss()
         })
         self.addSubview(imagePicker!)
@@ -41,7 +42,8 @@ class TLStoryOverlayImagePicker: UIView {
     }
     
     public func display() {
-        UIView.animate(withDuration: 0.25) { 
+        self.isHidden = false
+        UIView.animate(withDuration: 0.25) {
             self.imagePicker!.y = self.height - 380
         }
     }

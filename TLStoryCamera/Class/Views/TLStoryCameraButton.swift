@@ -136,7 +136,7 @@ class TLStoryCameraButton: UIControl {
             self.isHidden = true
         }
     }
-    
+        
     @objc fileprivate func startAction(sender:UIButton) {
         self.delegete?.cameraStart(hoopButton: self)
         self.bounds = CGRect.init(x: 0, y: 0, width: zoomInSize.width, height: zoomInSize.height)

@@ -14,6 +14,7 @@ protocol TLStoryOverlayControlDelegate: NSObjectProtocol {
     func storyOverlayCameraZoom(distance:CGFloat)
     func storyOverlayCameraFlashChange() -> AVCaptureTorchMode
     func storyOverlayCameraSwitch()
+    func storyOverlayCameraFocused(point:CGPoint)
 }
 
 class TLStoryOverlayControlView: UIView {
@@ -39,6 +40,10 @@ class TLStoryOverlayControlView: UIView {
     
     fileprivate var photoLibraryHintView:TLPhotoLibraryHintView?
     
+    fileprivate var tapGesture:UITapGestureRecognizer?
+    
+    fileprivate var doubleTapGesture:UITapGestureRecognizer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -57,6 +62,18 @@ class TLStoryOverlayControlView: UIView {
         photoLibraryHintView = TLPhotoLibraryHintView.init(frame: CGRect.init(x: 0, y: 0, width: 200, height: 50))
         photoLibraryHintView?.center = CGPoint.init(x: self.self.width / 2, y: self.height - 25)
         addSubview(photoLibraryHintView!)
+        
+        tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        tapGesture?.delegate = self
+        tapGesture!.numberOfTapsRequired = 1
+        self.addGestureRecognizer(tapGesture!)
+        
+        doubleTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(doubleTapAction))
+        doubleTapGesture?.delegate = self
+        doubleTapGesture!.numberOfTapsRequired = 2
+        self.addGestureRecognizer(doubleTapGesture!)
+        
+        tapGesture!.require(toFail: doubleTapGesture!)
     }
     
     public func dismiss() {
@@ -67,6 +84,15 @@ class TLStoryOverlayControlView: UIView {
     public func display() {
         self.isHidden = false
         self.cameraBtn.show()
+    }
+    
+    @objc fileprivate func tapAction(sender:UITapGestureRecognizer) {
+        let point = sender.location(in: self)
+        self.delegate?.storyOverlayCameraFocused(point: point)
+    }
+    
+    @objc fileprivate func doubleTapAction(sender:UITapGestureRecognizer) {
+        self.delegate?.storyOverlayCameraSwitch()
     }
     
     @objc fileprivate func flashAction(sender: UIButton) {
@@ -90,7 +116,17 @@ class TLStoryOverlayControlView: UIView {
     }
 }
 
-extension TLStoryOverlayControlView : TLStoryCameraButtonDelegate {
+extension TLStoryOverlayControlView: UIGestureRecognizerDelegate {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let point = gestureRecognizer.location(in: self)
+        if self.cameraBtn.frame.contains(point) {
+            return false
+        }
+        return true
+    }
+}
+
+extension TLStoryOverlayControlView: TLStoryCameraButtonDelegate {
     internal func cameraStart(hoopButton: TLStoryCameraButton) {
         self.delegate?.storyOverlayCameraRecordingStart()
         photoLibraryHintView?.isHidden = true

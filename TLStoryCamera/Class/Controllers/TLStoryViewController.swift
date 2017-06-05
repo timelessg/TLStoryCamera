@@ -45,10 +45,6 @@ public class TLStoryViewController: UIViewController {
     
     fileprivate var swipeDown:UISwipeGestureRecognizer?
     
-    fileprivate var tapGesture:UITapGestureRecognizer?
-    
-    fileprivate var doubleTapGesture:UITapGestureRecognizer?
-    
     fileprivate var output = TLStoryOutput.init()
     
     public override func viewDidLoad() {
@@ -101,17 +97,7 @@ public class TLStoryViewController: UIViewController {
         swipeUp = UISwipeGestureRecognizer.init(target: self, action: #selector(swipeAction))
         swipeUp!.direction = .up
         self.controlView?.addGestureRecognizer(swipeUp!)
-        
-        tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
-        tapGesture!.numberOfTapsRequired = 1
-        self.view.addGestureRecognizer(tapGesture!)
-        
-        doubleTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(doubleTapAction))
-        doubleTapGesture!.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(doubleTapGesture!)
-        
-        tapGesture!.require(toFail: doubleTapGesture!)
-        
+                
         self.checkAuthorized()
     }
     
@@ -143,16 +129,7 @@ public class TLStoryViewController: UIViewController {
             return
         }
     }
-    
-    @objc fileprivate func tapAction(sender:UITapGestureRecognizer) {
-        let point = sender.location(in: self.view)
-        self.captureView?.focus(point: point)
-    }
-    
-    @objc fileprivate func doubleTapAction(sender:UITapGestureRecognizer) {
-        self.captureView?.rotateCamera()
-    }
-    
+        
     fileprivate func bottomImagePicker(hidden:Bool) {
         if !hidden {
             blurCoverView.isHidden = false
@@ -235,6 +212,10 @@ public class TLStoryViewController: UIViewController {
 }
 
 extension TLStoryViewController: TLStoryOverlayControlDelegate {
+    func storyOverlayCameraFocused(point: CGPoint) {
+        captureView?.focus(point: point)
+    }
+
     internal func storyOverlayCameraRecordingStart() {
         captureView!.configVideoRecording()
         captureView!.configAudioRecording()
@@ -312,7 +293,6 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
     }
     
     internal func storyOverlayEditStickerPickerDisplay() {
-        imageStickerView?.isHidden = false
         imageStickerView?.display()
     }
     
@@ -341,7 +321,6 @@ extension TLStoryViewController: TLStoryOverlayTextStickerViewDelegate {
 
 extension TLStoryViewController: TLStoryOverlayImagePickerDelegate {
     internal func storyOverlayImagePickerDismiss() {
-        self.imageStickerView?.isHidden = true
         editView?.dispaly()
     }
 
@@ -351,6 +330,16 @@ extension TLStoryViewController: TLStoryOverlayImagePickerDelegate {
 }
 
 extension TLStoryViewController: TLStoryEditContainerViewDelegate {
+    func storyEditContainerTap() {
+        self.editView?.dismiss()
+        self.textStickerView?.show(sticker: nil)
+    }
+
+    func storyEditContainerSwipeUp() {
+        self.editView?.dismiss()
+        self.imageStickerView?.display()
+    }
+
     internal func storyEditContainerSticker(editing: Bool) {
         if editing {
             self.editView?.dismiss()

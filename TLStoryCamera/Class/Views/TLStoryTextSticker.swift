@@ -166,6 +166,6 @@ extension TLStoryTextSticker: UIGestureRecognizerDelegate {
     }
 }
 
-class TLStoryTextView: UITextView, UIGestureRecognizerDelegate {
+class TLStoryTextView: UITextView {
     
 }

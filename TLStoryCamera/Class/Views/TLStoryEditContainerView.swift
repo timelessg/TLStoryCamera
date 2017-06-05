@@ -12,6 +12,8 @@ protocol TLStoryEditContainerViewDelegate: NSObjectProtocol{
     func storyEditContainerEndDrawing()
     func storyEditContainerSticker(editing:Bool)
     func storyEditContainerTextStickerBeEditing(sticker:TLStoryTextSticker)
+    func storyEditContainerSwipeUp()
+    func storyEditContainerTap()
 }
 
 class TLStoryEditContainerView: UIView {
@@ -40,6 +42,10 @@ class TLStoryEditContainerView: UIView {
     
     fileprivate var isDrawing:Bool = false
     
+    fileprivate var tapGesture:UITapGestureRecognizer?
+    
+    fileprivate var swipeUpGesture:UISwipeGestureRecognizer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -67,6 +73,23 @@ class TLStoryEditContainerView: UIView {
         colorPicker?.delegate = self
         colorPicker!.isHidden = true
         self.addSubview(colorPicker!)
+        
+        tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        tapGesture?.delegate = self
+        self.addGestureRecognizer(tapGesture!)
+        
+        swipeUpGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(swipeUpAction))
+        swipeUpGesture?.direction = .up
+        swipeUpGesture?.delegate = self
+        self.addGestureRecognizer(swipeUpGesture!)
+    }
+    
+    @objc fileprivate func tapAction() {
+        self.delegate?.storyEditContainerTap()
+    }
+    
+    @objc fileprivate func swipeUpAction() {
+        self.delegate?.storyEditContainerSwipeUp()
     }
     
     @objc fileprivate func undoAction() {
@@ -151,6 +174,15 @@ class TLStoryEditContainerView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension TLStoryEditContainerView: UIGestureRecognizerDelegate {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if isDrawing {
+            return false
+        }
+        return true
     }
 }
 

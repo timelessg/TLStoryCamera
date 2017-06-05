@@ -9,7 +9,7 @@
 import UIKit
 import GPUImage
 
-class TLStoryCapturePreviewView: GPUImageView {
+class TLStoryCapturePreviewView: GPUImageView {    
     fileprivate var videoCamera:GPUImageStillCamera?
     
     fileprivate var filterView:GPUImageView?
@@ -52,11 +52,11 @@ class TLStoryCapturePreviewView: GPUImageView {
         group.fillMode = kCAFillModeForwards
         return group
     }()
-        
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(focusRing)
-        focusAnim.delegate = self
+        focusAnim.delegate = self        
     }
     
     public func cameraSwitch(open:Bool) {
