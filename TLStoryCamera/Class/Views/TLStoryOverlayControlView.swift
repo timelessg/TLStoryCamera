@@ -84,14 +84,7 @@ class TLStoryOverlayControlView: UIView {
             self.delegate?.storyOverlayCameraSwitch()
         }
     }
-    
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        if point.y < self.height + 165 {
-            return true
-        }
-        return super.point(inside: point, with: event)
-    }
-    
+        
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -45,6 +45,10 @@ public class TLStoryViewController: UIViewController {
     
     fileprivate var swipeDown:UISwipeGestureRecognizer?
     
+    fileprivate var tapGesture:UITapGestureRecognizer?
+    
+    fileprivate var doubleTapGesture:UITapGestureRecognizer?
+    
     fileprivate var output = TLStoryOutput.init()
     
     public override func viewDidLoad() {
@@ -98,6 +102,16 @@ public class TLStoryViewController: UIViewController {
         swipeUp!.direction = .up
         self.controlView?.addGestureRecognizer(swipeUp!)
         
+        tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        tapGesture!.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(tapGesture!)
+        
+        doubleTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(doubleTapAction))
+        doubleTapGesture!.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(doubleTapGesture!)
+        
+        tapGesture!.require(toFail: doubleTapGesture!)
+        
         self.checkAuthorized()
     }
     
@@ -128,6 +142,15 @@ public class TLStoryViewController: UIViewController {
             self.bottomImagePicker(hidden: true)
             return
         }
+    }
+    
+    @objc fileprivate func tapAction(sender:UITapGestureRecognizer) {
+        let point = sender.location(in: self.view)
+        self.captureView?.focus(point: point)
+    }
+    
+    @objc fileprivate func doubleTapAction(sender:UITapGestureRecognizer) {
+        self.captureView?.rotateCamera()
     }
     
     fileprivate func bottomImagePicker(hidden:Bool) {

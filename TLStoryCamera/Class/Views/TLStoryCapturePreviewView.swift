@@ -52,23 +52,9 @@ class TLStoryCapturePreviewView: GPUImageView {
         group.fillMode = kCAFillModeForwards
         return group
     }()
-    
-    fileprivate var tapGesture:UITapGestureRecognizer?
-    
-    fileprivate var doubleTapGesture:UITapGestureRecognizer?
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
-        tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
-        tapGesture!.numberOfTapsRequired = 1
-        self.addGestureRecognizer(tapGesture!)
-        
-        doubleTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(doubleTapAction))
-        doubleTapGesture!.numberOfTapsRequired = 2
-        self.addGestureRecognizer(doubleTapGesture!)
-        
-        tapGesture!.require(toFail: doubleTapGesture!)
-        
         self.addSubview(focusRing)
         focusAnim.delegate = self
     }
@@ -226,9 +212,7 @@ class TLStoryCapturePreviewView: GPUImageView {
         return mode
     }
     
-    @objc fileprivate func tapAction(sender:UITapGestureRecognizer) {
-        let point = sender.location(in: self)
-        
+    public func focus(point:CGPoint) {
         if !videoCamera!.inputCamera.isFocusModeSupported(.autoFocus) || !videoCamera!.inputCamera.isFocusPointOfInterestSupported {
             return
         }
@@ -244,11 +228,7 @@ class TLStoryCapturePreviewView: GPUImageView {
         
         self.showFocusRing(point: point)
     }
-    
-    @objc fileprivate func doubleTapAction(sender:UITapGestureRecognizer) {
-        self.rotateCamera()
-    }
-    
+        
     fileprivate func showFocusRing(point:CGPoint) {
         if !animEnd {
             return
