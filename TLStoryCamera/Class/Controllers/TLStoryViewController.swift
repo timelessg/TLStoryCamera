@@ -185,16 +185,24 @@ public class TLStoryViewController: UIViewController {
         captureView!.startCapture()
     }
     
-    fileprivate func previewDispay(url:URL, type:TLStoryType) {
+    fileprivate func previewDispay<T>(input:T, type:TLStoryType) {
         self.outputView!.isHidden = false
         self.output.type = type
-        self.output.url = url
         self.editView?.dispaly()
         self.editView?.setAudioEnableBtn(hidden: type == .photo)
         self.controlView?.dismiss()
         self.captureView?.pauseCamera()
-        self.outputView?.display(with: url, type: type)
         self.delegate?.storyViewRecording(running: true)
+        
+        if type == .photo, let img = input as? UIImage {
+            self.output.image = img
+            self.outputView?.display(withPhoto: img)
+        }
+        
+        if type == .video, let url = input as? URL {
+            self.output.url = url
+            self.outputView?.display(withVideo: url)
+        }
     }
     
     fileprivate func previewDismiss() {
@@ -234,15 +242,15 @@ extension TLStoryViewController: TLStoryOverlayControlDelegate {
     
     internal func storyOverlayCameraRecordingFinish(type: TLStoryType) {
         if type == .photo {
-            self.captureView!.capturePhoto(complete: { [weak self] (x) in
-                if let url = x {
-                    self?.previewDispay(url: url, type: .photo)
+            self.captureView?.capturePhoto(complete: { (image) in
+                if let img = image {
+                    self.previewDispay(input: img, type: .photo)
                 }
             })
         }else {
             self.captureView!.finishRecording(complete: { [weak self] (x) in
                 if let url = x {
-                    self?.previewDispay(url: url, type: .video)
+                    self?.previewDispay(input: url, type: .video)
                 }
             })
         }
@@ -267,7 +275,7 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
     }
     
     internal func storyOverlayEditSave() {
-        let block:((Void) -> Void) = { () in
+        let block:(() -> Void) = { () in
             guard let container = self.editContainerView?.getScreenshot() else {
                 return
             }
@@ -361,9 +369,14 @@ extension TLStoryViewController: TLStoryEditContainerViewDelegate {
 }
 
 extension TLStoryViewController: TLStoryBottomImagePickerViewDelegate {
-    internal func photoLibraryPickerDidSelect(url: URL, type:TLStoryType) {
+    func photoLibraryPickerDidSelectPhoto(image: UIImage) {
         self.bottomImagePicker(hidden: true)
-        self.previewDispay(url: url, type: type)
+        self.previewDispay(input: image, type: .photo)
+    }
+
+    func photoLibraryPickerDidSelectVideo(url: URL) {
+        self.bottomImagePicker(hidden: true)
+        self.previewDispay(input: url, type: .video)
     }
 }
 

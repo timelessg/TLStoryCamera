@@ -105,7 +105,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func configVideoRecording() {
-        currentVideoPath = getVideoFilePath()
+        currentVideoPath = TLStoryOutput.outputFilePath(type: .video)
         let size = CGSize.init(width: TLStoryConfiguration.videoSetting["AVVideoWidthKey"] as! Int, height: TLStoryConfiguration.videoSetting["AVVideoHeightKey"] as! Int)
         self.movieWriter = GPUImageMovieWriter.init(movieURL: self.currentVideoPath, size: size, fileType: TLStoryConfiguration.videoFileType, outputSettings: TLStoryConfiguration.videoSetting)
         self.beautifyFilter.addTarget(self.movieWriter!)
@@ -167,28 +167,12 @@ class TLStoryCapturePreviewView: GPUImageView {
         })
     }
     
-    public func capturePhoto(complete:@escaping ((URL?) -> Void)){
+    public func capturePhoto(complete:@escaping ((UIImage?) -> Void)){
         videoCamera?.capturePhotoAsImageProcessedUp(toFilter: beautifyFilter, with: .up, withCompletionHandler: { [weak self] (image, error) in
             DispatchQueue.main.async {
                 self?.beautifyFilter.removeTarget(self?.movieWriter!)
                 self?.movieWriter = nil
-                
-                guard let strongSelf = self else {
-                    return
-                }
-                guard let img = image else {
-                    complete(nil)
-                    return
-                }
-                
-                let imgData = UIImagePNGRepresentation(img)
-                strongSelf.currentPhotoPath = strongSelf.getPhotoFilePath()
-                do {
-                    try imgData?.write(to: strongSelf.currentPhotoPath!)
-                    complete(strongSelf.currentPhotoPath!)
-                }catch {
-                    complete(nil)
-                }
+                complete(image)
             }
         })
     }
@@ -236,29 +220,7 @@ class TLStoryCapturePreviewView: GPUImageView {
         animEnd = false
         focusRing.layer.add(focusAnim, forKey: nil)
     }
-    
-    fileprivate func getVideoFilePath() -> URL {
-        let path = TLStoryConfiguration.videoPath
-        let filePath = path?.appending("/\(Int(Date().timeIntervalSince1970)).mp4")
-        do {
-            try FileManager.default.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            
-        }
-        return URL.init(fileURLWithPath: filePath!)
-    }
-    
-    fileprivate func getPhotoFilePath() -> URL {
-        let path = TLStoryConfiguration.photoPath
-        let filePath = path?.appending("/\(Int(Date().timeIntervalSince1970)).png")
-        do {
-            try FileManager.default.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            
-        }
-        return URL.init(fileURLWithPath: filePath!)
-    }
-    
+        
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

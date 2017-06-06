@@ -25,7 +25,7 @@ extension UIImage {
         return result!
     }
     
-    func rotate(by radians: CGFloat) -> UIImage {
+    public func rotate(by radians: CGFloat) -> UIImage {
         let rotatedViewBox = UIView(frame: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
         let t = CGAffineTransform.init(rotationAngle: radians)
         rotatedViewBox.transform = t

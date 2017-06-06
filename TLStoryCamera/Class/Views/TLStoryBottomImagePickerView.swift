@@ -10,12 +10,13 @@ import UIKit
 import Photos
 
 protocol TLStoryBottomImagePickerViewDelegate: NSObjectProtocol {
-    func photoLibraryPickerDidSelect(url:URL, type:TLStoryType)
+    func photoLibraryPickerDidSelectVideo(url:URL)
+    func photoLibraryPickerDidSelectPhoto(image:UIImage)
 }
 
 class TLStoryBottomImagePickerView: UIView {
     public weak var delegate:TLStoryBottomImagePickerViewDelegate?
-
+    
     fileprivate var collectionView:UICollectionView?
     
     fileprivate var hintLabel:UILabel = {
@@ -37,7 +38,7 @@ class TLStoryBottomImagePickerView: UIView {
     }()
     
     fileprivate var imgs = [PHAsset]()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -61,7 +62,7 @@ class TLStoryBottomImagePickerView: UIView {
         authorizationBtn.addTarget(self, action: #selector(requestAlbumAuthorization), for: .touchUpInside)
         authorizationBtn.sizeToFit()
         authorizationBtn.center = CGPoint.init(x: self.width / 2, y: self.height - authorizationBtn.height / 2 - 30)
-
+        
     }
     
     public func loadPhotos() {
@@ -131,26 +132,30 @@ extension TLStoryBottomImagePickerView: UICollectionViewDelegate, UICollectionVi
             PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (ass, mix, map) in
                 let url = (ass as! AVURLAsset).url
                 DispatchQueue.main.async {
-                    self.delegate?.photoLibraryPickerDidSelect(url: url, type:.video)
+                    self.delegate?.photoLibraryPickerDidSelectVideo(url: url)
                 }
             }
         }
         
         if asset.mediaType == .image {
-            PHImageManager.default().requestImageData(for: asset, options: nil, resultHandler: { (result, string, orientation, info) -> Void in
-                if let r = result {
-                    let filePath = TLStoryConfiguration.photoPath?.appending("/\(Int(Date().timeIntervalSince1970)).png")
-                    
-                    let resultUrl = URL.init(fileURLWithPath: filePath!)
-                    
-                    do {
-                        try r.write(to: resultUrl)
-                        DispatchQueue.main.async {
-                            self.delegate?.photoLibraryPickerDidSelect(url: resultUrl, type:.photo)
-                        }
-                    } catch {
-                        
-                    }
+            let imgSize = CGSize.init(width: asset.pixelWidth, height: asset.pixelHeight)
+            let scale = imgSize.width / imgSize.height;
+            let targetSize = TLStoryConfiguration.outputPhotoSize
+            
+            let newWidth = max(min(imgSize.width, targetSize.width), targetSize.width);
+            let newHeight = max(min(imgSize.height, targetSize.height), targetSize.height);
+            
+            let newSize = scale > 1 ? CGSize.init(width: newWidth, height: newWidth / scale) : CGSize.init(width: newHeight * scale, height: newHeight)
+            
+            let option = PHImageRequestOptions.init();
+            option.isSynchronous = true
+            
+            PHImageManager.default().requestImage(for: asset, targetSize: newSize, contentMode: .aspectFill, options: option, resultHandler: { (image, info) in
+                guard let img = image else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.delegate?.photoLibraryPickerDidSelectPhoto(image: img)
                 }
             })
         }

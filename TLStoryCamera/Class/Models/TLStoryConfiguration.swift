@@ -49,8 +49,11 @@ class TLStoryConfiguration: NSObject {
     //视频采集尺寸
     public static let captureSessionPreset:String = AVCaptureSessionPreset1280x720
     
-    //最终输出的视频尺寸
+    //输出的视频尺寸
     public static let outputVideoSize:CGSize = CGSize.init(width: 720, height: 1280)
+    
+    //输出的图片尺寸
+    public static let outputPhotoSize:CGSize = CGSize.init(width: 720, height: 1280)
     
     //视频路径
     public static let videoPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first?.appending("/storyvideo")

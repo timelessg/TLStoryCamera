@@ -16,6 +16,8 @@ class TLStoryOutput: NSObject {
     
     public      var url:URL?
     
+    public      var image:UIImage?
+    
     public      var audioEnable:Bool = true
     
     fileprivate var movieFile:GPUImageMovie?
@@ -37,7 +39,7 @@ class TLStoryOutput: NSObject {
             self.outputImageToAlbum(container: container, callback: callback)
         }
     }
-        
+    
     fileprivate func outputImageToAlbum(container: UIImage, callback:@escaping ((Bool) -> Void)) {
         self.outputImage(container: container) { (u, type) in
             if u == nil {
@@ -79,30 +81,20 @@ class TLStoryOutput: NSObject {
     fileprivate func outputImage(container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
         SVProgressHUD.show()
         DispatchQueue.global().async {
-            guard let url = self.url, let d = try? Data.init(contentsOf: url), let image = UIImage.init(data: d) else {
+            guard let image = self.image else {
                 return
             }
             
             let resultImg = image.imageMontage(img: container)
-            let imgData = UIImagePNGRepresentation(resultImg)
+            let imgData = UIImageJPEGRepresentation(resultImg, 1)
             
-            let filePath = TLStoryConfiguration.photoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.png")
-            
-            guard let p = filePath else {
-                DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    callback(nil, .photo)
-                }
-                return
-            }
-            
-            let resultUrl = URL.init(fileURLWithPath: p)
+            let filePath = TLStoryOutput.outputFilePath(type: .photo)
             
             do {
-                try imgData?.write(to: resultUrl)
+                try imgData?.write(to: filePath)
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
-                    callback(resultUrl, .photo)
+                    callback(filePath, .photo)
                 }
             } catch {
                 
@@ -118,7 +110,7 @@ class TLStoryOutput: NSObject {
         let asset = AVAsset.init(url: url)
         movieFile = GPUImageMovie.init(asset: asset)
         movieFile?.runBenchmark = true
-//        movieFile?.playAtActualSpeed = true
+        //        movieFile?.playAtActualSpeed = true
         
         let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
         let size = self.getVideoSize(asset: asset)
@@ -187,6 +179,17 @@ class TLStoryOutput: NSObject {
             }
         }
         return TLStoryConfiguration.outputVideoSize
+    }
+    
+    public static func outputFilePath(type:TLStoryType) -> URL {
+        let path = type == .video ? TLStoryConfiguration.videoPath : TLStoryConfiguration.photoPath
+        let filePath = path?.appending("/\(Int(Date().timeIntervalSince1970)).\(type == .video ? "mp4" : "png")")
+        do {
+            try FileManager.default.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            
+        }
+        return URL.init(fileURLWithPath: filePath!)
     }
     
     fileprivate func getVideoRotation(asset:AVAsset) -> CGAffineTransform? {

@@ -10,10 +10,6 @@ import UIKit
 import GPUImage
 
 class TLStoryOverlayOutputView: UIView {
-    public var type:TLStoryType?
-    
-    fileprivate var url:URL?
-
     fileprivate var videoPlayer:TLStoryVideoPlayerView?
     
     fileprivate var photoPreview:UIImageView?
@@ -22,34 +18,22 @@ class TLStoryOverlayOutputView: UIView {
         super.init(frame: frame)
     }
         
-    public func display(with url:URL, type:TLStoryType) {
-        if type == .photo {
-            photoPreview = UIImageView.init(frame: self.bounds)
-            photoPreview?.contentMode = .scaleAspectFill
-            self.insertSubview(photoPreview!, at: 0)
-            if let d = try? Data.init(contentsOf: url) {
-                photoPreview?.image = UIImage.init(data: d)
-            }
-        }else {
-            videoPlayer = TLStoryVideoPlayerView.init(frame: self.bounds, url: url)
-            self.insertSubview(videoPlayer!, at: 0)
-        }
-        self.type = type
-        self.url = url
+    public func display(withVideo url:URL) {
+        videoPlayer = TLStoryVideoPlayerView.init(frame: self.bounds, url: url)
+        self.insertSubview(videoPlayer!, at: 0)
+    }
+    
+    public func display(withPhoto img:UIImage) {
+        photoPreview = UIImageView.init(frame: self.bounds)
+        photoPreview?.contentMode = .scaleAspectFill
+        photoPreview?.image = img
+        self.insertSubview(photoPreview!, at: 0)
     }
     
     public func playerAudio(enable:Bool) {
-        if let player = videoPlayer, type! == .video {
+        if let player = videoPlayer {
             player.audio(enable: enable)
         }
-    }
-    
-    public func getUrl() -> (URL?, TLStoryType?) {
-        return (url, type)
-    }
-    
-    public func getAudioEnable() -> Bool {
-        return self.videoPlayer!.audioEnable
     }
     
     public func reset() {
