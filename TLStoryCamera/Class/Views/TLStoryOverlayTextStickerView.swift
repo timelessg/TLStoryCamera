@@ -190,6 +190,7 @@ class TLStoryOverlayTextStickerView: UIView {
     @objc fileprivate func textAlignmentAction(sender:UIButton) {
         let textAlignment = self.setTextAlignment()
         sender.setImage(textAlignmentIcons[textAlignment], for: .normal)
+        self.setTextAttribute()
     }
     
     @objc fileprivate func textBgColorAction(sender:UIButton) {
