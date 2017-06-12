@@ -23,15 +23,19 @@
 		4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */; };
 		4B47245E1EE04ED5006F755B /* TLStoryImageSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47245D1EE04ED5006F755B /* TLStoryImageSticker.swift */; };
 		4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */; };
-		4B7126FA1EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */; };
 		4B8845941EDFFA5000710F4C /* TLStoryTextSticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8845931EDFFA5000710F4C /* TLStoryTextSticker.swift */; };
 		4B8E81F41EDE955500ADD56D /* TLStoryOverlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F31EDE955500ADD56D /* TLStoryOverlayControlView.swift */; };
 		4B8E81F61EDEA4A400ADD56D /* TLStoryOverlayEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F51EDEA4A400ADD56D /* TLStoryOverlayEditView.swift */; };
 		4B8E81F81EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */; };
 		4B8E81FA1EDEC14E00ADD56D /* TLStoryDoodleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */; };
 		4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */; };
+		4BA690351EEE971E004132D0 /* UIColor+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */; };
+		4BA690361EEE971E004132D0 /* UIImage+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */; };
+		4BA690371EEE971E004132D0 /* UIView+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */; };
+		4BA690381EEE971E004132D0 /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902F1EEE971E004132D0 /* GPUImageBeautifyFilter.m */; };
+		4BA690391EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA690311EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m */; };
+		4BA6903A1EEE971E004132D0 /* TLStoryTextLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA690341EEE971E004132D0 /* TLStoryTextLayoutManager.m */; };
 		4BB1A66D1ED3E48000B1397A /* WBStoryTextColor.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */; };
-		C61582B01EC021C2003C82AC /* UIView+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */; };
 		C63FA4D21EC07A41003690DB /* TLStoryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FA4D11EC07A41003690DB /* TLStoryConfiguration.swift */; };
 		C64E77501EC00D9C005B09B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E774F1EC00D9C005B09B6 /* AppDelegate.swift */; };
 		C64E77571EC00D9C005B09B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C64E77561EC00D9C005B09B6 /* Assets.xcassets */; };
@@ -39,9 +43,6 @@
 		C64E77681EC01052005B09B6 /* TLStoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E77671EC01052005B09B6 /* TLStoryViewController.swift */; };
 		C64E776D1EC01FB6005B09B6 /* TLStoryCameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64E776C1EC01FB6005B09B6 /* TLStoryCameraButton.swift */; };
 		C657F05E1EC955A500246393 /* WBStoryStickers.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C657F05D1EC955A500246393 /* WBStoryStickers.bundle */; };
-		C657F0601EC959FF00246393 /* UIImage+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */; };
-		C690DB431EC0213F00320D90 /* UIColor+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */; };
-		C69A2D851EC05AA10028244D /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */; };
 		C6DA55EB1EC05A1300961DAF /* TLStoryCapturePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA55EA1EC05A1300961DAF /* TLStoryCapturePreviewView.swift */; };
 		C6F7052A1ECD732A0069C1FF /* TLStorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */; };
 /* End PBXBuildFile section */
@@ -63,18 +64,24 @@
 		4B46B8F01ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryAuthorizationController.swift; sourceTree = "<group>"; };
 		4B47245D1EE04ED5006F755B /* TLStoryImageSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryImageSticker.swift; sourceTree = "<group>"; };
 		4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBStoryStickers.plist; sourceTree = "<group>"; };
-		4B7126F81EE554140022BD28 /* TLGPUImageAlphaBlendFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGPUImageAlphaBlendFilter.h; sourceTree = "<group>"; };
-		4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageAlphaBlendFilter.m; sourceTree = "<group>"; };
 		4B8845931EDFFA5000710F4C /* TLStoryTextSticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryTextSticker.swift; sourceTree = "<group>"; };
 		4B8E81F31EDE955500ADD56D /* TLStoryOverlayControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayControlView.swift; sourceTree = "<group>"; };
 		4B8E81F51EDEA4A400ADD56D /* TLStoryOverlayEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayEditView.swift; sourceTree = "<group>"; };
 		4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayOutputView.swift; sourceTree = "<group>"; };
 		4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryDoodleView.swift; sourceTree = "<group>"; };
 		4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryVideoPlayerView.swift; sourceTree = "<group>"; };
+		4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+TLStory.swift"; sourceTree = "<group>"; };
+		4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+TLStory.swift"; sourceTree = "<group>"; };
+		4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+TLStory.swift"; sourceTree = "<group>"; };
+		4BA6902E1EEE971E004132D0 /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
+		4BA6902F1EEE971E004132D0 /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
+		4BA690301EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGPUImageAlphaBlendFilter.h; sourceTree = "<group>"; };
+		4BA690311EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageAlphaBlendFilter.m; sourceTree = "<group>"; };
+		4BA690331EEE971E004132D0 /* TLStoryTextLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLStoryTextLayoutManager.h; sourceTree = "<group>"; };
+		4BA690341EEE971E004132D0 /* TLStoryTextLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLStoryTextLayoutManager.m; sourceTree = "<group>"; };
 		4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBStoryTextColor.plist; sourceTree = "<group>"; };
 		ABCCF2CB56002C86AF5BAED1 /* Pods-TLStoryCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TLStoryCamera.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TLStoryCamera/Pods-TLStoryCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		BD9422C59A5198DD0D677E8D /* Pods_TLStoryCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TLStoryCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+TLStory.swift"; sourceTree = "<group>"; };
 		C63FA4D11EC07A41003690DB /* TLStoryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryConfiguration.swift; sourceTree = "<group>"; };
 		C64E774C1EC00D9C005B09B6 /* TLStoryCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TLStoryCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C64E774F1EC00D9C005B09B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,10 +91,6 @@
 		C64E77671EC01052005B09B6 /* TLStoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryViewController.swift; sourceTree = "<group>"; };
 		C64E776C1EC01FB6005B09B6 /* TLStoryCameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryCameraButton.swift; sourceTree = "<group>"; };
 		C657F05D1EC955A500246393 /* WBStoryStickers.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WBStoryStickers.bundle; sourceTree = "<group>"; };
-		C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+TLStory.swift"; sourceTree = "<group>"; };
-		C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+TLStory.swift"; sourceTree = "<group>"; };
-		C69A2D831EC05AA10028244D /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
-		C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
 		C69A2D861EC05AE10028244D /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		C6DA55EA1EC05A1300961DAF /* TLStoryCapturePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryCapturePreviewView.swift; sourceTree = "<group>"; };
 		C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStorySliderView.swift; sourceTree = "<group>"; };
@@ -113,13 +116,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4B7126F11EE5522F0022BD28 /* GPUImageFilter */ = {
+		4BA690291EEE971E004132D0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				4B7126F81EE554140022BD28 /* TLGPUImageAlphaBlendFilter.h */,
-				4B7126F91EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m */,
+				4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */,
+				4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */,
+				4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		4BA6902D1EEE971E004132D0 /* GPUImageFilter */ = {
+			isa = PBXGroup;
+			children = (
+				4BA6902E1EEE971E004132D0 /* GPUImageBeautifyFilter.h */,
+				4BA6902F1EEE971E004132D0 /* GPUImageBeautifyFilter.m */,
+				4BA690301EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.h */,
+				4BA690311EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m */,
 			);
 			path = GPUImageFilter;
+			sourceTree = "<group>";
+		};
+		4BA690321EEE971E004132D0 /* TextLayoutManager */ = {
+			isa = PBXGroup;
+			children = (
+				4BA690331EEE971E004132D0 /* TLStoryTextLayoutManager.h */,
+				4BA690341EEE971E004132D0 /* TLStoryTextLayoutManager.m */,
+			);
+			path = TextLayoutManager;
 			sourceTree = "<group>";
 		};
 		8623CF3DA9E60BC3BC9E8AF2 /* Pods */ = {
@@ -233,22 +257,11 @@
 		C690DB411EC0212200320D90 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				4B7126F11EE5522F0022BD28 /* GPUImageFilter */,
-				C69A2D821EC05AA10028244D /* GPUImageBeautifyFilter */,
-				C61582AF1EC021C2003C82AC /* UIView+TLStory.swift */,
-				C690DB421EC0213F00320D90 /* UIColor+TLStory.swift */,
-				C657F05F1EC959FF00246393 /* UIImage+TLStory.swift */,
+				4BA690291EEE971E004132D0 /* Extension */,
+				4BA6902D1EEE971E004132D0 /* GPUImageFilter */,
+				4BA690321EEE971E004132D0 /* TextLayoutManager */,
 			);
 			path = Tools;
-			sourceTree = "<group>";
-		};
-		C69A2D821EC05AA10028244D /* GPUImageBeautifyFilter */ = {
-			isa = PBXGroup;
-			children = (
-				C69A2D831EC05AA10028244D /* GPUImageBeautifyFilter.h */,
-				C69A2D841EC05AA10028244D /* GPUImageBeautifyFilter.m */,
-			);
-			path = GPUImageBeautifyFilter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,7 +299,7 @@
 				TargetAttributes = {
 					C64E774B1EC00D9C005B09B6 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = HLFH2Z48FU;
+						DevelopmentTeam = 6ZLY37X4F2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -378,35 +391,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B4497EF1EDFB80300FD47BE /* TLStoryOverlayImagePicker.swift in Sources */,
-				C69A2D851EC05AA10028244D /* GPUImageBeautifyFilter.m in Sources */,
+				4BA690361EEE971E004132D0 /* UIImage+TLStory.swift in Sources */,
 				4B37BD941EE1390B00494CA5 /* TLStoryOutput.swift in Sources */,
 				4B4497E71EDFAEC200FD47BE /* TLStoryEditContainerView.swift in Sources */,
 				4B40E5721ED9251000CAE2AC /* FristViewController.swift in Sources */,
 				4B4497E91EDFAEE600FD47BE /* TLStoryStickersView.swift in Sources */,
 				4B8E81F41EDE955500ADD56D /* TLStoryOverlayControlView.swift in Sources */,
 				4B46B8EB1ED7226E00CEFFF4 /* TLButton.swift in Sources */,
-				C61582B01EC021C2003C82AC /* UIView+TLStory.swift in Sources */,
 				4B4497EB1EDFAF6A00FD47BE /* TLStoryColorPickerView.swift in Sources */,
 				4B46B8ED1ED8555200CEFFF4 /* TLAuthorizedManager.swift in Sources */,
 				C6DA55EB1EC05A1300961DAF /* TLStoryCapturePreviewView.swift in Sources */,
+				4BA690351EEE971E004132D0 /* UIColor+TLStory.swift in Sources */,
 				4B8845941EDFFA5000710F4C /* TLStoryTextSticker.swift in Sources */,
 				C6F7052A1ECD732A0069C1FF /* TLStorySliderView.swift in Sources */,
 				4B8E81FA1EDEC14E00ADD56D /* TLStoryDoodleView.swift in Sources */,
-				C657F0601EC959FF00246393 /* UIImage+TLStory.swift in Sources */,
 				4B40E5701ED91FC900CAE2AC /* TabBarViewController.swift in Sources */,
+				4BA690391EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m in Sources */,
 				C64E776D1EC01FB6005B09B6 /* TLStoryCameraButton.swift in Sources */,
+				4BA690371EEE971E004132D0 /* UIView+TLStory.swift in Sources */,
 				C64E77681EC01052005B09B6 /* TLStoryViewController.swift in Sources */,
+				4BA6903A1EEE971E004132D0 /* TLStoryTextLayoutManager.m in Sources */,
 				4B8E81F81EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift in Sources */,
 				4B4497ED1EDFB4F300FD47BE /* TLStoryBottomImagePickerView.swift in Sources */,
+				4BA690381EEE971E004132D0 /* GPUImageBeautifyFilter.m in Sources */,
 				4B46B8F11ED8686E00CEFFF4 /* TLStoryAuthorizationController.swift in Sources */,
 				C64E77501EC00D9C005B09B6 /* AppDelegate.swift in Sources */,
-				4B7126FA1EE554140022BD28 /* TLGPUImageAlphaBlendFilter.m in Sources */,
 				4B4497F11EDFB93A00FD47BE /* TLStoryOverlayTextStickerView.swift in Sources */,
 				4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */,
 				4B40E5741ED926E700CAE2AC /* FristSubViewController.swift in Sources */,
 				C63FA4D21EC07A41003690DB /* TLStoryConfiguration.swift in Sources */,
 				4B47245E1EE04ED5006F755B /* TLStoryImageSticker.swift in Sources */,
-				C690DB431EC0213F00320D90 /* UIColor+TLStory.swift in Sources */,
 				4B8E81F61EDEA4A400ADD56D /* TLStoryOverlayEditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,7 +537,7 @@
 			baseConfigurationReference = ABCCF2CB56002C86AF5BAED1 /* Pods-TLStoryCamera.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HLFH2Z48FU;
+				DEVELOPMENT_TEAM = 6ZLY37X4F2;
 				INFOPLIST_FILE = TLStoryCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -539,7 +553,7 @@
 			baseConfigurationReference = 325AFAF6849D5513C06F53DD /* Pods-TLStoryCamera.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HLFH2Z48FU;
+				DEVELOPMENT_TEAM = 6ZLY37X4F2;
 				INFOPLIST_FILE = TLStoryCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

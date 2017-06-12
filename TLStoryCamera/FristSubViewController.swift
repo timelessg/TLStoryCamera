@@ -13,7 +13,7 @@ class FristSubViewController: UIViewController {
         super.viewDidLoad()
         
         let tipLabel = UILabel.init()
-        tipLabel.text = "向左滑动开启>>>"
+        tipLabel.text = "Scroll left open>>>"
         self.view.addSubview(tipLabel)
         tipLabel.sizeToFit()
         tipLabel.center = CGPoint.init(x: self.view.width / 2, y: self.view.height / 2)

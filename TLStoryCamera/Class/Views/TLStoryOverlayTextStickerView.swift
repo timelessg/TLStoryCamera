@@ -22,6 +22,13 @@ class TLStoryOverlayTextStickerView: UIView {
         return btn
     }()
     
+    fileprivate var textBgColorBtn:TLButton = {
+        let btn = TLButton.init(type: UIButtonType.custom)
+        btn.showsTouchWhenHighlighted = true
+        btn.setImage(#imageLiteral(resourceName: "story_publish_icon_no_background"), for: .normal)
+        return btn
+    }()
+    
     fileprivate var confrimBtn: TLButton = {
         let btn = TLButton.init(type: UIButtonType.custom)
         btn.showsTouchWhenHighlighted = true
@@ -42,6 +49,20 @@ class TLStoryOverlayTextStickerView: UIView {
     
     fileprivate var tap:UITapGestureRecognizer?
     
+    fileprivate var textAlignment:NSTextAlignment = .center
+    
+    fileprivate var keyboardHeight:CGFloat = 0
+    
+    fileprivate let textAlignmentIcons = [NSTextAlignment.left:#imageLiteral(resourceName: "story_publish_icon_align_left"),
+                                          NSTextAlignment.center:#imageLiteral(resourceName: "story_publish_icon_align_center"),
+                                          NSTextAlignment.right:#imageLiteral(resourceName: "story_publish_icon_align_right")]
+    
+    fileprivate let textBgColorIcons   = [TLStoryTextSticker.TextBgType.clear:#imageLiteral(resourceName: "story_publish_icon_no_background"),
+                                          TLStoryTextSticker.TextBgType.opacity:#imageLiteral(resourceName: "story_publish_icon_solid_background"),
+                                          TLStoryTextSticker.TextBgType.translucent:#imageLiteral(resourceName: "story_publish_icon_transparent_background")]
+    
+    
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -61,7 +82,12 @@ class TLStoryOverlayTextStickerView: UIView {
         textAlignmentBtn.frame = CGRect.init(x: 0, y: 0, width: 55, height: 55)
         textAlignmentBtn.center = CGPoint.init(x: textAlignmentBtn.width / 2, y: textAlignmentBtn.height / 2)
         
-        confrimBtn.addTarget(self, action: #selector(confrimAction), for: .touchUpInside)
+        textBgColorBtn.addTarget(self, action: #selector(textBgColorAction), for: .touchUpInside)
+        self.addSubview(textBgColorBtn)
+        textBgColorBtn.frame = CGRect.init(x: 0, y: 0, width: 55, height: 55)
+        textBgColorBtn.center = CGPoint.init(x: self.width / 2, y: textAlignmentBtn.centerY)
+        
+        confrimBtn.addTarget(self, action: #selector(competeEdit), for: .touchUpInside)
         self.addSubview(confrimBtn)
         confrimBtn.bounds = CGRect.init(x: 0, y: 0, width: 55, height: 55)
         confrimBtn.center = CGPoint.init(x: self.width - confrimBtn.width / 2, y:confrimBtn.height / 2)
@@ -81,6 +107,8 @@ class TLStoryOverlayTextStickerView: UIView {
             editingSticker = s
             self.lastPosition = s.center
             self.lastTransform = s.transform
+            self.textAlignmentBtn.setImage(textAlignmentIcons[s.textView.textAlignment], for: .normal)
+            self.textBgColorBtn.setImage(textBgColorIcons[s.textBgType], for: .normal)
             isNew = false
         }else {
             editingSticker = TLStoryTextSticker.init(frame: CGRect.init(x: 0, y: 0, width: self.width - 20, height: TLStoryConfiguration.defaultTextWeight + 20))
@@ -100,28 +128,10 @@ class TLStoryOverlayTextStickerView: UIView {
     }
     
     public func reset() {
-        textAlignmentBtn.setImage(#imageLiteral(resourceName: "story_publish_icon_align_center"), for: .normal)
         self.colorPicker?.reset()
-    }
-    
-    public func confrimAction() {
-        self.competeEdit()
-    }
-    
-    fileprivate func setText(color:UIColor) {
-        self.editingSticker?.textView.textColor = color
-    }
-    
-    fileprivate func setText(size:CGFloat) {
-        self.editingSticker?.textView.font = UIFont.boldSystemFont(ofSize: size)
-        self.editingSticker?.height = size + 20
-    }
-    
-    fileprivate func setTextAlignment() -> NSTextAlignment {
-        let r = editingSticker!.textView.textAlignment.rawValue + 1
-        let textAlignment = NSTextAlignment(rawValue: r > 2 ? 0 : r)!
-        editingSticker?.textView.textAlignment = textAlignment
-        return textAlignment
+        self.textAlignment = .left
+        self.textBgColorBtn.setImage(textBgColorIcons[.clear], for: .normal)
+        self.textAlignmentBtn.setImage(textAlignmentIcons[.center], for: .normal)
     }
     
     @objc fileprivate func keyboardWillShow(sender:NSNotification) {
@@ -146,19 +156,26 @@ class TLStoryOverlayTextStickerView: UIView {
             }
         }
         
+        keyboardHeight = frame.height
         self.colorPicker?.set(hidden: false)
     }
     
     @objc fileprivate func keyboardWillHide() {
+        guard let editingSticker = self.editingSticker else {
+            return
+        }
+        
+        editingSticker.height = editingSticker.textView.sizeThatFits(CGSize.init(width: editingSticker.textView.width, height: CGFloat(MAXFLOAT))).height
+        
         UIView.animate(withDuration: 0.25, animations: {
-            self.editingSticker?.center = self.lastPosition!
-            self.editingSticker?.transform = self.lastTransform!
+            editingSticker.center = self.lastPosition!
+            editingSticker.transform = self.lastTransform!
         }) { (x) in
             if x {
-                self.editingSticker?.removeFromSuperview()
-                self.editingSticker?.isUserInteractionEnabled = true
-                if !self.isEmpty(str: self.editingSticker!.textView.text) {
-                    self.delegate?.textEditerDidCompleteEdited(sticker: self.editingSticker!)
+                editingSticker.removeFromSuperview()
+                editingSticker.isUserInteractionEnabled = true
+                if !self.isEmpty(str: editingSticker.textView.text) {
+                    self.delegate?.textEditerDidCompleteEdited(sticker: editingSticker)
                 }else {
                     self.delegate?.textEditerDidCompleteEdited(sticker: nil)
                 }
@@ -167,14 +184,20 @@ class TLStoryOverlayTextStickerView: UIView {
             }
         }
         self.colorPicker?.set(hidden: true)
+        self.reset()
     }
     
     @objc fileprivate func textAlignmentAction(sender:UIButton) {
-        let imgs = [NSTextAlignment.left:#imageLiteral(resourceName: "story_publish_icon_align_left"),
-                    NSTextAlignment.center:#imageLiteral(resourceName: "story_publish_icon_align_center"),
-                    NSTextAlignment.right:#imageLiteral(resourceName: "story_publish_icon_align_right")]
         let textAlignment = self.setTextAlignment()
-        sender.setImage(imgs[textAlignment], for: .normal)
+        sender.setImage(textAlignmentIcons[textAlignment], for: .normal)
+    }
+    
+    @objc fileprivate func textBgColorAction(sender:UIButton) {
+        let rawValue = editingSticker!.textBgType.rawValue + 1
+        let type = TLStoryTextSticker.TextBgType(rawValue: rawValue + 1 > 3 ? 0 : rawValue)!
+        sender.setImage(textBgColorIcons[type], for: .normal)
+        editingSticker!.textBgType = type
+        self.setTextAttribute()
     }
     
     @objc fileprivate func competeEdit() {
@@ -182,6 +205,53 @@ class TLStoryOverlayTextStickerView: UIView {
         if let t = tap {
             self.removeGestureRecognizer(t)
         }
+    }
+    
+    fileprivate func setText(size:CGFloat) {
+        self.editingSticker?.height = size + 20
+        self.editingSticker?.textView.font = UIFont.boldSystemFont(ofSize: size)
+        self.editingSticker?.center = CGPoint.init(x: self.width / 2, y: (self.height - self.keyboardHeight) / 2)
+        self.setTextAttribute()
+    }
+    
+    fileprivate func setTextAlignment() -> NSTextAlignment {
+        let r = editingSticker!.textView.textAlignment.rawValue + 1
+        let textAlignment = NSTextAlignment(rawValue: r > 2 ? 0 : r)!
+        (editingSticker?.textView.textStorage.layoutManagers.last as! TLStoryTextLayoutManager).textAlignment = textAlignment
+        editingSticker?.textView.textAlignment = textAlignment
+        self.textAlignment = textAlignment
+        return textAlignment
+    }
+    
+    fileprivate func setTextAttribute() {
+        let paragraphStyle = NSMutableParagraphStyle.init()
+        paragraphStyle.lineSpacing = 10;
+        
+        let font = editingSticker!.textView.font
+        let range = NSRange.init(location: 0, length: editingSticker!.textView.text.characters.count)
+        
+        var bgColor:UIColor = UIColor.clear
+        var textColor = UIColor.clear
+        
+        switch editingSticker!.textBgType {
+        case .clear:
+            bgColor = UIColor.clear
+            textColor = editingSticker!.cColor.backgroundColor
+        case .opacity:
+            bgColor = UIColor.init(cgColor: editingSticker!.cColor.backgroundColor.cgColor.copy(alpha: 1)!)
+            textColor = editingSticker!.cColor.textColor
+        case .translucent:
+            bgColor = UIColor.init(cgColor: editingSticker!.cColor.backgroundColor.cgColor.copy(alpha: 0.5)!)
+            textColor = editingSticker!.cColor.textColor
+        }
+        
+        editingSticker!.textView.textStorage.addAttributes([NSFontAttributeName:font!,
+                                                            NSParagraphStyleAttributeName:paragraphStyle,
+                                                            NSBackgroundColorAttributeName:bgColor,
+                                                            NSForegroundColorAttributeName:textColor
+            ], range: range)
+        
+        editingSticker!.textView.textAlignment = textAlignment
     }
     
     fileprivate func isEmpty(str:String) -> Bool {
@@ -203,12 +273,14 @@ extension TLStoryOverlayTextStickerView: UIGestureRecognizerDelegate {
 
 extension TLStoryOverlayTextStickerView: UITextViewDelegate {
     internal func textViewDidChange(_ textView: UITextView) {
-        if (textView.markedTextRange == nil) {
-            textView.flashScrollIndicators()
-            
-            let size = textView.sizeThatFits(CGSize.init(width: editingSticker!.textView.width, height: CGFloat(MAXFLOAT)))
-            editingSticker?.bounds = CGRect.init(x: 0, y: 0, width: editingSticker!.width, height: size.height)
-        }
+        textView.flashScrollIndicators()
+        
+        let maxHeight = self.frame.height - keyboardHeight - self.confrimBtn.frame.maxY - 50
+        let size = textView.sizeThatFits(CGSize.init(width: textView.width, height: CGFloat(MAXFLOAT)))
+        editingSticker?.bounds = CGRect.init(x: 0, y: 0, width: editingSticker!.width, height: size.height > maxHeight ? maxHeight : size.height + 20)
+        let count = textView.text.characters.count
+        textView.scrollRangeToVisible(NSRange.init(location: count, length: 1))
+        self.setTextAttribute()
     }
     
     internal func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -220,12 +292,13 @@ extension TLStoryOverlayTextStickerView: UITextViewDelegate {
 }
 
 extension TLStoryOverlayTextStickerView: TLStoryColorPickerViewDelegate {
+    internal func storyColorPickerDidChange(color: TLStoryColor) {
+        editingSticker!.cColor = color
+        self.setTextAttribute()
+    }
+    
     internal func storyColorPickerDidChange(percent: CGFloat) {
         let size = (TLStoryConfiguration.maxTextWeight - TLStoryConfiguration.minTextWeight) * percent + TLStoryConfiguration.minTextWeight
         self.setText(size: size)
-    }
-
-    internal func storyColorPickerDidChange(color: UIColor) {
-        self.setText(color: color)
     }
 }

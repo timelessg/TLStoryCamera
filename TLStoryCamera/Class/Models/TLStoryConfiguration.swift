@@ -71,7 +71,7 @@ class TLStoryConfiguration: NSObject {
     //最大字体大小
     public static let maxTextWeight:CGFloat = 60
     //最小字体大小
-    public static let minTextWeight:CGFloat = 30
+    public static let minTextWeight:CGFloat = 12
     //默认字体大小
-    public static let defaultTextWeight:CGFloat = 50
+    public static let defaultTextWeight:CGFloat = 30
 }

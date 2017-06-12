@@ -8,8 +8,23 @@
 
 import UIKit
 
+struct TLStoryColor {
+    public var textColor:UIColor
+    public var backgroundColor:UIColor
+    
+    init() {
+        self.backgroundColor = UIColor.white
+        self.textColor = UIColor.black
+    }
+    
+    init(color:[String:String]) {
+        self.textColor = UIColor.color(hexString: color["textColor"]!)!
+        self.backgroundColor = UIColor.color(hexString: color["background"]!)!
+    }
+}
+
 protocol TLStoryColorPickerViewDelegate: NSObjectProtocol {
-    func storyColorPickerDidChange(color:UIColor)
+    func storyColorPickerDidChange(color:TLStoryColor)
     func storyColorPickerDidChange(percent:CGFloat)
 }
 
@@ -37,14 +52,12 @@ class TLStoryColorPickerView: UIView {
     
     fileprivate var collectionView:UICollectionView?
     
-    fileprivate var colors:[UIColor] = {
-        var array = [UIColor]()
+    fileprivate var colors:[TLStoryColor] = {
+        var array = [TLStoryColor]()
         let plist = Bundle.main.path(forResource: "WBStoryTextColor", ofType: "plist")
         if let p = plist, let colors = NSArray.init(contentsOfFile: p) as? [[String:String]] {
             for colorDic in colors {
-                if var c = colorDic["background"], let color = UIColor.color(hexString: c) {
-                    array.append(color)
-                }
+                array.append(TLStoryColor.init(color: colorDic))
             }
         }
         return array
@@ -93,6 +106,7 @@ class TLStoryColorPickerView: UIView {
     }
     
     public func reset() {
+        self.sliderBtn.backgroundColor = colors.first!.backgroundColor
         self.collectionView?.selectItem(at: IndexPath.init(row: 0, section: 0), animated: false, scrollPosition: .left)
     }
     
@@ -125,7 +139,7 @@ extension TLStoryColorPickerView: UICollectionViewDelegate, UICollectionViewData
     }
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! TLColorPaletteCell
-        cell.color = colors[indexPath.row]
+        cell.color = colors[indexPath.row].backgroundColor
         return cell
     }
     
@@ -133,7 +147,7 @@ extension TLStoryColorPickerView: UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.cellForItem(at: indexPath) as! TLColorPaletteCell
         cell.selectedAnim()
         let color = colors[indexPath.row]
-        self.sliderBtn.backgroundColor = color
+        self.sliderBtn.backgroundColor = color.backgroundColor
         self.delegate?.storyColorPickerDidChange(color: color)
     }
     

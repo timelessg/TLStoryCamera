@@ -60,23 +60,43 @@ protocol TLStoryTextStickerDelegate: TLStoryStickerDelegate {
 class TLStoryTextSticker: UIView, TLStoryStickerProtocol {
     public weak var delegate:TLStoryTextStickerDelegate?
     
+    public enum TextBgType:Int {
+        case clear = 0
+        case opacity = 1
+        case translucent = 2
+    }
+    
     fileprivate var lastPosition:CGPoint = CGPoint.zero
     
     fileprivate var lastScale:CGFloat = 1.0
-
+    
     public      var textView:TLStoryTextView = {
-        let textview = TLStoryTextView()
+        let textStorage = NSTextStorage.init()
+        let textLayout = TLStoryTextLayoutManager.init()
+        textLayout.textAlignment = .center
+        textStorage.addLayoutManager(textLayout)
+        
+        let textContainer = NSTextContainer.init(size: UIScreen.main.bounds.size)
+        
+        textLayout.addTextContainer(textContainer)
+        
+        let textview = TLStoryTextView(frame: CGRect.zero, textContainer: textContainer)
         textview.font = UIFont.boldSystemFont(ofSize: TLStoryConfiguration.defaultTextWeight)
         textview.textColor = UIColor.white
         textview.backgroundColor = UIColor.clear
         textview.textAlignment = .center
         textview.layoutManager.allowsNonContiguousLayout = false
-        textview.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        textview.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10)
         textview.autocorrectionType = .no
-        textview.isScrollEnabled = false
+        textview.tintColor = UIColor.white
+        textview.showsHorizontalScrollIndicator = false
         return textview
     }()
     
+    public var textBgType = TextBgType.clear
+    
+    public var cColor = TLStoryColor.init()
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -99,7 +119,7 @@ class TLStoryTextSticker: UIView, TLStoryStickerProtocol {
         
         let rotateGesture = UIRotationGestureRecognizer.init(target: self, action: #selector(rotate))
         rotateGesture.delegate = self
-        self.addGestureRecognizer(rotateGesture)
+        self.addGestureRecognizer(rotateGesture)        
     }
     
     @objc fileprivate func pan(gesture:UIPanGestureRecognizer) {
@@ -114,7 +134,7 @@ class TLStoryTextSticker: UIView, TLStoryStickerProtocol {
     
     @objc fileprivate func tap(tap:UITapGestureRecognizer) {
         self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
-        self.delegate?.storyTextStickerEditing(sticker: self)        
+        self.delegate?.storyTextStickerEditing(sticker: self)
     }
     
     @objc fileprivate func pinche(pinche:UIPinchGestureRecognizer) {
@@ -167,5 +187,13 @@ extension TLStoryTextSticker: UIGestureRecognizerDelegate {
 }
 
 class TLStoryTextView: UITextView {
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        
+        
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

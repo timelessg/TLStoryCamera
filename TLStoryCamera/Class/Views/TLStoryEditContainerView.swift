@@ -204,12 +204,12 @@ extension TLStoryEditContainerView: TLStoryDoodleViewDelegate {
 }
 
 extension TLStoryEditContainerView: TLStoryColorPickerViewDelegate {
+    func storyColorPickerDidChange(color: TLStoryColor) {
+        doodleView?.lineColor = color.backgroundColor
+    }
+
     internal func storyColorPickerDidChange(percent: CGFloat) {
         let lineWidth = (TLStoryConfiguration.maxDrawLineWeight - TLStoryConfiguration.minDrawLineWeight) * percent + TLStoryConfiguration.minDrawLineWeight
         doodleView?.lineWidth = lineWidth
-    }
-    
-    internal func storyColorPickerDidChange(color: UIColor) {
-        doodleView?.lineColor = color
     }
 }
