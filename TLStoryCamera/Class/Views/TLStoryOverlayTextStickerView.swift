@@ -107,6 +107,7 @@ class TLStoryOverlayTextStickerView: UIView {
             editingSticker = s
             self.lastPosition = s.center
             self.lastTransform = s.transform
+            self.textAlignment = s.textView.textAlignment
             self.textAlignmentBtn.setImage(textAlignmentIcons[s.textView.textAlignment], for: .normal)
             self.textBgColorBtn.setImage(textBgColorIcons[s.textBgType], for: .normal)
             isNew = false
@@ -135,6 +136,10 @@ class TLStoryOverlayTextStickerView: UIView {
     }
     
     @objc fileprivate func keyboardWillShow(sender:NSNotification) {
+        guard let editingSticker = self.editingSticker else {
+            return
+        }
+        
         guard let frame = (sender.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue else {
             return
         }
@@ -147,17 +152,19 @@ class TLStoryOverlayTextStickerView: UIView {
             self.lastPosition = toPoint
             self.lastTransform = self.editingSticker!.transform
             UIView.animate(withDuration: 0.25, animations: {
-                self.editingSticker?.center = toPoint
+                editingSticker.center = toPoint
             })
         } else {
             UIView.animate(withDuration: 0.25) {
-                self.editingSticker?.center = toPoint
-                self.editingSticker?.transform = CGAffineTransform.init(rotationAngle: 0)
+                editingSticker.center = toPoint
+                editingSticker.transform = CGAffineTransform.init(rotationAngle: 0)
             }
         }
         
         keyboardHeight = frame.height
         self.colorPicker?.set(hidden: false)
+        
+        self.adjustBounds()
     }
     
     @objc fileprivate func keyboardWillHide() {
@@ -209,8 +216,8 @@ class TLStoryOverlayTextStickerView: UIView {
     }
     
     fileprivate func setText(size:CGFloat) {
-        self.editingSticker?.height = size + 20
         self.editingSticker?.textView.font = UIFont.boldSystemFont(ofSize: size)
+        self.adjustBounds()
         self.editingSticker?.center = CGPoint.init(x: self.width / 2, y: (self.height - self.keyboardHeight) / 2)
         self.setTextAttribute()
     }
@@ -255,6 +262,15 @@ class TLStoryOverlayTextStickerView: UIView {
         editingSticker!.textView.textAlignment = textAlignment
     }
     
+    fileprivate func adjustBounds() {
+        let maxHeight = self.frame.height - keyboardHeight - self.confrimBtn.frame.maxY - 50
+        let size = editingSticker!.textView.sizeThatFits(CGSize.init(width: editingSticker!.textView.width, height: CGFloat(MAXFLOAT)))
+        editingSticker!.bounds = CGRect.init(x: 0, y: 0, width: editingSticker!.width, height: size.height > maxHeight ? maxHeight : size.height + 20)
+        
+        let count = editingSticker!.textView.text.characters.count
+        editingSticker!.textView.scrollRangeToVisible(NSRange.init(location: count, length: 1))
+    }
+    
     fileprivate func isEmpty(str:String) -> Bool {
         let set = str.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         return set.characters.count == 0 || str.characters.count == 0
@@ -275,12 +291,7 @@ extension TLStoryOverlayTextStickerView: UIGestureRecognizerDelegate {
 extension TLStoryOverlayTextStickerView: UITextViewDelegate {
     internal func textViewDidChange(_ textView: UITextView) {
         textView.flashScrollIndicators()
-        
-        let maxHeight = self.frame.height - keyboardHeight - self.confrimBtn.frame.maxY - 50
-        let size = textView.sizeThatFits(CGSize.init(width: textView.width, height: CGFloat(MAXFLOAT)))
-        editingSticker?.bounds = CGRect.init(x: 0, y: 0, width: editingSticker!.width, height: size.height > maxHeight ? maxHeight : size.height + 20)
-        let count = textView.text.characters.count
-        textView.scrollRangeToVisible(NSRange.init(location: count, length: 1))
+        self.adjustBounds()
         self.setTextAttribute()
     }
     

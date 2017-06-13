@@ -20,6 +20,8 @@ class TLStoryOverlayImagePicker: UIView {
     
     fileprivate var tap:UITapGestureRecognizer?
     
+    fileprivate var swipeDown:UISwipeGestureRecognizer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -32,12 +34,17 @@ class TLStoryOverlayImagePicker: UIView {
         })
         self.addSubview(imagePicker!)
         
-        tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        tap = UITapGestureRecognizer.init(target: self, action: #selector(dismissAction))
         tap!.delegate = self
         self.addGestureRecognizer(tap!)
+        
+        swipeDown = UISwipeGestureRecognizer.init(target: self, action: #selector(dismissAction))
+        swipeDown!.delegate = self
+        swipeDown!.direction = .down
+        self.addGestureRecognizer(swipeDown!)
     }
     
-    @objc fileprivate func tapAction() {
+    @objc fileprivate func dismissAction() {
         self.imagePicker?.dismiss()
     }
     

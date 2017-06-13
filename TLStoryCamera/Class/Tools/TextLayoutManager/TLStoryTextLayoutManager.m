@@ -94,6 +94,9 @@
             firstRect.size.width += 20;
             
             CGRect lastRect = CGRectIntersection(lineBounds, rectArray[rectCount - 1]);
+            if (CGRectIsEmpty(lastRect)) {
+                lastRect = rectArray[rectCount - 1];
+            }
             lastRect.origin.x -= 10;
             lastRect.size.height += 10;
             lastRect.size.width += 20;
@@ -157,8 +160,6 @@
                 CGPathCloseSubpath(path);
             }
         }
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        
         CGContextClearRect(ctx, [[UIScreen mainScreen] bounds]);
         
         CGContextAddPath(ctx, path);
@@ -171,5 +172,4 @@
     }
     CGContextRestoreGState(ctx);
 }
-
 @end

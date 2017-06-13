@@ -17,7 +17,7 @@ class TLStoryOverlayOutputView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-        
+            
     public func display(withVideo url:URL) {
         videoPlayer = TLStoryVideoPlayerView.init(frame: self.bounds, url: url)
         self.insertSubview(videoPlayer!, at: 0)

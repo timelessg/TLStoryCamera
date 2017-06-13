@@ -34,6 +34,18 @@ class TLStoryVideoPlayerView: UIView {
         player?.play()
         
         NotificationCenter.default.addObserver(self, selector: #selector(playbackFinished), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+    
+    @objc fileprivate func didBecomeActive() {
+        player?.play()
+    }
+    
+    @objc fileprivate func didEnterBackground() {
+        player?.pause()
     }
     
     public func audio(enable:Bool) {
