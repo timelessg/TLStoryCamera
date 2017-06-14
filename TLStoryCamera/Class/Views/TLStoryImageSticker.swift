@@ -47,11 +47,12 @@ class TLStoryImageSticker: UIImageView, TLStoryStickerProtocol {
     
     @objc fileprivate func pan(gesture:UIPanGestureRecognizer) {
         let translation = gesture.translation(in: self.superview)
+        let point = gesture.location(in: self.superview)
         let newP = CGPoint.init(x: self.center.x + translation.x, y: self.center.y + translation.y)
         self.center = newP
         gesture.setTranslation(CGPoint.zero, in: superview)
         
-        self.delegate?.stickerViewDraggingDelete(point: newP, sticker: self, isEnd: gesture.state == .ended || gesture.state == .cancelled)
+        self.delegate?.stickerViewDraggingDelete(point: point, sticker: self, isEnd: gesture.state == .ended || gesture.state == .cancelled)
         self.delegate?.stickerView(handing: gesture.state == .began || gesture.state == .changed)
     }
     
