@@ -28,14 +28,15 @@ class TLStoryStickersView: UIView {
         self.addSubview(deleteIco)
         deleteIco.contentMode = .center
         deleteIco.isHidden = true
-        deleteIco.bounds = CGRect.init(x: 0, y: 0, width: 30, height: 30)
+        deleteIco.isUserInteractionEnabled = true
+        deleteIco.bounds = CGRect.init(x: 0, y: 0, width: 55, height: 55)
         deleteIco.center = CGPoint.init(x: self.width / 2, y: self.height - 35)
     }
     
     public func addSub(textSticker:TLStoryTextSticker) {
         textSticker.delegate = self
         textSticker.textView.isUserInteractionEnabled = false
-        self.addSubview(textSticker)
+        self.insertSubview(textSticker, belowSubview: deleteIco)
         self.stickers.append(textSticker)
     }
     
@@ -43,7 +44,7 @@ class TLStoryStickersView: UIView {
         let imgSticker = TLStoryImageSticker.init(img: image)
         imgSticker.delegate = self
         imgSticker.center = CGPoint.init(x: self.width / 2, y: self.height / 2)
-        self.addSubview(imgSticker)
+        self.insertSubview(imgSticker, belowSubview: deleteIco)
         self.stickers.append(imgSticker)
     }
     

@@ -85,7 +85,6 @@
             CGPathAddArcToPoint(path, NULL, CGRectGetMaxX(validRect), CGRectGetMaxY(validRect), CGRectGetMaxX(validRect) - cornerRadius * 2, CGRectGetMaxY(validRect), cornerRadius);
             CGPathAddArcToPoint(path, NULL, CGRectGetMinX(validRect), CGRectGetMaxY(validRect), CGRectGetMinX(validRect), CGRectGetMaxY(validRect) - cornerRadius * 2, cornerRadius);
             CGPathAddArcToPoint(path, NULL, CGRectGetMinX(validRect), CGRectGetMinY(validRect), CGRectGetMinX(validRect) + cornerRadius * 2, CGRectGetMinY(validRect), cornerRadius);
-            CGPathCloseSubpath(path);
         }else {
             CGRect firstRect = rectArray[0];
             firstRect.origin.y -= 10;
@@ -117,7 +116,6 @@
                 CGPathAddArcToPoint(path, NULL, CGRectGetMinX(firstRect), CGRectGetMaxY(lastRect), CGRectGetMinX(firstRect), CGRectGetMaxY(lastRect) - cornerRadius * 2, cornerRadius);
                 CGPathAddArcToPoint(path, NULL, CGRectGetMinX(firstRect), CGRectGetMinY(firstRect), CGRectGetMinX(firstRect) + cornerRadius * 2, CGRectGetMinY(firstRect), cornerRadius);
                 CGPathAddLineToPoint(path, NULL, CGRectGetMaxX(firstRect) - cornerRadius * 2, CGRectGetMinY(firstRect));
-                CGPathCloseSubpath(path);
             }else if (self.textAlignment == NSTextAlignmentRight) {
                 CGPathMoveToPoint(path, NULL, CGRectGetMinX(firstRect) + cornerRadius * 2, CGRectGetMinY(firstRect));
                 
@@ -134,7 +132,6 @@
                 }
                 
                 CGPathAddArcToPoint(path, NULL, CGRectGetMinX(firstRect), CGRectGetMinY(firstRect), CGRectGetMinX(firstRect) + cornerRadius * 2, CGRectGetMinY(firstRect), cornerRadius);
-                CGPathCloseSubpath(path);
             }else {
                 CGPathMoveToPoint(path, NULL, CGRectGetMinX(firstRect) + cornerRadius * 2, CGRectGetMinY(firstRect));
                 
@@ -157,7 +154,6 @@
                 }
                 
                 CGPathAddArcToPoint(path, NULL, CGRectGetMinX(firstRect), CGRectGetMinY(firstRect), CGRectGetMinX(firstRect) + cornerRadius * 2, CGRectGetMinY(firstRect), cornerRadius);
-                CGPathCloseSubpath(path);
             }
         }
         CGContextClearRect(ctx, [[UIScreen mainScreen] bounds]);
@@ -166,7 +162,7 @@
         [color setFill];
         CGContextSetLineWidth(ctx, 0);
         CGPathRelease(path);
-        CGContextDrawPath(ctx, kCGPathFillStroke);
+        CGContextDrawPath(ctx, kCGPathFill);
         
         lineRange = NSMakeRange(NSMaxRange(lineRange), 1);
     }

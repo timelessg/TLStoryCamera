@@ -86,6 +86,7 @@ class TLStoryOverlayTextStickerView: UIView {
         self.addSubview(textBgColorBtn)
         textBgColorBtn.frame = CGRect.init(x: 0, y: 0, width: 55, height: 55)
         textBgColorBtn.center = CGPoint.init(x: self.width / 2, y: textAlignmentBtn.centerY)
+        textBgColorBtn.isHidden = true
         
         confrimBtn.addTarget(self, action: #selector(competeEdit), for: .touchUpInside)
         self.addSubview(confrimBtn)
