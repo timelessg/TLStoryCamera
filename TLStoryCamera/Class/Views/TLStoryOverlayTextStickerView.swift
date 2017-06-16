@@ -131,7 +131,7 @@ class TLStoryOverlayTextStickerView: UIView {
     
     public func reset() {
         self.colorPicker?.reset()
-        self.textAlignment = .left
+        self.textAlignment = .center
         self.textBgColorBtn.setImage(textBgColorIcons[.clear], for: .normal)
         self.textAlignmentBtn.setImage(textAlignmentIcons[.center], for: .normal)
     }
