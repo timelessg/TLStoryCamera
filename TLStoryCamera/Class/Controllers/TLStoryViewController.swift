@@ -16,6 +16,7 @@ public enum TLStoryType {
 public protocol TLStoryViewDelegate: NSObjectProtocol {
     func storyViewRecording(running:Bool)
     func storyViewDidPublish(type:TLStoryType, url:URL?)
+    func storyViewClose()
 }
 
 public class TLStoryViewController: UIViewController {
@@ -222,6 +223,10 @@ public class TLStoryViewController: UIViewController {
 }
 
 extension TLStoryViewController: TLStoryOverlayControlDelegate {
+    func storyOverlayCameraClose() {
+        self.delegate?.storyViewClose()
+    }
+    
     func storyOverlayCameraFocused(point: CGPoint) {
         captureView?.focus(point: point)
     }

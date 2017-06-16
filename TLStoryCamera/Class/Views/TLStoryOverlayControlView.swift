@@ -15,6 +15,7 @@ protocol TLStoryOverlayControlDelegate: NSObjectProtocol {
     func storyOverlayCameraFlashChange() -> AVCaptureTorchMode
     func storyOverlayCameraSwitch()
     func storyOverlayCameraFocused(point:CGPoint)
+    func storyOverlayCameraClose()
 }
 
 class TLStoryOverlayControlView: UIView {
@@ -38,6 +39,14 @@ class TLStoryOverlayControlView: UIView {
         return btn
     }()
     
+    fileprivate lazy var closeBtn:TLButton = {
+        let btn = TLButton.init(type: UIButtonType.custom)
+        btn.showsTouchWhenHighlighted = true
+        btn.setImage(#imageLiteral(resourceName: "story_icon_close"), for: .normal)
+        btn.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        return btn
+    }()
+    
     fileprivate var photoLibraryHintView:TLPhotoLibraryHintView?
     
     fileprivate var tapGesture:UITapGestureRecognizer?
@@ -46,6 +55,10 @@ class TLStoryOverlayControlView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        closeBtn.sizeToFit()
+        closeBtn.center = CGPoint.init(x: self.width - closeBtn.width / 2 - 15, y: closeBtn.height / 2 + 15)
+        addSubview(closeBtn)
         
         cameraBtn.center = CGPoint.init(x: self.center.x, y: self.bounds.height - 52 - 40)
         cameraBtn.delegete = self
@@ -97,6 +110,10 @@ class TLStoryOverlayControlView: UIView {
     
     @objc fileprivate func doubleTapAction(sender:UITapGestureRecognizer) {
         self.delegate?.storyOverlayCameraSwitch()
+    }
+    
+    @objc fileprivate func closeAction() {
+        self.delegate?.storyOverlayCameraClose()
     }
     
     @objc fileprivate func flashAction(sender: UIButton) {

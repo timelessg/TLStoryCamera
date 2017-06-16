@@ -68,6 +68,12 @@ class FristViewController: UIViewController {
 }
 
 extension FristViewController:TLStoryViewDelegate {
+    func storyViewClose() {
+        self.scrollView.contentOffset = CGPoint.init(x: self.view.width, y: 0)
+        self.lastPage = 1
+        self.storyVc.resumeCamera(open: false)
+    }
+    
     func storyViewRecording(running complete: Bool) {
         self.scrollView.isScrollEnabled = !complete
     }
