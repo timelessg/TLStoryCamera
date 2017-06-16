@@ -92,6 +92,7 @@ class TLStoryOverlayControlView: UIView {
     public func dismiss() {
         self.isHidden = true
         self.cameraBtn.reset()
+        self.photoLibraryHintView?.isHidden = false
     }
     
     public func display() {
