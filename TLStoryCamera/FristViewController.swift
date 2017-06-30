@@ -1,5 +1,5 @@
 //
-//  FristViewController.swift
+//  FirstViewController.swift
 //  TLStoryCamera
 //
 //  Created by garry on 2017/5/27.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class FristViewController: UIViewController {
+class FirstViewController: UIViewController {
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
     let scrollView = UIScrollView()
-    let pageVc = FristSubViewController()
+    let pageVc = FirstSubViewController()
     let storyVc = TLStoryViewController()
     
     var lastPage:Int = 0
@@ -67,7 +67,7 @@ class FristViewController: UIViewController {
     }
 }
 
-extension FristViewController:TLStoryViewDelegate {
+extension FirstViewController:TLStoryViewDelegate {
     func storyViewClose() {
         self.scrollView.contentOffset = CGPoint.init(x: self.view.width, y: 0)
         self.lastPage = 1
@@ -86,7 +86,7 @@ extension FristViewController:TLStoryViewDelegate {
     }
 }
 
-extension FristViewController: UIScrollViewDelegate {
+extension FirstViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x / screenWidth);
         if (self.lastPage == page) {

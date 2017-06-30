@@ -1,5 +1,5 @@
 //
-//  FristSubViewController.swift
+//  FirstSubViewController.swift
 //  TLStoryCamera
 //
 //  Created by garry on 2017/5/27.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FristSubViewController: UIViewController {
+class FirstSubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         

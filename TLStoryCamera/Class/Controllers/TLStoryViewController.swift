@@ -141,11 +141,13 @@ public class TLStoryViewController: UIViewController {
                 self.containerView.y -= 165
             }) { (x) in
                 self.swipeDown = UISwipeGestureRecognizer.init(target: self, action: #selector(self.swipeAction))
-                self.swipeDown!.direction = .down
-                self.blurCoverView.addGestureRecognizer(self.swipeDown!)
+                if let swipeDown = self.swipeDown {
+                    swipeDown.direction = .down
+                    self.blurCoverView.addGestureRecognizer(swipeDown)
+                }
                 self.bottomImagePicker?.loadPhotos()
             }
-        }else {
+        } else {
             blurCoverView.alpha = 1
             UIView.animate(withDuration: 0.25, animations: {
                 self.blurCoverView.alpha = 0
@@ -153,9 +155,12 @@ public class TLStoryViewController: UIViewController {
             }, completion: { (x) in
                 self.blurCoverView.isHidden = true
                 self.blurCoverView.alpha = 1
-                self.blurCoverView.removeGestureRecognizer(self.swipeDown!)
+                if let swipeDown = self.swipeDown {
+                    self.blurCoverView.removeGestureRecognizer(swipeDown)
+                }
             })
         }
+        
         self.delegate?.storyViewRecording(running: !hidden)
     }
     
