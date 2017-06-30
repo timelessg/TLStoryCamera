@@ -13,7 +13,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let fristVc = FristViewController.init()
+        let fristVc = FirstViewController.init()
         fristVc.title = "One"
         fristVc.view.backgroundColor = UIColor.gray
         let fristNav = UINavigationController.init(rootViewController: fristVc)
