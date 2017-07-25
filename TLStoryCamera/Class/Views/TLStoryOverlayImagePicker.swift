@@ -120,9 +120,9 @@ class TLStoryImagePickerView: UIView {
         collectionView!.dataSource = self;
         collectionView!.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: self.height - 380, right: 10)
         collectionView!.register(TLStickerCell.self, forCellWithReuseIdentifier: "cell")
-        blurBgView!.addSubview(collectionView!)
+        blurBgView!.contentView.addSubview(collectionView!)
         
-        blurBgView!.addSubview(handleBgView)
+        blurBgView!.contentView.addSubview(handleBgView)
         handleBgView.frame = CGRect.init(x: 0, y: 0, width: self.width, height: 30)
         handleBgView.isUserInteractionEnabled = true
         
