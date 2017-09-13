@@ -32,10 +32,10 @@ class TLAuthorizedManager: NSObject {
     
     public static func checkAuthorization(with type:AuthorizedType) -> Bool {
         if type == .mic {
-            return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio) == .authorized
+            return AVCaptureDevice.authorizationStatus(for: AVMediaType.audio) == .authorized
         }
         if type == .camera {
-            return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized
+            return AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .authorized
         }
         if type == .album {
             return PHPhotoLibrary.authorizationStatus() == .authorized
@@ -52,13 +52,13 @@ class TLAuthorizedManager: NSObject {
     }
     
     fileprivate static func requestMicAuthorizationStatus(_ callabck:@escaping AuthorizedCallback) {
-        let status = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio)
+        let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.audio)
         if status == .authorized {
             DispatchQueue.main.async {
                 callabck(.mic, true)
             }
         }else if status == .notDetermined {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeAudio, completionHandler: { (granted) in
+            AVCaptureDevice.requestAccess(for: AVMediaType.audio, completionHandler: { (granted) in
                 DispatchQueue.main.async {
                     callabck(.mic, granted)
                 }
@@ -72,13 +72,13 @@ class TLAuthorizedManager: NSObject {
     }
     
     fileprivate static func requestCameraAuthorizationStatus(_ callabck:@escaping AuthorizedCallback) {
-        let status = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         if status == .authorized {
             DispatchQueue.main.async {
                 callabck(.camera, true)
             }
         }else if status == .notDetermined {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted) in
+            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted) in
                 DispatchQueue.main.async {
                     callabck(.camera, granted)
                 }

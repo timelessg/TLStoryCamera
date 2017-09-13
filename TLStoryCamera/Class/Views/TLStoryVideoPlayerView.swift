@@ -29,7 +29,7 @@ class TLStoryVideoPlayerView: UIView {
         player = AVPlayer.init(url: url)
         let playerLayer = AVPlayerLayer.init(player: player)
         playerLayer.frame = self.bounds
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspect
         self.layer.insertSublayer(playerLayer, at: 0)
         player?.play()
         

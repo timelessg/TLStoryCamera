@@ -174,7 +174,7 @@ class TLStoryOutput: NSObject {
     
     fileprivate func getVideoSize(asset:AVAsset) -> CGSize {
         for track in asset.tracks {
-            if track.mediaType == AVMediaTypeVideo {
+            if track.mediaType == AVMediaType.video {
                 return track.naturalSize
             }
         }
@@ -194,7 +194,7 @@ class TLStoryOutput: NSObject {
     
     fileprivate func getVideoRotation(asset:AVAsset) -> CGAffineTransform? {
         for track in asset.tracks {
-            if track.mediaType == AVMediaTypeVideo {
+            if track.mediaType == AVMediaType.video {
                 return track.preferredTransform
             }
         }

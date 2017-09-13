@@ -265,7 +265,7 @@ extension TLStoryViewController: TLStoryOverlayControlDelegate {
             })
         }
     }
-    internal func storyOverlayCameraFlashChange() -> AVCaptureTorchMode {
+    internal func storyOverlayCameraFlashChange() -> AVCaptureDevice.TorchMode {
         return self.captureView!.flashStatusChange()
     }
 }

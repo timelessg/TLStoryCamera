@@ -254,10 +254,10 @@ class TLStoryOverlayTextStickerView: UIView {
             textColor = editingSticker!.cColor.textColor
         }
         
-        editingSticker!.textView.textStorage.addAttributes([NSFontAttributeName:font!,
-                                                            NSParagraphStyleAttributeName:paragraphStyle,
-                                                            NSBackgroundColorAttributeName:bgColor,
-                                                            NSForegroundColorAttributeName:textColor
+        editingSticker!.textView.textStorage.addAttributes([NSAttributedStringKey.font:font!,
+                                                            NSAttributedStringKey.paragraphStyle:paragraphStyle,
+                                                            NSAttributedStringKey.backgroundColor:bgColor,
+                                                            NSAttributedStringKey.foregroundColor:textColor
             ], range: range)
         
         editingSticker!.textView.textAlignment = textAlignment

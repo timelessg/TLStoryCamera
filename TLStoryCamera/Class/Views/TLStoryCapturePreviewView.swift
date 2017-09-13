@@ -168,7 +168,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func capturePhoto(complete:@escaping ((UIImage?) -> Void)){
-        videoCamera?.capturePhotoAsImageProcessedUp(toFilter: beautifyFilter, with: .up, withCompletionHandler: { [weak self] (image, error) in
+        videoCamera?.capturePhotoAsImageProcessedUp(toFilter: beautifyFilter as! GPUImageOutput & GPUImageInput, with: .up, withCompletionHandler: { [weak self] (image, error) in
             DispatchQueue.main.async {
                 self?.beautifyFilter.removeTarget(self?.movieWriter!)
                 self?.movieWriter = nil
@@ -177,13 +177,13 @@ class TLStoryCapturePreviewView: GPUImageView {
         })
     }
     
-    public func flashStatusChange() -> AVCaptureTorchMode {
+    public func flashStatusChange() -> AVCaptureDevice.TorchMode {
         if !videoCamera!.inputCamera.hasFlash || !videoCamera!.inputCamera.hasTorch {
             return .auto
         }
         
         let rawValue = videoCamera!.inputCamera.torchMode.rawValue + 1
-        let mode = AVCaptureTorchMode(rawValue: rawValue + 1 > 3 ? 0 : rawValue)!
+        let mode = AVCaptureDevice.TorchMode(rawValue: rawValue + 1 > 3 ? 0 : rawValue)!
         do {
             try videoCamera?.inputCamera.lockForConfiguration()
             videoCamera?.inputCamera.torchMode = mode

@@ -12,7 +12,7 @@ protocol TLStoryOverlayControlDelegate: NSObjectProtocol {
     func storyOverlayCameraRecordingStart()
     func storyOverlayCameraRecordingFinish(type:TLStoryType)
     func storyOverlayCameraZoom(distance:CGFloat)
-    func storyOverlayCameraFlashChange() -> AVCaptureTorchMode
+    func storyOverlayCameraFlashChange() -> AVCaptureDevice.TorchMode
     func storyOverlayCameraSwitch()
     func storyOverlayCameraFocused(point:CGPoint)
     func storyOverlayCameraClose()
@@ -119,9 +119,9 @@ class TLStoryOverlayControlView: UIView {
     
     @objc fileprivate func flashAction(sender: UIButton) {
         let mode = self.delegate?.storyOverlayCameraFlashChange()
-        let imgs = [AVCaptureTorchMode.on:#imageLiteral(resourceName: "story_publish_icon_flashlight_on"),
-                    AVCaptureTorchMode.off:#imageLiteral(resourceName: "story_publish_icon_flashlight_off"),
-                    AVCaptureTorchMode.auto:#imageLiteral(resourceName: "story_publish_icon_flashlight_auto")]
+        let imgs = [AVCaptureDevice.TorchMode.on:#imageLiteral(resourceName: "story_publish_icon_flashlight_on"),
+                    AVCaptureDevice.TorchMode.off:#imageLiteral(resourceName: "story_publish_icon_flashlight_off"),
+                    AVCaptureDevice.TorchMode.auto:#imageLiteral(resourceName: "story_publish_icon_flashlight_auto")]
         sender.setImage(imgs[mode!], for: .normal)
     }
     
