@@ -14,6 +14,7 @@ protocol TLStoryEditContainerViewDelegate: NSObjectProtocol{
     func storyEditContainerTextStickerBeEditing(sticker:TLStoryTextSticker)
     func storyEditContainerSwipeUp()
     func storyEditContainerTap()
+    func storyEditSwpieFilter(direction:UISwipeGestureRecognizerDirection)
 }
 
 class TLStoryEditContainerView: UIView {
@@ -45,6 +46,10 @@ class TLStoryEditContainerView: UIView {
     fileprivate var tapGesture:UITapGestureRecognizer?
     
     fileprivate var swipeUpGesture:UISwipeGestureRecognizer?
+    
+    fileprivate var swipeLeftGesture:UISwipeGestureRecognizer?
+    
+    fileprivate var swipeRightGesture:UISwipeGestureRecognizer?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,6 +87,14 @@ class TLStoryEditContainerView: UIView {
         swipeUpGesture?.direction = .up
         swipeUpGesture?.delegate = self
         self.addGestureRecognizer(swipeUpGesture!)
+        
+        swipeLeftGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(switchFilter));
+        swipeLeftGesture!.direction = .left
+        self.addGestureRecognizer(swipeLeftGesture!)
+        
+        swipeRightGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(switchFilter));
+        swipeRightGesture!.direction = .right
+        self.addGestureRecognizer(swipeRightGesture!)
     }
     
     @objc fileprivate func tapAction() {
@@ -90,6 +103,10 @@ class TLStoryEditContainerView: UIView {
     
     @objc fileprivate func swipeUpAction() {
         self.delegate?.storyEditContainerSwipeUp()
+    }
+    
+    @objc fileprivate func switchFilter(sender:UISwipeGestureRecognizer) {
+        self.delegate?.storyEditSwpieFilter(direction: sender.direction)
     }
     
     @objc fileprivate func undoAction() {

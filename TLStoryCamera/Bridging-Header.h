@@ -12,4 +12,5 @@
 #import "GPUImageBeautifyFilter.h"
 #import "TLGPUImageAlphaBlendFilter.h"
 #import "TLStoryTextLayoutManager.h"
+#import "TLGPUImageMovie.h"
 #endif /* Bridging_Header_h */

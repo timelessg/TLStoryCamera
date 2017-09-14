@@ -36,6 +36,10 @@ class TLStoryOverlayOutputView: UIView {
         }
     }
     
+    public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
+        self.videoPlayer?.switchFilter(direction: direction)
+    }
+    
     public func reset() {
         videoPlayer?.removeFromSuperview()
         photoPreview?.removeFromSuperview()

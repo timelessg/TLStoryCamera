@@ -45,7 +45,7 @@ public class TLStoryViewController: UIViewController {
     fileprivate var swipeUp:UISwipeGestureRecognizer?
     
     fileprivate var swipeDown:UISwipeGestureRecognizer?
-    
+        
     fileprivate var output = TLStoryOutput.init()
     
     public override func viewDidLoad() {
@@ -350,12 +350,16 @@ extension TLStoryViewController: TLStoryOverlayImagePickerDelegate {
 }
 
 extension TLStoryViewController: TLStoryEditContainerViewDelegate {
-    func storyEditContainerTap() {
+    internal func storyEditSwpieFilter(direction: UISwipeGestureRecognizerDirection) {
+        self.outputView?.switchFilter(direction: direction);
+    }
+    
+    internal func storyEditContainerTap() {
         self.editView?.dismiss()
         self.textStickerView?.show(sticker: nil)
     }
 
-    func storyEditContainerSwipeUp() {
+    internal func storyEditContainerSwipeUp() {
         self.editView?.dismiss()
         self.imageStickerView?.display()
     }
@@ -376,6 +380,7 @@ extension TLStoryViewController: TLStoryEditContainerViewDelegate {
         self.editView?.dismiss()
         self.textStickerView?.show(sticker: sticker)
     }
+    
 }
 
 extension TLStoryViewController: TLStoryBottomImagePickerViewDelegate {

@@ -110,7 +110,6 @@ class TLStoryOutput: NSObject {
         let asset = AVAsset.init(url: url)
         movieFile = GPUImageMovie.init(asset: asset)
         movieFile?.runBenchmark = true
-        //        movieFile?.playAtActualSpeed = true
         
         let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
         let size = self.getVideoSize(asset: asset)

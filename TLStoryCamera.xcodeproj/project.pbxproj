@@ -29,6 +29,9 @@
 		4B8E81F81EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */; };
 		4B8E81FA1EDEC14E00ADD56D /* TLStoryDoodleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */; };
 		4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */; };
+		4B9C39021F6A2A4D008D7204 /* TLGPUImageMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */; };
+		4B9C39041F6A4CE8008D7204 /* lookup_miss_etikate.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */; };
+		4B9C390A1F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C39091F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift */; };
 		4BA690351EEE971E004132D0 /* UIColor+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */; };
 		4BA690361EEE971E004132D0 /* UIImage+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */; };
 		4BA690371EEE971E004132D0 /* UIView+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */; };
@@ -70,6 +73,10 @@
 		4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayOutputView.swift; sourceTree = "<group>"; };
 		4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryDoodleView.swift; sourceTree = "<group>"; };
 		4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryVideoPlayerView.swift; sourceTree = "<group>"; };
+		4B9C39001F6A2A4D008D7204 /* TLGPUImageMovie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLGPUImageMovie.h; sourceTree = "<group>"; };
+		4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageMovie.m; sourceTree = "<group>"; };
+		4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_miss_etikate.png; sourceTree = "<group>"; };
+		4B9C39091F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUImageCustomLookupFilter.swift; sourceTree = "<group>"; };
 		4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+TLStory.swift"; sourceTree = "<group>"; };
 		4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+TLStory.swift"; sourceTree = "<group>"; };
 		4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+TLStory.swift"; sourceTree = "<group>"; };
@@ -116,6 +123,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B9C38FF1F6A29A1008D7204 /* GPUImageExtension */ = {
+			isa = PBXGroup;
+			children = (
+				4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */,
+				4B9C39001F6A2A4D008D7204 /* TLGPUImageMovie.h */,
+				4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */,
+			);
+			path = GPUImageExtension;
+			sourceTree = "<group>";
+		};
 		4BA690291EEE971E004132D0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +150,7 @@
 				4BA6902F1EEE971E004132D0 /* GPUImageBeautifyFilter.m */,
 				4BA690301EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.h */,
 				4BA690311EEE971E004132D0 /* TLGPUImageAlphaBlendFilter.m */,
+				4B9C39091F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift */,
 			);
 			path = GPUImageFilter;
 			sourceTree = "<group>";
@@ -247,8 +265,8 @@
 		C657F05C1EC955A500246393 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */,
 				4B6443381ED0960900D6AEB6 /* WBStoryStickers.plist */,
+				4BB1A66C1ED3E48000B1397A /* WBStoryTextColor.plist */,
 				C657F05D1EC955A500246393 /* WBStoryStickers.bundle */,
 			);
 			path = Resource;
@@ -257,6 +275,7 @@
 		C690DB411EC0212200320D90 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				4B9C38FF1F6A29A1008D7204 /* GPUImageExtension */,
 				4BA690291EEE971E004132D0 /* Extension */,
 				4BA6902D1EEE971E004132D0 /* GPUImageFilter */,
 				4BA690321EEE971E004132D0 /* TextLayoutManager */,
@@ -332,6 +351,7 @@
 				4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */,
 				C64E77571EC00D9C005B09B6 /* Assets.xcassets in Resources */,
 				C657F05E1EC955A500246393 /* WBStoryStickers.bundle in Resources */,
+				4B9C39041F6A4CE8008D7204 /* lookup_miss_etikate.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +418,7 @@
 				4B4497E91EDFAEE600FD47BE /* TLStoryStickersView.swift in Sources */,
 				4B8E81F41EDE955500ADD56D /* TLStoryOverlayControlView.swift in Sources */,
 				4B46B8EB1ED7226E00CEFFF4 /* TLButton.swift in Sources */,
+				4B9C390A1F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift in Sources */,
 				4B4497EB1EDFAF6A00FD47BE /* TLStoryColorPickerView.swift in Sources */,
 				4B46B8ED1ED8555200CEFFF4 /* TLAuthorizedManager.swift in Sources */,
 				C6DA55EB1EC05A1300961DAF /* TLStoryCapturePreviewView.swift in Sources */,
@@ -419,6 +440,7 @@
 				4B4497F11EDFB93A00FD47BE /* TLStoryOverlayTextStickerView.swift in Sources */,
 				4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */,
 				4B40E5741ED926E700CAE2AC /* FristSubViewController.swift in Sources */,
+				4B9C39021F6A2A4D008D7204 /* TLGPUImageMovie.m in Sources */,
 				C63FA4D21EC07A41003690DB /* TLStoryConfiguration.swift in Sources */,
 				4B47245E1EE04ED5006F755B /* TLStoryImageSticker.swift in Sources */,
 				4B8E81F61EDEA4A400ADD56D /* TLStoryOverlayEditView.swift in Sources */,
