@@ -30,8 +30,8 @@
 		4B8E81FA1EDEC14E00ADD56D /* TLStoryDoodleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */; };
 		4B8E81FC1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */; };
 		4B9C39021F6A2A4D008D7204 /* TLGPUImageMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */; };
-		4B9C39041F6A4CE8008D7204 /* lookup_miss_etikate.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */; };
 		4B9C390A1F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C39091F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift */; };
+		4B9F77BC1F6B7586003CFA5D /* TLStoryPhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9F77BB1F6B7586003CFA5D /* TLStoryPhotoPreviewView.swift */; };
 		4BA690351EEE971E004132D0 /* UIColor+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */; };
 		4BA690361EEE971E004132D0 /* UIImage+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */; };
 		4BA690371EEE971E004132D0 /* UIView+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */; };
@@ -75,8 +75,8 @@
 		4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryVideoPlayerView.swift; sourceTree = "<group>"; };
 		4B9C39001F6A2A4D008D7204 /* TLGPUImageMovie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLGPUImageMovie.h; sourceTree = "<group>"; };
 		4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageMovie.m; sourceTree = "<group>"; };
-		4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_miss_etikate.png; sourceTree = "<group>"; };
 		4B9C39091F6A5F4A008D7204 /* GPUImageCustomLookupFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUImageCustomLookupFilter.swift; sourceTree = "<group>"; };
+		4B9F77BB1F6B7586003CFA5D /* TLStoryPhotoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLStoryPhotoPreviewView.swift; sourceTree = "<group>"; };
 		4BA6902A1EEE971E004132D0 /* UIColor+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+TLStory.swift"; sourceTree = "<group>"; };
 		4BA6902B1EEE971E004132D0 /* UIImage+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+TLStory.swift"; sourceTree = "<group>"; };
 		4BA6902C1EEE971E004132D0 /* UIView+TLStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+TLStory.swift"; sourceTree = "<group>"; };
@@ -126,7 +126,6 @@
 		4B9C38FF1F6A29A1008D7204 /* GPUImageExtension */ = {
 			isa = PBXGroup;
 			children = (
-				4B9C39031F6A4C2F008D7204 /* lookup_miss_etikate.png */,
 				4B9C39001F6A2A4D008D7204 /* TLGPUImageMovie.h */,
 				4B9C39011F6A2A4D008D7204 /* TLGPUImageMovie.m */,
 			);
@@ -246,7 +245,6 @@
 				4B8E81F31EDE955500ADD56D /* TLStoryOverlayControlView.swift */,
 				4B4497EC1EDFB4F300FD47BE /* TLStoryBottomImagePickerView.swift */,
 				4B8E81F51EDEA4A400ADD56D /* TLStoryOverlayEditView.swift */,
-				4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */,
 				4B4497EE1EDFB80300FD47BE /* TLStoryOverlayImagePicker.swift */,
 				4B4497F01EDFB93A00FD47BE /* TLStoryOverlayTextStickerView.swift */,
 				4B4497E61EDFAEC200FD47BE /* TLStoryEditContainerView.swift */,
@@ -254,7 +252,9 @@
 				4B8E81F91EDEC14E00ADD56D /* TLStoryDoodleView.swift */,
 				4B4497EA1EDFAF6A00FD47BE /* TLStoryColorPickerView.swift */,
 				C6F705291ECD732A0069C1FF /* TLStorySliderView.swift */,
+				4B8E81F71EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift */,
 				4B8E81FB1EDEC1FE00ADD56D /* TLStoryVideoPlayerView.swift */,
+				4B9F77BB1F6B7586003CFA5D /* TLStoryPhotoPreviewView.swift */,
 				4B8845931EDFFA5000710F4C /* TLStoryTextSticker.swift */,
 				4B47245D1EE04ED5006F755B /* TLStoryImageSticker.swift */,
 				4B46B8EA1ED7226E00CEFFF4 /* TLButton.swift */,
@@ -351,7 +351,6 @@
 				4B6443391ED0960900D6AEB6 /* WBStoryStickers.plist in Resources */,
 				C64E77571EC00D9C005B09B6 /* Assets.xcassets in Resources */,
 				C657F05E1EC955A500246393 /* WBStoryStickers.bundle in Resources */,
-				4B9C39041F6A4CE8008D7204 /* lookup_miss_etikate.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +430,7 @@
 				C64E776D1EC01FB6005B09B6 /* TLStoryCameraButton.swift in Sources */,
 				4BA690371EEE971E004132D0 /* UIView+TLStory.swift in Sources */,
 				C64E77681EC01052005B09B6 /* TLStoryViewController.swift in Sources */,
+				4B9F77BC1F6B7586003CFA5D /* TLStoryPhotoPreviewView.swift in Sources */,
 				4BA6903A1EEE971E004132D0 /* TLStoryTextLayoutManager.m in Sources */,
 				4B8E81F81EDEBEEA00ADD56D /* TLStoryOverlayOutputView.swift in Sources */,
 				4B4497ED1EDFB4F300FD47BE /* TLStoryBottomImagePickerView.swift in Sources */,

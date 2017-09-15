@@ -21,11 +21,7 @@ class TLStoryVideoPlayerView: UIView {
     fileprivate var theAudioPlayer:AVPlayer? = nil
     
     fileprivate var oldVolume:Float = 0
-    
-    fileprivate var filters:[String] = ["lookupAbaose","lookupDianya","lookupFennen","lookupFugu","lookupHeibai","lookupHuaijiu","lookupKeke","lookupMeiyan","lookupQingliang","lookupRouguang","lookupTianmei","lookupWeimei","lookupZiran"]
-    
-    fileprivate var filterIndex:NSInteger = 0
-    
+        
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -39,37 +35,7 @@ class TLStoryVideoPlayerView: UIView {
         
         gpuView = GPUImageView.init(frame: self.bounds)
         self.addSubview(gpuView!)
-        
-        createMovie()
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-    }
-    
-    public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
-        if direction == .left {
-            filterIndex += 1
-        }
-        
-        if direction == .right {
-            filterIndex -= 1
-        }
-        
-        if filterIndex >= filters.count - 1 || filterIndex <= 0 {
-            filterIndex = 0
-        }
-        
-        self.gpuMovie!.removeAllTargets()
-        
-        let lookupImageName = filters[filterIndex]
-        let filter = GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
-        
-        gpuMovie!.addTarget(filter)
-        filter.addTarget(gpuView!)
-    }
-    
-    func createMovie() {
         gpuMovie = TLGPUImageMovie.init(url: url)
         gpuMovie!.shouldRepeat = true
         gpuMovie!.startProcessingCallback = { [weak self] in
@@ -83,14 +49,15 @@ class TLStoryVideoPlayerView: UIView {
         gpuMovie!.startProcessing()
     }
     
-    @objc fileprivate func didBecomeActive() {
-        createMovie()
-    }
-    
-    @objc fileprivate func didEnterBackground() {
-        gpuMovie!.endProcessing()
-        gpuMovie!.removeAllTargets()
-        gpuMovie = nil
+    public func switchWith(filter:GPUImageCustomLookupFilter?) {
+        self.gpuMovie!.removeAllTargets()
+
+        if let f = filter {
+            gpuMovie?.addTarget(f)
+            f.addTarget(gpuView!)
+        }else {
+            gpuMovie!.addTarget(gpuView)
+        }
     }
     
     public func audio(enable:Bool) {

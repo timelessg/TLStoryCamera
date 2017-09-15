@@ -8,11 +8,19 @@
 
 import UIKit
 import GPUImage
+import SVProgressHUD
 
 class TLStoryOverlayOutputView: UIView {
     fileprivate var videoPlayer:TLStoryVideoPlayerView?
     
-    fileprivate var photoPreview:UIImageView?
+    fileprivate var photoPreview:TLStoryPhotoPreviewView?
+    
+    fileprivate var filters:[String] = ["","lookupAbaose","lookupDianya","lookupFennen","lookupFugu","lookupHeibai","lookupHuaijiu","lookupKeke","lookupMeiyan","lookupQingliang","lookupRouguang","lookupWeimei","lookupZiran"]
+    
+    fileprivate var filterNames:[String] = ["无","阿宝","典雅","粉嫩","复古","黑白","怀旧","可可","美颜","晴朗","柔光","唯美","自然"]
+
+    
+    fileprivate var filterIndex:NSInteger = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,9 +32,7 @@ class TLStoryOverlayOutputView: UIView {
     }
     
     public func display(withPhoto img:UIImage) {
-        photoPreview = UIImageView.init(frame: self.bounds)
-        photoPreview?.contentMode = .scaleAspectFill
-        photoPreview?.image = img
+        photoPreview = TLStoryPhotoPreviewView.init(frame: self.bounds, image: img)
         self.insertSubview(photoPreview!, at: 0)
     }
     
@@ -37,7 +43,26 @@ class TLStoryOverlayOutputView: UIView {
     }
     
     public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
-        self.videoPlayer?.switchFilter(direction: direction)
+        if direction == .left {
+            filterIndex += 1
+        }
+        
+        if direction == .right {
+            filterIndex -= 1
+        }
+        
+        if filterIndex >= filters.count - 1 || filterIndex <= 0 {
+            filterIndex = 0
+        }
+        
+        SVProgressHUD.showInfo(withStatus: filterNames[filterIndex])
+        
+        let lookupImageName = filters[filterIndex]
+        let filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
+        
+        self.videoPlayer?.switchWith(filter: filter)
+        
+        self.photoPreview?.switchWith(filter: filter)
     }
     
     public func reset() {
