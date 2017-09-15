@@ -42,6 +42,14 @@ class TLStoryOverlayOutputView: UIView {
         }
     }
     
+    public func pictureOutput() -> GPUImageOutput {
+        return self.photoPreview!.gpuOutput!
+    }
+    
+    public func movieOutput() -> GPUImageOutput {
+        return self.videoPlayer!.gpuMovie!
+    }
+    
     public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
         if direction == .left {
             filterIndex += 1

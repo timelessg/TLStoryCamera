@@ -201,12 +201,12 @@ public class TLStoryViewController: UIViewController {
         self.delegate?.storyViewRecording(running: true)
         
         if type == .photo, let img = input as? UIImage {
-            self.output.image = img
+//            self.output.image = img
             self.outputView?.display(withPhoto: img)
         }
         
         if type == .video, let url = input as? URL {
-            self.output.url = url
+//            self.output.url = url
             self.outputView?.display(withVideo: url)
         }
     }

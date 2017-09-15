@@ -10,6 +10,8 @@ import UIKit
 import GPUImage
 
 class TLStoryPhotoPreviewView: UIView {
+    public var gpuOutput:GPUImageOutput? = nil
+
     fileprivate var gpuPicture:GPUImagePicture? = nil
     
     fileprivate var gpuView:GPUImageView? = nil
@@ -35,8 +37,10 @@ class TLStoryPhotoPreviewView: UIView {
         if let f = filter {
             gpuPicture?.addTarget(f)
             f.addTarget(gpuView!)
+            gpuOutput = f
         }else {
             gpuPicture!.addTarget(gpuView)
+            gpuOutput = gpuPicture
         }
         gpuPicture?.processImage()
     }
