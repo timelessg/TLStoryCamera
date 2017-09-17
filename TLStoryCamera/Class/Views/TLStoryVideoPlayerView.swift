@@ -23,6 +23,9 @@ class TLStoryVideoPlayerView: UIView {
     fileprivate var oldVolume:Float = 0
         
     deinit {
+        gpuMovie?.endProcessing()
+        gpuMovie?.removeAllTargets()
+        gpuMovie = nil
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -34,10 +37,12 @@ class TLStoryVideoPlayerView: UIView {
         theAudioPlayer = AVPlayer.init(url: url)
         
         gpuView = GPUImageView.init(frame: self.bounds)
+        gpuView?.fillMode = kGPUImageFillModePreserveAspectRatioAndFill
         self.addSubview(gpuView!)
                 
         gpuMovie = TLGPUImageMovie.init(url: url)
         gpuMovie!.shouldRepeat = true
+        gpuMovie?.playAtActualSpeed = true
         gpuMovie!.startProcessingCallback = { [weak self] in
             if let strongSelf = self {
                 strongSelf.theAudioPlayer!.seek(to: kCMTimeZero)

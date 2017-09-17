@@ -10,13 +10,12 @@ import UIKit
 import GPUImage
 
 class TLStoryPhotoPreviewView: UIView {
-    public var gpuOutput:GPUImageOutput? = nil
-
-    fileprivate var gpuPicture:GPUImagePicture? = nil
+    public var gpuPicture:GPUImagePicture? = nil
     
     fileprivate var gpuView:GPUImageView? = nil
     
     deinit {
+        gpuOutput?.removeAllTargets()
         gpuPicture?.removeAllTargets()
     }
     
@@ -24,11 +23,14 @@ class TLStoryPhotoPreviewView: UIView {
         super.init(frame: frame)
         
         gpuView = GPUImageView.init(frame: self.bounds)
+        gpuView?.fillMode = kGPUImageFillModePreserveAspectRatioAndFill
         self.addSubview(gpuView!)
         
         gpuPicture = GPUImagePicture.init(image: image)
         
         gpuPicture!.addTarget(gpuView)
+        
+        gpuPicture?.processImage()
     }
     
     public func switchWith(filter:GPUImageCustomLookupFilter?) {
@@ -37,10 +39,8 @@ class TLStoryPhotoPreviewView: UIView {
         if let f = filter {
             gpuPicture?.addTarget(f)
             f.addTarget(gpuView!)
-            gpuOutput = f
         }else {
             gpuPicture!.addTarget(gpuView)
-            gpuOutput = gpuPicture
         }
         gpuPicture?.processImage()
     }

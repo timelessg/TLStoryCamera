@@ -17,10 +17,11 @@ class TLStoryOverlayOutputView: UIView {
     
     fileprivate var filters:[String] = ["","lookupAbaose","lookupDianya","lookupFennen","lookupFugu","lookupHeibai","lookupHuaijiu","lookupKeke","lookupMeiyan","lookupQingliang","lookupRouguang","lookupWeimei","lookupZiran"]
     
-    fileprivate var filterNames:[String] = ["无","阿宝","典雅","粉嫩","复古","黑白","怀旧","可可","美颜","晴朗","柔光","唯美","自然"]
-
+    fileprivate var filterNames:[String] = ["无滤镜","阿宝","典雅","粉嫩","复古","黑白","怀旧","可可","美艳","晴朗","柔光","唯美","自然"]
     
     fileprivate var filterIndex:NSInteger = 0
+    
+    fileprivate var filter:GPUImageCustomLookupFilter? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,12 +43,12 @@ class TLStoryOverlayOutputView: UIView {
         }
     }
     
-    public func pictureOutput() -> GPUImageOutput {
-        return self.photoPreview!.gpuOutput!
+    public func getPhoto() -> (GPUImagePicture,GPUImageCustomLookupFilter?) {
+        return (photoPreview!.gpuPicture!,filter)
     }
     
-    public func movieOutput() -> GPUImageOutput {
-        return self.videoPlayer!.gpuMovie!
+    public func getMovie() -> (TLGPUImageMovie,GPUImageCustomLookupFilter?) {
+        return (self.videoPlayer!.gpuMovie!,filter)
     }
     
     public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
@@ -59,14 +60,18 @@ class TLStoryOverlayOutputView: UIView {
             filterIndex -= 1
         }
         
-        if filterIndex >= filters.count - 1 || filterIndex <= 0 {
+        if filterIndex >= filters.count - 1 {
             filterIndex = 0
+        }
+        
+        if filterIndex <= 0 {
+            filterIndex = filters.count - 1
         }
         
         SVProgressHUD.showInfo(withStatus: filterNames[filterIndex])
         
         let lookupImageName = filters[filterIndex]
-        let filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
+        filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
         
         self.videoPlayer?.switchWith(filter: filter)
         

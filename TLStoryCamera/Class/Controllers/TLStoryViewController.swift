@@ -193,7 +193,6 @@ public class TLStoryViewController: UIViewController {
     
     fileprivate func previewDispay<T>(input:T, type:TLStoryType) {
         self.outputView!.isHidden = false
-        self.output.type = type
         self.editView?.dispaly()
         self.editView?.setAudioEnableBtn(hidden: type == .photo)
         self.controlView?.dismiss()
@@ -277,7 +276,11 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
         }
         
         self.editView?.dismiss()
-        self.output.output(container: container) { [weak self] (url, type) in
+        
+        guard let output = self.outputView?.getOutput() else {
+            return
+        }
+        self.output.output(output:output.0, type: output.1, container: container) { [weak self] (url, type) in
             self?.editView?.dispaly()
             self?.delegate?.storyViewDidPublish(type: type, url: url)
             self?.previewDismiss()
@@ -291,7 +294,11 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
             }
             
             self.editView?.dismiss()
-            self.output.saveToAlbum(container: container) { (x) in
+            
+            guard let output = self.outputView?.getOutput() else {
+                return
+            }
+            self.output.saveToAlbum(output:output.0, type: output.1, container: container) { (x) in
                 self.editView?.dispaly()
             }
         }

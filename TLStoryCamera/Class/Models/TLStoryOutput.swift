@@ -11,37 +11,31 @@ import GPUImage
 import SVProgressHUD
 import Photos
 
-class TLStoryOutput: NSObject {
-    public      var type:TLStoryType?
-    
-//    public      var url:URL?
-//
-//    public      var image:UIImage?
-    
+class TLStoryOutput: NSObject {    
     public      var audioEnable:Bool = true
     
     fileprivate var movieFile:GPUImageMovie?
     
     fileprivate var movieWriter:GPUImageMovieWriter?
     
-    public func output(container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
-        if type! == .video {
-            self.outputVideo(container: container, audioEnable: audioEnable, callback: callback)
+    public func output(output:GPUImageOutput, type:TLStoryType, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
+        if type == .video {
+            self.outputVideo(output:output, container: container, audioEnable: audioEnable, callback: callback)
         }else {
-            self.outputImage(container: container, callback: callback)
+            self.outputImage(output: output, container: container, callback: callback)
         }
     }
     
-    public func saveToAlbum(container: UIImage, callback:@escaping ((Bool) -> Void)) {
-        if type! == .video {
-            self.outputVideoToAlbum(container: container, audioEnable: audioEnable, callback: callback)
+    public func saveToAlbum(output:GPUImageOutput, type:TLStoryType, container: UIImage, callback:@escaping ((Bool) -> Void)) {
+        if type == .video {
+            self.outputVideoToAlbum(output: output, container: container, audioEnable: audioEnable, callback: callback)
         }else {
-            self.outputImageToAlbum(container: container, callback: callback)
+            self.outputImageToAlbum(output: output, container: container, callback: callback)
         }
     }
     
-    fileprivate func outputImageToAlbum(container: UIImage, callback:@escaping ((Bool) -> Void)) {
-        self.outputImage(container: container) { (u, type) in
+    fileprivate func outputImageToAlbum(output:GPUImageOutput, container: UIImage, callback:@escaping ((Bool) -> Void)) {
+        self.outputImage(output: output, container: container) { (u, type) in
             if u == nil {
                 callback(false)
                 return
@@ -59,8 +53,8 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func outputVideoToAlbum(container: UIImage, audioEnable:Bool, callback:@escaping ((Bool) -> Void)) {
-        self.outputVideo(container: container, audioEnable: audioEnable) { (u, type) in
+    fileprivate func outputVideoToAlbum(output:GPUImageOutput, container: UIImage, audioEnable:Bool, callback:@escaping ((Bool) -> Void)) {
+        self.outputVideo(output:output, container: container, audioEnable: audioEnable) { (u, type) in
             if u == nil {
                 callback(false)
                 return
@@ -78,9 +72,18 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func outputImage(container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
+    fileprivate func outputImage(output:GPUImageOutput, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
         SVProgressHUD.show()
         DispatchQueue.global().async {
+            let filter = GPUImageAlphaBlendFilter.init()
+            filter.image(byFilteringImage: container)
+            
+            output.addTarget(filter)
+            
+            filter.useNextFrameForImageCapture()
+            
+            let img = filter.imageFromCurrentFramebuffer()
+            
 //            guard let image = self.image else {
 //                return
 //            }
@@ -102,7 +105,7 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func outputVideo(container: UIImage, audioEnable:Bool, callback:@escaping ((URL?, TLStoryType) -> Void)){
+    fileprivate func outputVideo(output:GPUImageOutput, container: UIImage, audioEnable:Bool, callback:@escaping ((URL?, TLStoryType) -> Void)){
 //        guard let url = url else {
 //            return
 //        }
