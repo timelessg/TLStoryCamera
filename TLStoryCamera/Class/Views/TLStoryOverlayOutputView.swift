@@ -60,7 +60,7 @@ class TLStoryOverlayOutputView: UIView {
             filterIndex = 0
         }
         
-        if filterIndex <= 0 {
+        if filterIndex < 0 {
             filterIndex = filters.count - 1
         }
         
