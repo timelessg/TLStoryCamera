@@ -21,11 +21,11 @@ class TLStoryVideoPlayerView: UIView {
     fileprivate var theAudioPlayer:AVPlayer? = nil
     
     fileprivate var oldVolume:Float = 0
-        
+    
+    fileprivate var filter:GPUImageCustomLookupFilter? = nil
+    
     deinit {
-        gpuMovie?.endProcessing()
-        gpuMovie?.removeAllTargets()
-        gpuMovie = nil
+        didEnterBackground()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -39,7 +39,28 @@ class TLStoryVideoPlayerView: UIView {
         gpuView = GPUImageView.init(frame: self.bounds)
         gpuView?.fillMode = kGPUImageFillModePreserveAspectRatioAndFill
         self.addSubview(gpuView!)
-                
+        
+        initImageMovie()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+    }
+    
+    @objc fileprivate func didBecomeActive() {
+        initImageMovie()
+        
+        config(filter: self.filter)
+    }
+    
+    @objc fileprivate func didEnterBackground() {
+        gpuMovie?.endProcessing()
+        gpuMovie?.removeAllTargets()
+        gpuMovie = nil
+    }
+    
+    fileprivate func initImageMovie() {
         gpuMovie = TLGPUImageMovie.init(url: url)
         gpuMovie!.shouldRepeat = true
         gpuMovie?.playAtActualSpeed = true
@@ -54,9 +75,10 @@ class TLStoryVideoPlayerView: UIView {
         gpuMovie!.startProcessing()
     }
     
-    public func switchWith(filter:GPUImageCustomLookupFilter?) {
-        self.gpuMovie!.removeAllTargets()
-
+    public func config(filter:GPUImageCustomLookupFilter?) {
+        gpuMovie!.removeAllTargets()
+        
+        self.filter = filter
         if let f = filter {
             gpuMovie?.addTarget(f)
             f.addTarget(gpuView!)

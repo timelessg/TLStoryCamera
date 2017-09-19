@@ -11,31 +11,37 @@ import GPUImage
 import SVProgressHUD
 import Photos
 
-class TLStoryOutput: NSObject {    
+class TLStoryOutput: NSObject {
+    public      var type:TLStoryType?
+    
+    public      var url:URL?
+    
+    public      var image:UIImage?
+    
     public      var audioEnable:Bool = true
     
     fileprivate var movieFile:GPUImageMovie?
     
     fileprivate var movieWriter:GPUImageMovieWriter?
     
-    public func output(output:GPUImageOutput, type:TLStoryType, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
-        if type == .video {
-            self.outputVideo(output:output, container: container, audioEnable: audioEnable, callback: callback)
+    public func output(filterNamed:String, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
+        if type! == .video {
+            self.outputVideo(filterNamed: filterNamed, container: container, audioEnable: audioEnable, callback: callback)
         }else {
-            self.outputImage(output: output, container: container, callback: callback)
+            self.outputImage(filterNamed: filterNamed, container: container, callback: callback)
         }
     }
     
-    public func saveToAlbum(output:GPUImageOutput, type:TLStoryType, container: UIImage, callback:@escaping ((Bool) -> Void)) {
-        if type == .video {
-            self.outputVideoToAlbum(output: output, container: container, audioEnable: audioEnable, callback: callback)
+    public func saveToAlbum(filterNamed:String, container: UIImage, callback:@escaping ((Bool) -> Void)) {
+        if type! == .video {
+            self.outputVideoToAlbum(filterNamed: filterNamed, container: container, audioEnable: audioEnable, callback: callback)
         }else {
-            self.outputImageToAlbum(output: output, container: container, callback: callback)
+            self.outputImageToAlbum(filterNamed: filterNamed, container: container, callback: callback)
         }
     }
     
-    fileprivate func outputImageToAlbum(output:GPUImageOutput, container: UIImage, callback:@escaping ((Bool) -> Void)) {
-        self.outputImage(output: output, container: container) { (u, type) in
+    fileprivate func outputImageToAlbum(filterNamed:String, container: UIImage, callback:@escaping ((Bool) -> Void)) {
+        self.outputImage(filterNamed: filterNamed, container: container) { (u, type) in
             if u == nil {
                 callback(false)
                 return
@@ -53,8 +59,8 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func outputVideoToAlbum(output:GPUImageOutput, container: UIImage, audioEnable:Bool, callback:@escaping ((Bool) -> Void)) {
-        self.outputVideo(output:output, container: container, audioEnable: audioEnable) { (u, type) in
+    fileprivate func outputVideoToAlbum(filterNamed:String, container: UIImage, audioEnable:Bool, callback:@escaping ((Bool) -> Void)) {
+        self.outputVideo(filterNamed: filterNamed, container: container, audioEnable: audioEnable) { (u, type) in
             if u == nil {
                 callback(false)
                 return
@@ -72,106 +78,113 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func outputImage(output:GPUImageOutput, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
+    fileprivate func outputImage(filterNamed:String, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
         SVProgressHUD.show()
-        DispatchQueue.global().async {
-            let filter = GPUImageAlphaBlendFilter.init()
-            filter.image(byFilteringImage: container)
+        var cImg:UIImage? = nil
+        if filterNamed != "" {
+            let picture = GPUImagePicture.init(image: self.image!)
             
-            output.addTarget(filter)
+            let filter = GPUImageCustomLookupFilter.init(lookupImageNamed: filterNamed)
+            
+            picture?.addTarget(filter)
+            picture?.processImage()
             
             filter.useNextFrameForImageCapture()
             
-            let img = filter.imageFromCurrentFramebuffer()
+            guard let img = filter.imageFromCurrentFramebuffer() else {
+                SVProgressHUD.dismiss()
+                callback(nil, .photo)
+                return
+            }
+            picture?.removeAllTargets()
+            cImg = img
+        }else {
+            cImg = self.image
+        }
+        
+        let resultImg = cImg!.imageMontage(img: container)
+        let imgData = UIImageJPEGRepresentation(resultImg, 1)
+        
+        let filePath = TLStoryOutput.outputFilePath(type: .photo)
+        
+        do {
+            try imgData?.write(to: filePath)
+            SVProgressHUD.dismiss()
+            callback(filePath, .photo)
+        } catch {
             
-//            guard let image = self.image else {
-//                return
-//            }
-            
-//            let resultImg = image.imageMontage(img: container)
-//            let imgData = UIImageJPEGRepresentation(resultImg, 1)
-//
-//            let filePath = TLStoryOutput.outputFilePath(type: .photo)
-//
-//            do {
-//                try imgData?.write(to: filePath)
-//                DispatchQueue.main.async {
-//                    SVProgressHUD.dismiss()
-//                    callback(filePath, .photo)
-//                }
-//            } catch {
-//
-//            }
         }
     }
     
-    fileprivate func outputVideo(output:GPUImageOutput, container: UIImage, audioEnable:Bool, callback:@escaping ((URL?, TLStoryType) -> Void)){
-//        guard let url = url else {
-//            return
-//        }
+    fileprivate func outputVideo(filterNamed:String, container: UIImage, audioEnable:Bool, callback:@escaping ((URL?, TLStoryType) -> Void)){
+        guard let url = url else {
+            return
+        }
         
-//        let asset = AVAsset.init(url: url)
-//        movieFile = GPUImageMovie.init(asset: asset)
-//        movieFile?.runBenchmark = true
-//
-//        let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
-//        let size = self.getVideoSize(asset: asset)
-//
-//        var img:UIImage? = nil
-//
-//        movieWriter = GPUImageMovieWriter.init(movieURL: URL.init(fileURLWithPath: filePath!), size: size)
-//        if let t = self.getVideoRotation(asset: asset) {
-//            movieWriter?.transform = t
-//            img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
-//        }
-//
-//        if audioEnable {
-//            movieWriter?.shouldPassthroughAudio = audioEnable
-//            movieFile?.audioEncodingTarget = movieWriter
-//        }
-//
-//        movieFile?.enableSynchronizedEncoding(using: movieWriter)
-//
-//        let imgview = UIImageView.init(image: img!)
-//
-//        let uielement = GPUImageUIElement.init(view: imgview)
-//
-//        let landBlendFilter = TLGPUImageAlphaBlendFilter.init()
-//        landBlendFilter.mix = 1
-//
-//        let progressFilter = GPUImageFilter.init()
-//
-//        movieFile?.addTarget(progressFilter)
-//        progressFilter.addTarget(landBlendFilter)
-//        uielement?.addTarget(landBlendFilter)
-//
-//        landBlendFilter.addTarget(movieWriter!)
-//
-//        progressFilter.frameProcessingCompletionBlock = { output, time in
-//            uielement?.update(withTimestamp: time)
-//        }
-//
-//        movieWriter?.startRecording()
-//        movieFile?.startProcessing()
-//
-//        SVProgressHUD.show()
-//        self.movieWriter?.completionBlock = { [weak self] in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//            landBlendFilter.removeTarget(strongSelf.movieWriter)
-//            strongSelf.movieWriter?.finishRecording()
-//
-//            DispatchQueue.main.async {
-//                SVProgressHUD.dismiss()
-//                guard let p = filePath, let u = URL.init(string: p) else {
-//                    callback(nil, .video)
-//                    return
-//                }
-//
-//                callback(u, .video)
-//            }
-//        }
+        let asset = AVAsset.init(url: url)
+        movieFile = GPUImageMovie.init(asset: asset)
+        movieFile?.runBenchmark = true
+        
+        let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
+        let size = self.getVideoSize(asset: asset)
+        
+        var img:UIImage? = nil
+        
+        movieWriter = GPUImageMovieWriter.init(movieURL: URL.init(fileURLWithPath: filePath!), size: size)
+        if let t = self.getVideoRotation(asset: asset) {
+            movieWriter?.transform = t
+            img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
+        }
+        
+        if audioEnable {
+            movieWriter?.shouldPassthroughAudio = audioEnable
+            movieFile?.audioEncodingTarget = movieWriter
+        }
+        
+        movieFile?.enableSynchronizedEncoding(using: movieWriter)
+        
+        let imgview = UIImageView.init(image: img!)
+        
+        let uielement = GPUImageUIElement.init(view: imgview)
+        
+        let landBlendFilter = TLGPUImageAlphaBlendFilter.init()
+        landBlendFilter.mix = 1
+        
+        let progressFilter = filterNamed == "" ? GPUImageFilter.init() : GPUImageCustomLookupFilter.init(lookupImageNamed: filterNamed)
+        
+        movieFile?.addTarget(progressFilter as! GPUImageInput)
+        progressFilter.addTarget(landBlendFilter)
+        uielement?.addTarget(landBlendFilter)
+        
+        landBlendFilter.addTarget(movieWriter!)
+        
+        progressFilter.frameProcessingCompletionBlock = { output, time in
+            uielement?.update(withTimestamp: time)
+        }
+        
+        movieWriter?.startRecording()
+        movieFile?.startProcessing()
+        
+        SVProgressHUD.show()
+        self.movieWriter?.completionBlock = { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            landBlendFilter.removeAllTargets()
+            progressFilter.removeAllTargets()
+            strongSelf.movieFile?.removeAllTargets()
+            strongSelf.movieWriter?.finishRecording()
+            
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
+                guard let p = filePath, let u = URL.init(string: p) else {
+                    callback(nil, .video)
+                    return
+                }
+                
+                callback(u, .video)
+            }
+        }
     }
     
     fileprivate func getVideoSize(asset:AVAsset) -> CGSize {
@@ -203,3 +216,4 @@ class TLStoryOutput: NSObject {
         return nil
     }
 }
+

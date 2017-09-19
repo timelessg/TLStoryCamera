@@ -15,8 +15,9 @@ class TLStoryPhotoPreviewView: UIView {
     fileprivate var gpuView:GPUImageView? = nil
     
     deinit {
-        gpuOutput?.removeAllTargets()
+        gpuView?.removeFromSuperview()
         gpuPicture?.removeAllTargets()
+        gpuPicture = nil
     }
     
     init(frame: CGRect, image:UIImage) {
@@ -28,12 +29,12 @@ class TLStoryPhotoPreviewView: UIView {
         
         gpuPicture = GPUImagePicture.init(image: image)
         
-        gpuPicture!.addTarget(gpuView)
+        gpuPicture?.addTarget(gpuView)
         
         gpuPicture?.processImage()
     }
     
-    public func switchWith(filter:GPUImageCustomLookupFilter?) {
+    public func config(filter:GPUImageCustomLookupFilter?) {
         gpuPicture?.removeAllTargets()
         
         if let f = filter {

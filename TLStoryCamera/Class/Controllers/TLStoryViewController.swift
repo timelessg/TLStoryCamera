@@ -193,6 +193,7 @@ public class TLStoryViewController: UIViewController {
     
     fileprivate func previewDispay<T>(input:T, type:TLStoryType) {
         self.outputView!.isHidden = false
+        self.output.type = type
         self.editView?.dispaly()
         self.editView?.setAudioEnableBtn(hidden: type == .photo)
         self.controlView?.dismiss()
@@ -200,12 +201,12 @@ public class TLStoryViewController: UIViewController {
         self.delegate?.storyViewRecording(running: true)
         
         if type == .photo, let img = input as? UIImage {
-//            self.output.image = img
+            self.output.image = img
             self.outputView?.display(withPhoto: img)
         }
         
         if type == .video, let url = input as? URL {
-//            self.output.url = url
+            self.output.url = url
             self.outputView?.display(withVideo: url)
         }
     }
@@ -277,14 +278,11 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
         
         self.editView?.dismiss()
         
-        guard let output = self.outputView?.getOutput() else {
-            return
-        }
-        self.output.output(output:output.0, type: output.1, container: container) { [weak self] (url, type) in
+        self.output.output(filterNamed: self.outputView!.currentFilterNamed, container: container, callback: { [weak self] (url, type) in
             self?.editView?.dispaly()
             self?.delegate?.storyViewDidPublish(type: type, url: url)
             self?.previewDismiss()
-        }
+        })
     }
     
     internal func storyOverlayEditSave() {
@@ -295,12 +293,9 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
             
             self.editView?.dismiss()
             
-            guard let output = self.outputView?.getOutput() else {
-                return
-            }
-            self.output.saveToAlbum(output:output.0, type: output.1, container: container) { (x) in
-                self.editView?.dispaly()
-            }
+            self.output.saveToAlbum(filterNamed: self.outputView!.currentFilterNamed, container: container, callback: { [weak self] (x) in
+                self?.editView?.dispaly()
+            })
         }
         
         guard TLAuthorizedManager.checkAuthorization(with: .album) else {

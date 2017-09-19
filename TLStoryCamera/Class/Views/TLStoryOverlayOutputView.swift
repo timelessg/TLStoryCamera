@@ -21,7 +21,11 @@ class TLStoryOverlayOutputView: UIView {
     
     fileprivate var filterIndex:NSInteger = 0
     
-    fileprivate var filter:GPUImageCustomLookupFilter? = nil
+    public var currentFilterNamed:String {
+        get {
+            return filters[filterIndex]
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,14 +45,6 @@ class TLStoryOverlayOutputView: UIView {
         if let player = videoPlayer {
             player.audio(enable: enable)
         }
-    }
-    
-    public func getPhoto() -> (GPUImagePicture,GPUImageCustomLookupFilter?) {
-        return (photoPreview!.gpuPicture!,filter)
-    }
-    
-    public func getMovie() -> (TLGPUImageMovie,GPUImageCustomLookupFilter?) {
-        return (self.videoPlayer!.gpuMovie!,filter)
     }
     
     public func switchFilter(direction:UISwipeGestureRecognizerDirection) {
@@ -71,11 +67,11 @@ class TLStoryOverlayOutputView: UIView {
         SVProgressHUD.showInfo(withStatus: filterNames[filterIndex])
         
         let lookupImageName = filters[filterIndex]
-        filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
+        let filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
         
-        self.videoPlayer?.switchWith(filter: filter)
+        self.videoPlayer?.config(filter: filter)
         
-        self.photoPreview?.switchWith(filter: filter)
+        self.photoPreview?.config(filter: filter)
     }
     
     public func reset() {

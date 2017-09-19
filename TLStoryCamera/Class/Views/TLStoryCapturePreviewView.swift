@@ -101,6 +101,7 @@ class TLStoryCapturePreviewView: GPUImageView {
         videoCamera!.horizontallyMirrorFrontFacingCamera = true
         videoCamera!.removeAllTargets()
         videoCamera!.addTarget(beautifyFilter as! GPUImageInput)
+        videoCamera!.addAudioInputsAndOutputs()
         beautifyFilter.addTarget(self)
     }
     
