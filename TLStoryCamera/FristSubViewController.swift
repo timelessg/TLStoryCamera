@@ -14,11 +14,12 @@ class FirstSubViewController: UIViewController {
         
         let tipLabel = UILabel.init()
         tipLabel.text = "Scroll left open>>>"
+        tipLabel.textColor = UIColor.white
         self.view.addSubview(tipLabel)
         tipLabel.sizeToFit()
         tipLabel.center = CGPoint.init(x: self.view.width / 2, y: self.view.height / 2)
         
-        self.view.backgroundColor = UIColor.yellow
+        self.view.backgroundColor = UIColor.gray
     }
 
 }

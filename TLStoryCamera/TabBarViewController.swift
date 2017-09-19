@@ -15,12 +15,12 @@ class TabBarViewController: UITabBarController {
         
         let fristVc = FirstViewController.init()
         fristVc.title = "One"
-        fristVc.view.backgroundColor = UIColor.gray
+        fristVc.view.backgroundColor = UIColor.black
         let fristNav = UINavigationController.init(rootViewController: fristVc)
         
         let secondVc = UIViewController.init()
         secondVc.title = "Two"
-        secondVc.view.backgroundColor = UIColor.purple
+        secondVc.view.backgroundColor = UIColor.gray
         let secondNav = UINavigationController.init(rootViewController: secondVc)
         
         self.viewControllers = [fristNav,secondNav]
