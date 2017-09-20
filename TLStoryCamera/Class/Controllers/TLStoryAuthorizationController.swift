@@ -79,6 +79,7 @@ class TLStoryAuthorizationController: UIViewController {
             if !success {
                 return
             }
+            self.openCameraBtn.isEnabled = true
             self.openCameraBtn.isSelected = true
             self.openCameraBtn.sizeToFit()
             self.openCameraBtn.centerX = self.view.width / 2
@@ -93,6 +94,7 @@ class TLStoryAuthorizationController: UIViewController {
                 return
             }
             self.openMicBtn.isEnabled = true
+            self.openMicBtn.isSelected = true
             self.openMicBtn.sizeToFit()
             self.openMicBtn.centerX = self.view.width / 2
             self.delegate?.requestMicAuthorizeSuccess()

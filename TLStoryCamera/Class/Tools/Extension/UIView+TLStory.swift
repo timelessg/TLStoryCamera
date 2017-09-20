@@ -113,7 +113,9 @@ extension UIView {
             self.height = newValue.height
         }
     }
-    
+}
+
+extension UIView {
     public var currentController:UIViewController? {
         get {
             var responder = self.next;

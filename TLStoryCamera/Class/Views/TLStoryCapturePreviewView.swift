@@ -101,7 +101,6 @@ class TLStoryCapturePreviewView: GPUImageView {
         videoCamera!.horizontallyMirrorFrontFacingCamera = true
         videoCamera!.removeAllTargets()
         videoCamera!.addTarget(beautifyFilter as! GPUImageInput)
-        videoCamera!.addAudioInputsAndOutputs()
         beautifyFilter.addTarget(self)
     }
     
@@ -116,6 +115,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     public func configAudioRecording() {
         movieWriter?.setHasAudioTrack(true, audioSettings: TLStoryConfiguration.audioSetting)
         videoCamera?.audioEncodingTarget = movieWriter
+        videoCamera?.addAudioInputsAndOutputs()
     }
     
     public func rotateCamera() {

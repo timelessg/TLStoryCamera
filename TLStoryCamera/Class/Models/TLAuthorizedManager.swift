@@ -32,7 +32,7 @@ class TLAuthorizedManager: NSObject {
     
     public static func checkAuthorization(with type:AuthorizedType) -> Bool {
         if type == .mic {
-            return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio) == .authorized
+            return AVAudioSession.sharedInstance().recordPermission() == .granted
         }
         if type == .camera {
             return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized
@@ -52,22 +52,22 @@ class TLAuthorizedManager: NSObject {
     }
     
     fileprivate static func requestMicAuthorizationStatus(_ callabck:@escaping AuthorizedCallback) {
-        let status = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio)
-        if status == .authorized {
+        let status = AVAudioSession.sharedInstance().recordPermission()
+        if status == .granted {
             DispatchQueue.main.async {
                 callabck(.mic, true)
             }
-        }else if status == .notDetermined {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeAudio, completionHandler: { (granted) in
-                DispatchQueue.main.async {
-                    callabck(.mic, granted)
-                }
-            })
-        }else if (status == .denied) {
+        }else if status == .denied {
             DispatchQueue.main.async {
                 callabck(.mic, false)
             }
             self.openAuthorizationSetting()
+        }else{
+            AVAudioSession.sharedInstance().requestRecordPermission({ granted in
+                DispatchQueue.main.async {
+                    callabck(.mic, granted)
+                }
+            })
         }
     }
     
@@ -78,7 +78,7 @@ class TLAuthorizedManager: NSObject {
                 callabck(.camera, true)
             }
         }else if status == .notDetermined {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted) in
+            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { granted in
                 DispatchQueue.main.async {
                     callabck(.camera, granted)
                 }
@@ -86,8 +86,8 @@ class TLAuthorizedManager: NSObject {
         }else if (status == .denied) {
             DispatchQueue.main.async {
                 callabck(.camera, false)
+                self.openAuthorizationSetting()
             }
-            self.openAuthorizationSetting()
         }
     }
     
@@ -103,7 +103,7 @@ class TLAuthorizedManager: NSObject {
                     callabck(.album, granted == .authorized)
                 }
             })
-        }else if status == .denied {
+        }else if status == .denied || status == .restricted {
             DispatchQueue.main.async {
                 callabck(.album, false)
             }
