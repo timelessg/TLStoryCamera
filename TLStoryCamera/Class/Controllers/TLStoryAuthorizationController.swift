@@ -16,7 +16,7 @@ protocol TLStoryAuthorizedDelegate: NSObjectProtocol {
 
 class TLStoryAuthorizationController: UIViewController {
     public weak var delegate:TLStoryAuthorizedDelegate?
-
+    
     fileprivate var bgBlurView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .dark))
     
     fileprivate var titleLabel:UILabel = {

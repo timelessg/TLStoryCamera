@@ -45,12 +45,10 @@ class TLStoryVideoPlayerView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        
     }
     
     @objc fileprivate func didBecomeActive() {
         initImageMovie()
-        
         config(filter: self.filter)
     }
     
@@ -61,6 +59,9 @@ class TLStoryVideoPlayerView: UIView {
     }
     
     fileprivate func initImageMovie() {
+        if gpuMovie != nil {
+            return
+        }
         gpuMovie = TLGPUImageMovie.init(url: url)
         gpuMovie!.shouldRepeat = true
         gpuMovie?.playAtActualSpeed = true
