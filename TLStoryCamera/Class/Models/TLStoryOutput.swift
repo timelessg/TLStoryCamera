@@ -8,7 +8,7 @@
 
 import UIKit
 import GPUImage
-import SVProgressHUD
+import MBProgressHUD
 import Photos
 
 class TLStoryOutput: NSObject {
@@ -46,13 +46,13 @@ class TLStoryOutput: NSObject {
                 callback(false)
                 return
             }
-            SVProgressHUD.show()
+            JLHUD.showWatting()
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: u!)
             }, completionHandler: { (x, e) in
                 DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    SVProgressHUD.showSuccess(withStatus: "已保存到相册")
+                    JLHUD.hideWatting()
+                    JLHUD.show(text: "已保存到相册", delay:1)
                     callback(true)
                 }
             })
@@ -65,13 +65,13 @@ class TLStoryOutput: NSObject {
                 callback(false)
                 return
             }
-            SVProgressHUD.show()
+            JLHUD.showWatting()
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: u!)
             }, completionHandler: { (x, e) in
                 DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    SVProgressHUD.showSuccess(withStatus: "已保存到相册")
+                    JLHUD.hideWatting()
+                    JLHUD.show(text: "已保存到相册", delay:1)
                     callback(true)
                 }
             })
@@ -79,7 +79,7 @@ class TLStoryOutput: NSObject {
     }
     
     fileprivate func outputImage(filterNamed:String, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
-        SVProgressHUD.show()
+        JLHUD.showWatting()
         var cImg:UIImage? = nil
         if filterNamed != "" {
             let picture = GPUImagePicture.init(image: self.image!)
@@ -92,7 +92,7 @@ class TLStoryOutput: NSObject {
             filter.useNextFrameForImageCapture()
             
             guard let img = filter.imageFromCurrentFramebuffer() else {
-                SVProgressHUD.dismiss()
+                JLHUD.hideWatting()
                 callback(nil, .photo)
                 return
             }
@@ -109,7 +109,7 @@ class TLStoryOutput: NSObject {
         
         do {
             try imgData?.write(to: filePath)
-            SVProgressHUD.dismiss()
+            JLHUD.hideWatting()
             callback(filePath, .photo)
         } catch {
             
@@ -165,7 +165,7 @@ class TLStoryOutput: NSObject {
         movieWriter?.startRecording()
         movieFile?.startProcessing()
         
-        SVProgressHUD.show()
+        JLHUD.showWatting()
         self.movieWriter?.completionBlock = { [weak self] in
             guard let strongSelf = self else {
                 return
@@ -176,7 +176,7 @@ class TLStoryOutput: NSObject {
             strongSelf.movieWriter?.finishRecording()
             
             DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
+                JLHUD.hideWatting()
                 guard let p = filePath, let u = URL.init(string: p) else {
                     callback(nil, .video)
                     return

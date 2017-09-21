@@ -8,7 +8,7 @@
 
 import UIKit
 import GPUImage
-import SVProgressHUD
+import MBProgressHUD
 
 class TLStoryOverlayOutputView: UIView {
     fileprivate var videoPlayer:TLStoryVideoPlayerView?
@@ -64,7 +64,7 @@ class TLStoryOverlayOutputView: UIView {
             filterIndex = filters.count - 1
         }
         
-        SVProgressHUD.showInfo(withStatus: filterNames[filterIndex])
+        JLHUD.show(text: filterNames[filterIndex], delay: 0.5)
         
         let lookupImageName = filters[filterIndex]
         let filter = lookupImageName == "" ? nil : GPUImageCustomLookupFilter.init(lookupImageNamed: lookupImageName)
@@ -73,7 +73,7 @@ class TLStoryOverlayOutputView: UIView {
         
         self.photoPreview?.config(filter: filter)
     }
-    
+        
     public func reset() {
         videoPlayer?.removeFromSuperview()
         photoPreview?.removeFromSuperview()
