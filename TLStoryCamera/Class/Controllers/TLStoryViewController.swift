@@ -239,9 +239,7 @@ extension TLStoryViewController: TLStoryOverlayControlDelegate {
     internal func storyOverlayCameraRecordingStart() {
         captureView!.configVideoRecording()
         captureView!.configAudioRecording()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.captureView!.startRecording()
-        }
+        self.captureView!.startRecording()
     }
     
     internal func storyOverlayCameraSwitch() {

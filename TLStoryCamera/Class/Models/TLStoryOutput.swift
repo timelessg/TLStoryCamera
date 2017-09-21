@@ -8,7 +8,6 @@
 
 import UIKit
 import GPUImage
-import MBProgressHUD
 import Photos
 
 class TLStoryOutput: NSObject {

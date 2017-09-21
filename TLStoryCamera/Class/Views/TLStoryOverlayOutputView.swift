@@ -8,7 +8,6 @@
 
 import UIKit
 import GPUImage
-import MBProgressHUD
 
 class TLStoryOverlayOutputView: UIView {
     fileprivate var videoPlayer:TLStoryVideoPlayerView?
