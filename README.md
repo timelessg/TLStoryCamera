@@ -29,7 +29,7 @@ TLStoryCamera
 
 # Depend on framwork
 * GPUImage
-* SVProgressHUD
+* MBProgressHUD
 
 # Usage
 * 克隆项目后，需要使用Cocoapods Install
