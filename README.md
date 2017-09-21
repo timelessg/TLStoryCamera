@@ -36,8 +36,8 @@ TLStoryCamera
 * Using Cocoapods to install after cloning the project 
 
 # FAQ
-* **为什么拍摄视频时会偶发第一帧黑屏？(Why shoot the video when the first frame will be black)**
-* [GPUImage·issues·#1255](https://github.com/BradLarson/GPUImage/issues/1255)
+* **Recorded movies start with a short duration of black video**
+* [GPUImage·issues·#52](https://github.com/BradLarson/GPUImage/issues/52)
 
 
 # Warning！
