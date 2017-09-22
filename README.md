@@ -1,5 +1,6 @@
 TLStoryCamera
-==================
+==============
+<center><img src="./ScreenShot/Logo.png"></center>
 
 # TODO
 * Fix bugs
@@ -73,7 +74,7 @@ extension ViewController:TLStoryViewDelegate {
 
 
 # Images
-<img src="./ScreenShot/2017-05-21 14_33_43.gif" width="320">
+<img src="./ScreenShot/GIF.gif" width="320">
 <img src="./ScreenShot/IMG_0037.jpg" width="320">
 <img src="./ScreenShot/IMG_0038.jpg" width="320">
 <img src="./ScreenShot/IMG_0040.jpg" width="320">
