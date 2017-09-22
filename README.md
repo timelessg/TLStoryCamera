@@ -17,15 +17,15 @@ TLStoryCamera
 * 基本实现WeiboStory的大部分功能
 * Implement most of the function of Weibo's story
 * 支持滑动切换滤镜
-* Support Slide Filter
+* Support slide filter
 * 支持码率，美颜开关等多项配置
-* Support config kpbs, beautifyFilter switch
+* Support config kpbs, beautifyFilter
 * 支持长按录像&短按拍照
 * Support long press to shoot a video or short press to take a photo
 * 支持相册选择图片&视频
-* Support choosing video or picture from album
+* Support import video or photo from album
 * 使用Swift 3开发
-* Development tool Swift3
+* Using Swift3
 
 # Depend on framwork
 * GPUImage
@@ -33,7 +33,32 @@ TLStoryCamera
 
 # Usage
 * 克隆项目后，需要使用Cocoapods Install
-* Using Cocoapods to install after cloning the project 
+* Using CocoaPods to install after cloning the project 
+
+```
+let storyVc = TLStoryViewController()
+storyVc.view.frame = CGRect.init(x: 0, y: -44, width: screenWidth, height: screenHeight)
+storyVc.delegate = self
+scrollView.addSubview(storyVc.view)
+self.addChildViewController(storyVc)
+
+extension ViewController:TLStoryViewDelegate {
+    func storyViewClose() {
+    }
+    
+    func storyViewRecording(running complete: Bool) {
+    
+    }
+     
+    //get output video & photo
+    func storyViewDidPublish(type: TLStoryType, url: URL?) {
+        guard let u = url else {
+            return
+        }
+        print("\(type)-----\(u)")
+    }
+}
+```
 
 # FAQ
 * **Recorded movies start with a short duration of black video**
@@ -42,7 +67,7 @@ TLStoryCamera
 
 # Warning！
 * 项目部分图片素材来自WeiBo，请替换后使用！
-* Partial resourse came frome Weibo,use after replacing
+* Partial resourse come frome Weibo, please use after replacing
 * 目前项目尚处于开发阶段，不建议直接在企业项目中使用。
 * Deprecated using in project directly cause of development stage
 
