@@ -105,7 +105,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func configVideoRecording() {
-        currentVideoPath = TLStoryOutput.outputFilePath(type: .video)
+        currentVideoPath = TLStoryOutput.outputFilePath(type: .video, isTemp: true)
         let size = CGSize.init(width: TLStoryConfiguration.videoSetting["AVVideoWidthKey"] as! Int, height: TLStoryConfiguration.videoSetting["AVVideoHeightKey"] as! Int)
         self.movieWriter = GPUImageMovieWriter.init(movieURL: self.currentVideoPath, size: size, fileType: TLStoryConfiguration.videoFileType, outputSettings: TLStoryConfiguration.videoSetting)
         self.beautifyFilter.addTarget(self.movieWriter!)

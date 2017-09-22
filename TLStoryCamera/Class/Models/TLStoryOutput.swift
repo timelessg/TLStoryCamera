@@ -80,6 +80,7 @@ class TLStoryOutput: NSObject {
     fileprivate func outputImage(filterNamed:String, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
         JLHUD.showWatting()
         var cImg:UIImage? = nil
+        
         if filterNamed != "" {
             let picture = GPUImagePicture.init(image: self.image!)
             
@@ -104,14 +105,17 @@ class TLStoryOutput: NSObject {
         let resultImg = cImg!.imageMontage(img: container)
         let imgData = UIImageJPEGRepresentation(resultImg, 1)
         
-        let filePath = TLStoryOutput.outputFilePath(type: .photo)
+        guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
+            callback(nil, .photo)
+            return
+        }
         
         do {
-            try imgData?.write(to: filePath)
+            try imgData?.write(to: exportUrl)
             JLHUD.hideWatting()
-            callback(filePath, .photo)
+            callback(exportUrl, .photo)
         } catch {
-            
+            callback(nil, .photo)
         }
     }
     
@@ -124,12 +128,15 @@ class TLStoryOutput: NSObject {
         movieFile = GPUImageMovie.init(asset: asset)
         movieFile?.runBenchmark = true
         
-        let filePath = TLStoryConfiguration.videoPath?.appending("/\(Int(Date().timeIntervalSince1970))_temp.mp4")
+        guard let exportUrl = TLStoryOutput.outputFilePath(type: .video, isTemp: false) else {
+            callback(nil, .video)
+            return
+        }
         let size = self.getVideoSize(asset: asset)
         
         var img:UIImage? = nil
         
-        movieWriter = GPUImageMovieWriter.init(movieURL: URL.init(fileURLWithPath: filePath!), size: size)
+        movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: size)
         if let t = self.getVideoRotation(asset: asset) {
             movieWriter?.transform = t
             img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
@@ -169,6 +176,7 @@ class TLStoryOutput: NSObject {
             guard let strongSelf = self else {
                 return
             }
+            
             landBlendFilter.removeAllTargets()
             progressFilter.removeAllTargets()
             strongSelf.movieFile?.removeAllTargets()
@@ -176,12 +184,7 @@ class TLStoryOutput: NSObject {
             
             DispatchQueue.main.async {
                 JLHUD.hideWatting()
-                guard let p = filePath, let u = URL.init(string: p) else {
-                    callback(nil, .video)
-                    return
-                }
-                
-                callback(u, .video)
+                callback(exportUrl, .video)
             }
         }
     }
@@ -195,15 +198,25 @@ class TLStoryOutput: NSObject {
         return TLStoryConfiguration.outputVideoSize
     }
     
-    public static func outputFilePath(type:TLStoryType) -> URL {
-        let path = type == .video ? TLStoryConfiguration.videoPath : TLStoryConfiguration.photoPath
-        let filePath = path?.appending("/\(Int(Date().timeIntervalSince1970)).\(type == .video ? "mp4" : "png")")
+    public static func outputFilePath(type:TLStoryType, isTemp:Bool) -> URL? {
         do {
-            try FileManager.default.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
-        } catch {
+            try? FileManager.default.createDirectory(atPath: type == .video ? TLStoryConfiguration.videoPath! : TLStoryConfiguration.photoPath!, withIntermediateDirectories: true, attributes: nil)
             
+            if type == .video {
+                let fileName = isTemp ? "mov_tmp.mp4" : "mov_out.mp4"
+                let url = URL.init(fileURLWithPath: "\(TLStoryConfiguration.videoPath!)/\(fileName)")
+                try? FileManager.default.removeItem(at: url)
+                return url
+            }
+            
+            if type == .photo {
+                let fileName = isTemp ? "pic_tmp.png" : "pic_out.png"
+                let url = URL.init(fileURLWithPath: "\(TLStoryConfiguration.photoPath!)/\(fileName)")
+                try? FileManager.default.removeItem(at: url)
+                return url
+            }
         }
-        return URL.init(fileURLWithPath: filePath!)
+        return nil
     }
     
     fileprivate func getVideoRotation(asset:AVAsset) -> CGAffineTransform? {
@@ -213,6 +226,13 @@ class TLStoryOutput: NSObject {
             }
         }
         return nil
+    }
+    
+    public func reset() {
+        movieFile = nil
+        movieWriter = nil
+        image = nil
+        audioEnable = true
     }
 }
 

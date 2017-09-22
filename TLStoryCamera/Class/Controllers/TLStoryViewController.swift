@@ -219,6 +219,7 @@ public class TLStoryViewController: UIViewController {
         self.textStickerView?.reset()
         self.controlView?.display()
         self.captureView?.resumeCamera()
+        self.output.reset()
         self.delegate?.storyViewRecording(running: false)
     }
     
@@ -238,8 +239,8 @@ extension TLStoryViewController: TLStoryOverlayControlDelegate {
 
     internal func storyOverlayCameraRecordingStart() {
         captureView!.configVideoRecording()
-        captureView!.configAudioRecording()
         self.captureView!.startRecording()
+        captureView!.configAudioRecording()
     }
     
     internal func storyOverlayCameraSwitch() {
@@ -382,7 +383,6 @@ extension TLStoryViewController: TLStoryEditContainerViewDelegate {
         self.editView?.dismiss()
         self.textStickerView?.show(sticker: sticker)
     }
-    
 }
 
 extension TLStoryViewController: TLStoryBottomImagePickerViewDelegate {

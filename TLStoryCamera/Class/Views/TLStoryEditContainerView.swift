@@ -90,10 +90,12 @@ class TLStoryEditContainerView: UIView {
         
         swipeLeftGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(switchFilter));
         swipeLeftGesture!.direction = .left
+        swipeLeftGesture?.delegate = self
         self.addGestureRecognizer(swipeLeftGesture!)
         
         swipeRightGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(switchFilter));
         swipeRightGesture!.direction = .right
+        swipeRightGesture?.delegate = self
         self.addGestureRecognizer(swipeRightGesture!)
     }
     
