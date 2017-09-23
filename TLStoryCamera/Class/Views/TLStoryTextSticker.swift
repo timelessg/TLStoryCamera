@@ -31,7 +31,7 @@ extension TLStoryStickerProtocol where Self: UIView {
     func beginScaleAnim() {
         let scaleAnim = CABasicAnimation.init(keyPath: "transform.scale")
         scaleAnim.fromValue = self.transform.d
-        scaleAnim.toValue = self.transform.d - 0.1
+        scaleAnim.toValue = self.transform.d * 0.95
         
         let alphaAnim = CABasicAnimation.init(keyPath: "opacity")
         alphaAnim.fromValue = 1

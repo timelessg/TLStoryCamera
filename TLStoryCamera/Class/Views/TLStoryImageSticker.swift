@@ -62,6 +62,8 @@ class TLStoryImageSticker: UIImageView, TLStoryStickerProtocol {
     }
     
     @objc fileprivate func pinche(pinche:UIPinchGestureRecognizer) {
+        self.delegate?.stickerView(handing: pinche.state == .began || pinche.state == .changed)
+
         if(pinche.state == .ended) {
             lastScale = 1.0
             return
@@ -76,7 +78,6 @@ class TLStoryImageSticker: UIImageView, TLStoryStickerProtocol {
         lastScale = pinche.scale
         
         self.delegate?.stickerViewBecomeFirstRespond(sticker: self)
-        self.delegate?.stickerView(handing: pinche.state == .began || pinche.state == .changed)
     }
     
     @objc fileprivate func rotate(rotate:UIRotationGestureRecognizer) {
