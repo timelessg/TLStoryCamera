@@ -79,43 +79,52 @@ class TLStoryOutput: NSObject {
     
     fileprivate func outputImage(filterNamed:String, container: UIImage, callback:@escaping ((URL?, TLStoryType) -> Void)) {
         JLHUD.showWatting()
-        var cImg:UIImage? = nil
-        
-        if filterNamed != "" {
-            let picture = GPUImagePicture.init(image: self.image!)
+        DispatchQueue.global().async {
+            var cImg:UIImage? = nil
             
-            let filter = GPUImageCustomLookupFilter.init(lookupImageNamed: filterNamed)
+            if filterNamed != "" {
+                let picture = GPUImagePicture.init(image: self.image!)
+                
+                let filter = GPUImageCustomLookupFilter.init(lookupImageNamed: filterNamed)
+                
+                picture?.addTarget(filter)
+                picture?.processImage()
+                
+                filter.useNextFrameForImageCapture()
+                
+                guard let img = filter.imageFromCurrentFramebuffer() else {
+                    DispatchQueue.main.async(execute: {
+                        JLHUD.hideWatting()
+                        callback(nil, .photo)
+                    })
+                    return
+                }
+                picture?.removeAllTargets()
+                cImg = img
+            }else {
+                cImg = self.image
+            }
             
-            picture?.addTarget(filter)
-            picture?.processImage()
+            let resultImg = cImg!.imageMontage(img: container)
+            let imgData = UIImageJPEGRepresentation(resultImg, 1)
             
-            filter.useNextFrameForImageCapture()
-            
-            guard let img = filter.imageFromCurrentFramebuffer() else {
-                JLHUD.hideWatting()
-                callback(nil, .photo)
+            guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
+                DispatchQueue.main.async(execute: {
+                    JLHUD.hideWatting()
+                    callback(nil, .photo)
+                })
                 return
             }
-            picture?.removeAllTargets()
-            cImg = img
-        }else {
-            cImg = self.image
-        }
-        
-        let resultImg = cImg!.imageMontage(img: container)
-        let imgData = UIImageJPEGRepresentation(resultImg, 1)
-        
-        guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
-            callback(nil, .photo)
-            return
-        }
-        
-        do {
-            try imgData?.write(to: exportUrl)
-            JLHUD.hideWatting()
-            callback(exportUrl, .photo)
-        } catch {
-            callback(nil, .photo)
+            
+            DispatchQueue.main.async(execute: {
+                JLHUD.hideWatting()
+                do {
+                    try imgData?.write(to: exportUrl)
+                    callback(exportUrl, .photo)
+                } catch {
+                    callback(nil, .photo)
+                }
+            })
         }
     }
     

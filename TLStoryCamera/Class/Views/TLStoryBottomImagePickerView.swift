@@ -130,7 +130,9 @@ extension TLStoryBottomImagePickerView: UICollectionViewDelegate, UICollectionVi
         print(asset.mediaType)
         if asset.mediaType == .video {
             PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (ass, mix, map) in
-                let url = (ass as! AVURLAsset).url
+                guard let url = (ass as? AVURLAsset)?.url else {
+                    return
+                }
                 DispatchQueue.main.async {
                     self.delegate?.photoLibraryPickerDidSelectVideo(url: url)
                 }
