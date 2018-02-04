@@ -151,6 +151,7 @@ extension TLStoryBottomImagePickerView: UICollectionViewDelegate, UICollectionVi
             
             let option = PHImageRequestOptions.init();
             option.isSynchronous = true
+            option.isNetworkAccessAllowed = true
             
             PHImageManager.default().requestImage(for: asset, targetSize: newSize, contentMode: .aspectFill, options: option, resultHandler: { (image, info) in
                 guard let img = image else {
