@@ -33,8 +33,8 @@ TLStoryCamera
 * MBProgressHUD
 
 # Usage
-* 克隆项目后，需要使用Cocoapods Install
-* Using CocoaPods to install after cloning the project 
+* 请使用真机运行Demo
+* Please use iOS device run this demo
 
 ```
 let storyVc = TLStoryViewController()
