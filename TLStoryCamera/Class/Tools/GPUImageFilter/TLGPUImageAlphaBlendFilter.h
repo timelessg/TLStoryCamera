@@ -6,7 +6,7 @@
 //  Copyright © 2017年 com.garry. All rights reserved.
 //
 
-#import <GPUImage/GPUImage.h>
+#import <GPUImage/GPUImageFramework.h>
 
 @interface TLGPUImageAlphaBlendFilter : GPUImageTwoInputFilter
 {
