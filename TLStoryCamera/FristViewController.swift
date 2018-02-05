@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TLStoryCameraFramework
 
 class FirstViewController: UIViewController {
     let screenWidth = UIScreen.main.bounds.width
