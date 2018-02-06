@@ -50,9 +50,9 @@ class TLStoryOverlayImagePicker: UIView {
     
     public func display() {
         self.isHidden = false
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             self.imagePicker!.y = self.height - 380
-        }
+        }, completion: nil);
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -117,6 +117,7 @@ class TLStoryImagePickerView: UIView {
         layout.itemSize = CGSize.init(width: self.width / 3 - 20, height: self.width / 3)
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
+        
         collectionView = UICollectionView.init(frame: self.bounds, collectionViewLayout: layout)
         collectionView!.backgroundColor = UIColor.clear
         collectionView!.delegate = self
@@ -139,17 +140,21 @@ class TLStoryImagePickerView: UIView {
         pincheGesture = UIPanGestureRecognizer.init(target: self, action: #selector(pincheAction))
         handleBgView.addGestureRecognizer(pincheGesture!)
         
-        let maskPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft,.topRight], cornerRadii: CGSize.init(width: 5, height: 5))
-        
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = maskPath.cgPath
-        maskLayer.fillRule = kCAFillRuleEvenOdd
-
-        let maskView = UIView(frame: self.bounds)
-        maskView.backgroundColor = UIColor.black
-        maskView.layer.mask = maskLayer
-        
-        blurBgView?.mask = maskView
+        if #available(iOS 11.0, *) {
+            blurBgView?.layer.cornerRadius = 10
+            blurBgView?.layer.masksToBounds = true
+        }else {
+            let maskPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft,.topRight], cornerRadii: CGSize.init(width: 10, height: 10))
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = maskPath.cgPath
+            maskLayer.fillRule = kCAFillRuleEvenOdd
+            
+            let maskView = UIView(frame: self.bounds)
+            maskView.backgroundColor = UIColor.black
+            maskView.layer.mask = maskLayer
+            
+            blurBgView?.mask = maskView
+        }
     }
     
     @objc fileprivate func pincheAction(sender:UIPanGestureRecognizer) -> Void {
@@ -160,24 +165,29 @@ class TLStoryImagePickerView: UIView {
             offsetY = self.convert(beginPoint, from: self.superview).y
         }
         if sender.state == .ended || sender.state == .cancelled {
-            if point.y - beginPoint.y > 10 {
+            if point.y - beginPoint.y > 30 {
                 dismiss()
                 return
+            }else {
+                self.reset(y: self.height - 380)
             }
             
-            if point.y - beginPoint.y < -10 {
-                UIView.animate(withDuration: 0.1, animations: {
+            if point.y - beginPoint.y < -30 {
+                UIView.animate(withDuration: 0.15, animations: {
                     self.y = 0
                 }, completion: { (x) in
                     self.collectionView?.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 0, right: 10)
                     self.collectionView?.removeGestureRecognizer(self.pincheGesture!)
                 })
                 return
+            }else {
+                self.reset(y: self.height - 380)
+                return
             }
         }
         
         if sender.state == .changed {
-            if self.y <= 0 {
+            if self.y < 0 {
                 return
             }
             self.y = point.y - offsetY
@@ -197,6 +207,12 @@ class TLStoryImagePickerView: UIView {
                 c(nil)
             }
         })
+    }
+    
+    public func reset(y:CGFloat) {
+        UIView.animate(withDuration: 0.25) {
+          self.y = y
+        };
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -64,7 +64,7 @@ class TLStoryVideoPlayerView: UIView {
         }
         gpuMovie = TLGPUImageMovie.init(url: url)
         gpuMovie!.shouldRepeat = true
-        gpuMovie?.playAtActualSpeed = true
+        gpuMovie!.playAtActualSpeed = true
         gpuMovie!.startProcessingCallback = { [weak self] in
             if let strongSelf = self {
                 strongSelf.theAudioPlayer!.seek(to: kCMTimeZero)
@@ -77,14 +77,14 @@ class TLStoryVideoPlayerView: UIView {
     }
     
     public func config(filter:GPUImageCustomLookupFilter?) {
-        gpuMovie!.removeAllTargets()
+        gpuMovie?.removeAllTargets()
         
         self.filter = filter
         if let f = filter {
             gpuMovie?.addTarget(f)
             f.addTarget(gpuView!)
         }else {
-            gpuMovie!.addTarget(gpuView)
+            gpuMovie?.addTarget(gpuView)
         }
     }
     
