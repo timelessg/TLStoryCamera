@@ -151,7 +151,9 @@ class TLStoryDoodleView: UIView {
         if #available(iOS 10.0, *) {
             let renderer = UIGraphicsImageRenderer(size: drawBox.size)
             renderer.image { (context) in
-                return self.layer.render(in: context.cgContext)
+                UIGraphicsBeginImageContext(size)
+                self.layer.render(in: context.cgContext)
+                UIGraphicsEndImageContext()
             }
         } else {
             UIGraphicsBeginImageContext(size)

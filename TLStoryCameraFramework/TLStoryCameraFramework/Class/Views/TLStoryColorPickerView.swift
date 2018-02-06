@@ -72,7 +72,7 @@ class TLStoryColorPickerView: UIView {
         sliderBtn.addTarget(self, action: #selector(sliderAction), for: .touchUpInside)
         self.addSubview(sliderBtn)
         sliderBtn.bounds = CGRect.init(x: 0, y: 0, width: 28, height: 28)
-        sliderBtn.center = CGPoint.init(x: 20, y: 30)
+        sliderBtn.center = CGPoint.init(x: 20, y: self.height / 2)
         
         let collectionViewX = sliderBtn.x + sliderBtn.width + 6
         
@@ -81,7 +81,8 @@ class TLStoryColorPickerView: UIView {
         layout.minimumLineSpacing = 0.01
         layout.scrollDirection = .horizontal
         
-        collectionView = UICollectionView.init(frame: CGRect.init(x: collectionViewX, y: 18, width: self.width - collectionViewX, height: 24), collectionViewLayout: layout)
+        collectionView = UICollectionView.init(frame: CGRect.init(x: collectionViewX, y: 0, width: self.width - collectionViewX, height: 30), collectionViewLayout: layout)
+        collectionView!.centerY = self.height / 2;
         collectionView!.backgroundColor = UIColor.clear
         collectionView!.delegate = self
         collectionView!.dataSource = self;
