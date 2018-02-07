@@ -37,7 +37,7 @@ class FirstViewController: UIViewController {
         scrollView.scrollsToTop = false
         scrollView.delegate = self
         
-        storyVc.view.frame = CGRect.init(x: 0, y: -44, width: screenWidth, height: screenHeight)
+        storyVc.view.frame = CGRect.init(x: 0, y: self.isX() ? -88 : -44, width: screenWidth, height: screenHeight)
         storyVc.delegate = self
         scrollView.addSubview(storyVc.view)
         self.addChildViewController(storyVc)
@@ -65,6 +65,12 @@ class FirstViewController: UIViewController {
                 self.navigationController?.navigationBar.transform = CGAffineTransform.identity
             }            
         }
+    }
+    public func isX() -> Bool {
+        if UIScreen.main.bounds.height == 812 {
+            return true
+        }
+        return false
     }
 }
 

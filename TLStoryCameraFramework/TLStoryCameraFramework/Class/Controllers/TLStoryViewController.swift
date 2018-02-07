@@ -47,53 +47,53 @@ public class TLStoryViewController: UIViewController {
     fileprivate var swipeDown:UISwipeGestureRecognizer?
         
     fileprivate var output = TLStoryOutput.init()
-    
+        
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.black
         self.view.isUserInteractionEnabled = true
         
-        bottomImagePicker = TLStoryBottomImagePickerView.init(frame: CGRect.init(x: 0, y: self.view.height - 165, width: self.view.width, height: 165))
+        bottomImagePicker = TLStoryBottomImagePickerView.init(frame: CGRect.init(x: 0, y: self.view.safeRect.height - 165, width: self.view.safeRect.width, height: 165))
         bottomImagePicker?.delegate = self
         self.view.addSubview(bottomImagePicker!)
         
         view.addSubview(containerView)
-        containerView.frame = self.view.bounds
+        containerView.frame = self.view.safeRect
         
-        captureView = TLStoryCapturePreviewView.init(frame: self.view.bounds)
+        captureView = TLStoryCapturePreviewView.init(frame: self.containerView.bounds)
         containerView.addSubview(captureView!)
         
-        outputView = TLStoryOverlayOutputView.init(frame: self.view.bounds)
+        outputView = TLStoryOverlayOutputView.init(frame: self.containerView.bounds)
         outputView!.isHidden = true
         containerView.addSubview(outputView!)
         
-        editContainerView = TLStoryEditContainerView.init(frame: self.view.bounds)
+        editContainerView = TLStoryEditContainerView.init(frame: self.containerView.bounds)
         editContainerView!.delegate = self
         outputView!.addSubview(editContainerView!)
         
-        controlView = TLStoryOverlayControlView.init(frame: self.view.bounds)
+        controlView = TLStoryOverlayControlView.init(frame: self.containerView.bounds)
         controlView!.delegate = self
         controlView!.isHidden = true
         containerView.addSubview(controlView!)
         
-        editView = TLStoryOverlayEditView.init(frame: self.view.bounds)
+        editView = TLStoryOverlayEditView.init(frame: self.containerView.bounds)
         editView!.delegate = self
         editView!.isHidden = true
         containerView.addSubview(editView!)
         
-        textStickerView = TLStoryOverlayTextStickerView.init(frame: self.view.bounds)
+        textStickerView = TLStoryOverlayTextStickerView.init(frame: self.containerView.bounds)
         textStickerView!.delegate = self
         textStickerView!.isHidden = true
         containerView.addSubview(textStickerView!)
         
-        imageStickerView = TLStoryOverlayImagePicker.init(frame: self.view.bounds)
+        imageStickerView = TLStoryOverlayImagePicker.init(frame: self.containerView.bounds)
         imageStickerView?.delegate = self
         imageStickerView!.isHidden = true
         containerView.addSubview(imageStickerView!)
         
         containerView.addSubview(blurCoverView)
         blurCoverView.isUserInteractionEnabled = true
-        blurCoverView.frame = self.view.bounds
+        blurCoverView.frame = containerView.bounds
         
         swipeUp = UISwipeGestureRecognizer.init(target: self, action: #selector(swipeAction))
         swipeUp!.direction = .up
@@ -121,7 +121,7 @@ public class TLStoryViewController: UIViewController {
     }
     
     @objc fileprivate func swipeAction(sender:UISwipeGestureRecognizer) {
-        if sender.direction == .up && self.containerView.y == 0 {
+        if sender.direction == .up && self.containerView.y == self.view.safeRect.origin.y {
             self.bottomImagePicker(hidden: false)
             return
         }
@@ -138,7 +138,7 @@ public class TLStoryViewController: UIViewController {
             blurCoverView.alpha = 0
             UIView.animate(withDuration: 0.25, animations: {
                 self.blurCoverView.alpha = 1
-                self.containerView.y -= 165
+                self.containerView.y -= 165 + self.view.safeRect.origin.y
             }) { (x) in
                 self.swipeDown = UISwipeGestureRecognizer.init(target: self, action: #selector(self.swipeAction))
                 if let swipeDown = self.swipeDown {
@@ -151,7 +151,7 @@ public class TLStoryViewController: UIViewController {
             blurCoverView.alpha = 1
             UIView.animate(withDuration: 0.25, animations: {
                 self.blurCoverView.alpha = 0
-                self.containerView.y = 0
+                self.containerView.y = self.view.safeRect.origin.y
             }, completion: { (x) in
                 self.blurCoverView.isHidden = true
                 self.blurCoverView.alpha = 1
@@ -186,6 +186,10 @@ public class TLStoryViewController: UIViewController {
     }
     
     fileprivate func cameraStart() {
+        if UIDevice.isSimulator {
+            return
+        }
+        
         captureView!.initCamera()
         captureView!.configVideoRecording()
         captureView!.startCapture()

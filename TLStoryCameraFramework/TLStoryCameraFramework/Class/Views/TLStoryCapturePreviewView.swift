@@ -179,6 +179,10 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func flashStatusChange() -> AVCaptureDevice.TorchMode {
+        if UIDevice.isSimulator {
+            return AVCaptureDevice.TorchMode.auto
+        }
+
         if !videoCamera!.inputCamera.hasFlash || !videoCamera!.inputCamera.hasTorch {
             return .auto
         }
@@ -196,6 +200,10 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func focus(point:CGPoint) {
+        if UIDevice.isSimulator {
+            return
+        }
+        
         if !videoCamera!.inputCamera.isFocusModeSupported(.autoFocus) || !videoCamera!.inputCamera.isFocusPointOfInterestSupported {
             return
         }

@@ -202,6 +202,7 @@ class TLStoryImagePickerView: UIView {
             self.y = UIScreen.main.bounds.height
         }, completion: { (x) in
             self.collectionView?.contentInset = UIEdgeInsets.init(top: 20, left: 10, bottom: self.height - 380, right: 10)
+            self.collectionView?.setContentOffset(CGPoint.zero, animated: false)
             self.collectionView?.removeGestureRecognizer(self.pincheGesture!)
             if let c = self.callback {
                 c(nil)

@@ -48,6 +48,7 @@
 		4B58E8F6202824FC00C29299 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B58E8F4202824FC00C29299 /* GPUImage.framework */; };
 		4B58E8F72028254800C29299 /* TLStoryConfiguration.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8AF202824B700C29299 /* TLStoryConfiguration.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B58E8F82028254E00C29299 /* TLStoryViewController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8B8202824B700C29299 /* TLStoryViewController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		4B828445202AAB820073749B /* UIDevice+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B828444202AAB820073749B /* UIDevice+TLStory.swift */; };
 		4B89DDAC202838B40035573C /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B58E8F4202824FC00C29299 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B89DDAD202838B40035573C /* MBProgressHUD.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -108,6 +109,7 @@
 		4B58E8CB202824B700C29299 /* TLStoryOverlayEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayEditView.swift; sourceTree = "<group>"; };
 		4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MBProgressHUD.framework; sourceTree = "<group>"; };
 		4B58E8F4202824FC00C29299 /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GPUImage.framework; sourceTree = "<group>"; };
+		4B828444202AAB820073749B /* UIDevice+TLStory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+TLStory.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				4B58E89D202824B700C29299 /* UIColor+TLStory.swift */,
 				4B58E89E202824B700C29299 /* UIImage+TLStory.swift */,
 				4B58E89F202824B700C29299 /* UIView+TLStory.swift */,
+				4B828444202AAB820073749B /* UIDevice+TLStory.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				4B58E8E7202824B700C29299 /* TLStoryOverlayControlView.swift in Sources */,
 				4B58E8F0202824B700C29299 /* TLStoryCapturePreviewView.swift in Sources */,
 				4B58E8EA202824B700C29299 /* TLButton.swift in Sources */,
+				4B828445202AAB820073749B /* UIDevice+TLStory.swift in Sources */,
 				4B58E8E2202824B700C29299 /* TLStoryCameraButton.swift in Sources */,
 				4B58E8E6202824B700C29299 /* TLStoryImageSticker.swift in Sources */,
 				4B58E8D9202824B700C29299 /* TLStoryConfiguration.swift in Sources */,

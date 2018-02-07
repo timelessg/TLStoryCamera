@@ -116,6 +116,18 @@ extension UIView {
 }
 
 extension UIView {
+    public var safeRect:CGRect {
+        get {
+            var inset = UIEdgeInsets.zero
+            var rect = self.bounds
+            if #available(iOS 11.0, *) {
+                inset = UIApplication.shared.delegate?.window??.safeAreaInsets ?? UIEdgeInsets.zero
+                rect = CGRect.init(x: 0, y: inset.top, width: self.width, height: self.height - inset.top - inset.bottom)
+            }
+            return rect
+        }
+    }
+
     public var currentController:UIViewController? {
         get {
             var responder = self.next;
