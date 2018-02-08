@@ -44,14 +44,29 @@
 		4B58E8F0202824B700C29299 /* TLStoryCapturePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B58E8C9202824B700C29299 /* TLStoryCapturePreviewView.swift */; };
 		4B58E8F1202824B700C29299 /* TLStoryBottomImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B58E8CA202824B700C29299 /* TLStoryBottomImagePickerView.swift */; };
 		4B58E8F2202824B700C29299 /* TLStoryOverlayEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B58E8CB202824B700C29299 /* TLStoryOverlayEditView.swift */; };
-		4B58E8F5202824FC00C29299 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */; };
-		4B58E8F6202824FC00C29299 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B58E8F4202824FC00C29299 /* GPUImage.framework */; };
 		4B58E8F72028254800C29299 /* TLStoryConfiguration.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8AF202824B700C29299 /* TLStoryConfiguration.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B58E8F82028254E00C29299 /* TLStoryViewController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8B8202824B700C29299 /* TLStoryViewController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B828445202AAB820073749B /* UIDevice+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B828444202AAB820073749B /* UIDevice+TLStory.swift */; };
-		4B89DDAC202838B40035573C /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B58E8F4202824FC00C29299 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4B89DDAD202838B40035573C /* MBProgressHUD.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B9CF3AC202C2F5E00ABAD66 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CF3AA202C2F4F00ABAD66 /* GPUImage.framework */; };
+		4B9CF3BB202C31B200ABAD66 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CF3B8202C318300ABAD66 /* MBProgressHUD.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4B9CF3A9202C2F4F00ABAD66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B9CF3A1202C2F4E00ABAD66 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCE209E51943F20C002FEED8;
+			remoteInfo = GPUImageFramework;
+		};
+		4B9CF3B7202C318300ABAD66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B9CF3AF202C318300ABAD66 /* MBProgressHUD.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1D104D7A1ACA36CC00973364;
+			remoteInfo = "MBProgressHUD Framework";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4B89DDAB202838A80035573C /* CopyFiles */ = {
@@ -60,8 +75,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4B89DDAC202838B40035573C /* GPUImage.framework in CopyFiles */,
-				4B89DDAD202838B40035573C /* MBProgressHUD.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,9 +120,9 @@
 		4B58E8C9202824B700C29299 /* TLStoryCapturePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryCapturePreviewView.swift; sourceTree = "<group>"; };
 		4B58E8CA202824B700C29299 /* TLStoryBottomImagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryBottomImagePickerView.swift; sourceTree = "<group>"; };
 		4B58E8CB202824B700C29299 /* TLStoryOverlayEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayEditView.swift; sourceTree = "<group>"; };
-		4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MBProgressHUD.framework; sourceTree = "<group>"; };
-		4B58E8F4202824FC00C29299 /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GPUImage.framework; sourceTree = "<group>"; };
 		4B828444202AAB820073749B /* UIDevice+TLStory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+TLStory.swift"; sourceTree = "<group>"; };
+		4B9CF3A1202C2F4E00ABAD66 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = TLStoryCameraFramework/GPUImageFramework/GPUImage.xcodeproj; sourceTree = "<group>"; };
+		4B9CF3AF202C318300ABAD66 /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = TLStoryCameraFramework/MBProgressHUDFramework/MBProgressHUD.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B58E8F5202824FC00C29299 /* MBProgressHUD.framework in Frameworks */,
-				4B58E8F6202824FC00C29299 /* GPUImage.framework in Frameworks */,
+				4B9CF3BB202C31B200ABAD66 /* MBProgressHUD.framework in Frameworks */,
+				4B9CF3AC202C2F5E00ABAD66 /* GPUImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,8 +141,11 @@
 		4B58E8852028249A00C29299 = {
 			isa = PBXGroup;
 			children = (
+				4B9CF3AF202C318300ABAD66 /* MBProgressHUD.xcodeproj */,
+				4B9CF3A1202C2F4E00ABAD66 /* GPUImage.xcodeproj */,
 				4B58E8912028249A00C29299 /* TLStoryCameraFramework */,
 				4B58E8902028249A00C29299 /* Products */,
+				4B9CF3AB202C2F5E00ABAD66 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,8 +160,6 @@
 		4B58E8912028249A00C29299 /* TLStoryCameraFramework */ = {
 			isa = PBXGroup;
 			children = (
-				4B58E8F4202824FC00C29299 /* GPUImage.framework */,
-				4B58E8F3202824FC00C29299 /* MBProgressHUD.framework */,
 				4B58E89A202824B700C29299 /* Class */,
 				4B58E8922028249A00C29299 /* TLStoryCameraFramework.h */,
 				4B58E8932028249A00C29299 /* Info.plist */,
@@ -269,6 +283,29 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4B9CF3A2202C2F4E00ABAD66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B9CF3AA202C2F4F00ABAD66 /* GPUImage.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4B9CF3AB202C2F5E00ABAD66 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4B9CF3B0202C318300ABAD66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B9CF3B8202C318300ABAD66 /* MBProgressHUD.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -333,12 +370,39 @@
 			mainGroup = 4B58E8852028249A00C29299;
 			productRefGroup = 4B58E8902028249A00C29299 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4B9CF3A2202C2F4E00ABAD66 /* Products */;
+					ProjectRef = 4B9CF3A1202C2F4E00ABAD66 /* GPUImage.xcodeproj */;
+				},
+				{
+					ProductGroup = 4B9CF3B0202C318300ABAD66 /* Products */;
+					ProjectRef = 4B9CF3AF202C318300ABAD66 /* MBProgressHUD.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4B58E88E2028249A00C29299 /* TLStoryCameraFramework */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4B9CF3AA202C2F4F00ABAD66 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 4B9CF3A9202C2F4F00ABAD66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4B9CF3B8202C318300ABAD66 /* MBProgressHUD.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MBProgressHUD.framework;
+			remoteRef = 4B9CF3B7202C318300ABAD66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4B58E88D2028249A00C29299 /* Resources */ = {
@@ -519,6 +583,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TLStoryCameraFramework/",
+					"$(PROJECT_DIR)/TLStoryCameraFramework",
 				);
 				INFOPLIST_FILE = TLStoryCameraFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -545,6 +610,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TLStoryCameraFramework/",
+					"$(PROJECT_DIR)/TLStoryCameraFramework",
 				);
 				INFOPLIST_FILE = TLStoryCameraFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

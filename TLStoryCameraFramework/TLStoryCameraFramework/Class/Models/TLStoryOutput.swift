@@ -141,15 +141,22 @@ class TLStoryOutput: NSObject {
             callback(nil, .video)
             return
         }
-        let size = self.getVideoSize(asset: asset)
         
-        var img:UIImage? = nil
+        movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: CGSize.init(width: 1024, height: 720))
         
-        movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: size)
-        if let t = self.getVideoRotation(asset: asset) {
-            movieWriter?.transform = t
-            img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
+        let tracks = asset.tracks(withMediaType: AVMediaType.video)
+        
+        let t = tracks.first!.preferredTransform
+        
+        if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
+            movieWriter?.setInputRotation(GPUImageRotationMode.rotateRight, at: 0)
+        }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
+            movieWriter?.setInputRotation(GPUImageRotationMode.rotateLeft, at: 0)
+        }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
+            movieWriter?.setInputRotation(GPUImageRotationMode.flipVertical, at: 0)
         }
+        
+        let img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
         
         if audioEnable {
             movieWriter?.shouldPassthroughAudio = audioEnable
@@ -158,7 +165,7 @@ class TLStoryOutput: NSObject {
         
         movieFile?.enableSynchronizedEncoding(using: movieWriter)
         
-        let imgview = UIImageView.init(image: img!)
+        let imgview = UIImageView.init(image: img)
         
         let uielement = GPUImageUIElement.init(view: imgview)
         
@@ -198,15 +205,6 @@ class TLStoryOutput: NSObject {
         }
     }
     
-    fileprivate func getVideoSize(asset:AVAsset) -> CGSize {
-        for track in asset.tracks {
-            if track.mediaType == AVMediaType.video {
-                return track.naturalSize
-            }
-        }
-        return TLStoryConfiguration.outputVideoSize
-    }
-    
     public static func outputFilePath(type:TLStoryType, isTemp:Bool) -> URL? {
         do {
             try? FileManager.default.createDirectory(atPath: type == .video ? TLStoryConfiguration.videoPath! : TLStoryConfiguration.photoPath!, withIntermediateDirectories: true, attributes: nil)
@@ -223,15 +221,6 @@ class TLStoryOutput: NSObject {
                 let url = URL.init(fileURLWithPath: "\(TLStoryConfiguration.photoPath!)/\(fileName)")
                 try? FileManager.default.removeItem(at: url)
                 return url
-            }
-        }
-        return nil
-    }
-    
-    fileprivate func getVideoRotation(asset:AVAsset) -> CGAffineTransform? {
-        for track in asset.tracks {
-            if track.mediaType == AVMediaType.video {
-                return track.preferredTransform
             }
         }
         return nil

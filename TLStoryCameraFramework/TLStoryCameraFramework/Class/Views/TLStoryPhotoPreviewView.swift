@@ -24,7 +24,7 @@ class TLStoryPhotoPreviewView: UIView {
         super.init(frame: frame)
         
         gpuView = GPUImageView.init(frame: self.bounds)
-        gpuView?.fillMode = .preserveAspectRatioAndFill
+        gpuView?.fillMode = .preserveAspectRatio
         self.addSubview(gpuView!)
         
         gpuPicture = GPUImagePicture.init(image: image)
