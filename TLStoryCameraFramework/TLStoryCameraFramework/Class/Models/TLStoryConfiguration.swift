@@ -53,7 +53,7 @@ class TLStoryConfiguration: NSObject {
     public static let outputVideoSize:CGSize = CGSize.init(width: 720, height: 1280)
     
     //输出的图片尺寸
-    public static let outputPhotoSize:CGSize = CGSize.init(width: 720, height: 1280)
+    public static let outputPhotoSize:CGSize = CGSize.init(width: 1080, height: 1920)
     
     //视频路径
     public static let videoPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first?.appending("/storyvideo")

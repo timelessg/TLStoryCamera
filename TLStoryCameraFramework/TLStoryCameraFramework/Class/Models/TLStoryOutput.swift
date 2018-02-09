@@ -105,7 +105,7 @@ class TLStoryOutput: NSObject {
                 cImg = self.image
             }
             
-            let resultImg = cImg!.imageMontage(img: container)
+            let resultImg = cImg!.imageMontage(img: container,bgColor: UIColor.black)
             let imgData = UIImageJPEGRepresentation(resultImg, 1)
             
             guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
@@ -142,7 +142,7 @@ class TLStoryOutput: NSObject {
             return
         }
         
-        movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: CGSize.init(width: 1024, height: 720))
+        movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: TLStoryConfiguration.outputVideoSize)
         
         let tracks = asset.tracks(withMediaType: AVMediaType.video)
         
