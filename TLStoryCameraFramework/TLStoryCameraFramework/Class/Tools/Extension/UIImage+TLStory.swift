@@ -38,21 +38,21 @@ extension UIImage {
 
         return UIImage.init(contentsOfFile: path!)
     }
-    
-    public func imageMontage(img:UIImage, bgColor:UIColor?) -> UIImage {
-        let outputSize = TLStoryConfiguration.outputPhotoSize
+}
+
+extension UIImage {
+    public func imageMontage(img:UIImage, bgColor:UIColor?, size:CGSize) -> UIImage {
+        let newImg = self.scale(x: size.width / self.size.width)
         
-        let newImg = self.scale(x: outputSize.width / self.size.width)
-        
-        UIGraphicsBeginImageContextWithOptions(outputSize, false, UIScreen.main.scale)
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         
         if let c = bgColor {
             c.set()
-            UIRectFill(CGRect.init(x: 0, y: 0, width: outputSize.width, height: outputSize.height))
+            UIRectFill(CGRect.init(x: 0, y: 0, width: size.width, height: size.height))
         }
         
-        newImg.draw(in: CGRect.init(x: (outputSize.width - newImg.size.width) / 2, y: (outputSize.height - newImg.size.height) / 2, width: newImg.size.width, height: newImg.size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
-        img.draw(in: CGRect.init(x: 0, y: 0, width: outputSize.width, height: outputSize.height), blendMode: CGBlendMode.normal, alpha: 1.0)
+        newImg.draw(in: CGRect.init(x: (size.width - newImg.size.width) / 2, y: (size.height - newImg.size.height) / 2, width: newImg.size.width, height: newImg.size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
+        img.draw(in: CGRect.init(x: 0, y: 0, width: size.width, height: size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
         
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

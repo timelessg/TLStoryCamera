@@ -105,7 +105,7 @@ class TLStoryOutput: NSObject {
                 cImg = self.image
             }
             
-            let resultImg = cImg!.imageMontage(img: container,bgColor: UIColor.black)
+            let resultImg = cImg!.imageMontage(img: container,bgColor: UIColor.black,size: TLStoryConfiguration.outputPhotoSize)
             let imgData = UIImageJPEGRepresentation(resultImg, 1)
             
             guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
@@ -135,7 +135,7 @@ class TLStoryOutput: NSObject {
         
         let asset = AVAsset.init(url: url)
         movieFile = GPUImageMovie.init(asset: asset)
-        movieFile?.runBenchmark = true
+        movieFile?.runBenchmark = false
         
         guard let exportUrl = TLStoryOutput.outputFilePath(type: .video, isTemp: false) else {
             callback(nil, .video)
@@ -195,13 +195,20 @@ class TLStoryOutput: NSObject {
             
             landBlendFilter.removeAllTargets()
             progressFilter.removeAllTargets()
+            uielement?.removeAllTargets()
             strongSelf.movieFile?.removeAllTargets()
             strongSelf.movieWriter?.finishRecording()
+            strongSelf.movieFile?.audioEncodingTarget = nil
             
             DispatchQueue.main.async {
                 JLHUD.hideWatting()
                 callback(exportUrl, .video)
             }
+        }
+        
+        self.movieWriter?.failureBlock = { x in
+            JLHUD.hideWatting()
+            JLHUD.show(text: "Failure", delay: 0.2)
         }
     }
     
@@ -227,6 +234,7 @@ class TLStoryOutput: NSObject {
     }
     
     public func reset() {
+        movieFile?.audioEncodingTarget = nil
         movieFile = nil
         movieWriter = nil
         image = nil

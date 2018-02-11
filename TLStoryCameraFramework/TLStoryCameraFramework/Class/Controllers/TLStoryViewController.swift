@@ -191,7 +191,6 @@ public class TLStoryViewController: UIViewController {
         }
         
         captureView!.initCamera()
-        captureView!.configVideoRecording()
         captureView!.startCapture()
     }
     
@@ -297,7 +296,7 @@ extension TLStoryViewController: TLStoryOverlayEditViewDelegate {
             }
             
             self.editView?.dismiss()
-            
+                        
             self.output.saveToAlbum(filterNamed: self.outputView!.currentFilterNamed, container: container, callback: { [weak self] (x) in
                 self?.editView?.dispaly()
             })

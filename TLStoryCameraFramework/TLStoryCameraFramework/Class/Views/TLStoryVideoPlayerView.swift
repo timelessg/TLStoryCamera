@@ -27,8 +27,15 @@ class TLStoryVideoPlayerView: UIView {
     fileprivate var filter:GPUImageCustomLookupFilter? = nil
     
     deinit {
-        didEnterBackground()
         NotificationCenter.default.removeObserver(self)
+        didEnterBackground()
+        filter?.removeAllTargets()
+        gpuView?.removeFromSuperview()
+        filter = nil
+        theAudioPlayer = nil
+        gpuView = nil
+        asset = nil
+        url = nil
     }
     
     init(frame: CGRect, url:URL) {

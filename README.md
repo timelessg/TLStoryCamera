@@ -65,6 +65,9 @@ extension ViewController:TLStoryViewDelegate {
 * **Recorded movies start with a short duration of black video**
 * [GPUImage·issues·#52](https://github.com/BradLarson/GPUImage/issues/52)
 
+* **CVOpenGLESTextureCacheRef leak when I'm using GPUImageMovieWriter**
+* [GPUImage·issues·##2500](https://github.com/BradLarson/GPUImage/issues/2500)
+
 
 # Warning！
 * 项目部分图片素材来自WeiBo，请替换后使用！

@@ -11,10 +11,8 @@ import GPUImage
 
 class TLStoryCapturePreviewView: GPUImageView {    
     fileprivate var videoCamera:GPUImageStillCamera?
-    
-    fileprivate var filterView:GPUImageView?
-    
-    fileprivate var beautifyFilter = TLStoryConfiguration.openBeauty ? GPUImageBeautifyFilter.init() : GPUImageFilter.init()
+        
+    fileprivate var beautifyFilter:GPUImageOutput? = TLStoryConfiguration.openBeauty ? GPUImageBeautifyFilter.init() : GPUImageFilter.init()
     
     fileprivate var movieWriter:GPUImageMovieWriter?
     
@@ -99,16 +97,15 @@ class TLStoryCapturePreviewView: GPUImageView {
         videoCamera = GPUImageStillCamera.init(sessionPreset: TLStoryConfiguration.captureSessionPreset, cameraPosition: .back)
         videoCamera!.outputImageOrientation = .portrait
         videoCamera!.horizontallyMirrorFrontFacingCamera = true
-        videoCamera!.removeAllTargets()
         videoCamera!.addTarget(beautifyFilter as! GPUImageInput)
-        beautifyFilter.addTarget(self)
+        beautifyFilter?.addTarget(self)
     }
     
     public func configVideoRecording() {
         currentVideoPath = TLStoryOutput.outputFilePath(type: .video, isTemp: true)
         let size = CGSize.init(width: TLStoryConfiguration.videoSetting["AVVideoWidthKey"] as! Int, height: TLStoryConfiguration.videoSetting["AVVideoHeightKey"] as! Int)
         self.movieWriter = GPUImageMovieWriter.init(movieURL: self.currentVideoPath, size: size, fileType: TLStoryConfiguration.videoFileType, outputSettings: TLStoryConfiguration.videoSetting)
-        self.beautifyFilter.addTarget(self.movieWriter!)
+        self.beautifyFilter?.addTarget(self.movieWriter!)
         self.movieWriter?.encodingLiveVideo = true
     }
     
@@ -123,7 +120,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     }
     
     public func pauseCamera() {
-        self.videoCamera?.pauseCapture()
+        videoCamera?.pauseCapture()
     }
     
     public func resumeCamera() {
@@ -151,8 +148,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     public func finishRecording(complete:@escaping ((URL?) -> Void)) {
         movieWriter?.finishRecording(completionHandler: { [weak self] in
             DispatchQueue.main.async {
-                self?.beautifyFilter.removeTarget(self?.movieWriter!)
-                self?.movieWriter = nil
+                self?.destroy()
                 
                 guard let strongSelf = self else {
                     return
@@ -171,8 +167,7 @@ class TLStoryCapturePreviewView: GPUImageView {
     public func capturePhoto(complete:@escaping ((UIImage?) -> Void)){
         videoCamera?.capturePhotoAsImageProcessedUp(toFilter: beautifyFilter as! GPUImageOutput & GPUImageInput, with: .up, withCompletionHandler: { [weak self] (image, error) in
             DispatchQueue.main.async {
-                self?.beautifyFilter.removeTarget(self?.movieWriter!)
-                self?.movieWriter = nil
+                self?.destroy()
                 complete(image)
             }
         })
@@ -229,7 +224,15 @@ class TLStoryCapturePreviewView: GPUImageView {
         animEnd = false
         focusRing.layer.add(focusAnim, forKey: nil)
     }
-        
+    
+    fileprivate func destroy() {
+        beautifyFilter?.removeTarget(self.movieWriter!)
+        movieWriter = nil
+        videoCamera?.audioEncodingTarget = nil
+        GPUImageContext.sharedImageProcessing().framebufferCache.purgeAllUnassignedFramebuffers()
+        GPUImageContext.sharedFramebufferCache().purgeAllUnassignedFramebuffers()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

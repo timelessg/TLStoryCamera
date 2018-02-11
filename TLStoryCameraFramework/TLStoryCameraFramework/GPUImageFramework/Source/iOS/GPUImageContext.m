@@ -25,6 +25,8 @@ extern dispatch_queue_attr_t GPUImageDefaultQueueAttribute(void);
 
 static void *openGLESContextQueueKey;
 
+- (void)dealloc { CFRelease(_coreVideoTextureCache); }
+
 - (id)init;
 {
     if (!(self = [super init]))

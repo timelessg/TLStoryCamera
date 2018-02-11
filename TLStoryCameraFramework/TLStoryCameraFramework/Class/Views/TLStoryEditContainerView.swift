@@ -159,7 +159,7 @@ class TLStoryEditContainerView: UIView {
     public func getScreenshot() -> UIImage {
         let doodleImg = self.doodleView!.screenshot()
         let stickersImg = self.stickersView!.screenshot()
-        return doodleImg.imageMontage(img: stickersImg,bgColor: nil)
+        return doodleImg.imageMontage(img: stickersImg,bgColor: nil, size: UIScreen.main.bounds.size)
     }
     
     public func benginDrawing() {
