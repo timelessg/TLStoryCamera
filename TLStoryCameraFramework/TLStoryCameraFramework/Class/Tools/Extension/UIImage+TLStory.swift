@@ -59,6 +59,32 @@ extension UIImage {
         return result!
     }
     
+    public func addWatermark(img:UIImage?, p:UIEdgeInsets) -> UIImage {
+        guard let watermark = img else {
+            return self
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+        
+        self.draw(in: CGRect.init(x: 0, y: 0, width: self.size.width, height: self.size.height))
+        
+        if p.bottom != 0, p.left != 0 {
+            watermark.draw(in: CGRect.init(x: p.left, y: self.size.height - p.bottom - watermark.size.height, width: watermark.size.width, height: watermark.size.height))
+        }else if p.bottom != 0, p.right != 0 {
+            watermark.draw(in: CGRect.init(x: self.size.width - p.right - watermark.size.width, y: self.size.height - p.bottom - watermark.size.height, width: watermark.size.width, height: watermark.size.height))
+        }else if p.top != 0, p.left != 0 {
+            watermark.draw(in: CGRect.init(x: p.left, y: p.top, width: watermark.size.width, height: watermark.size.height))
+        }else if p.top != 0, p.right != 0 {
+            watermark.draw(in: CGRect.init(x: self.size.height - p.bottom - watermark.size.height, y: p.top, width: watermark.size.width, height: watermark.size.height))
+        }else {
+            assert(false, "Watermark position error")
+        }
+                
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result!
+    }
+    
     public func scale(x:CGFloat) -> UIImage {
         if x == 1.0 {
             return self

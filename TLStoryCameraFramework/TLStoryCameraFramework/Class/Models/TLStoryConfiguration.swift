@@ -74,4 +74,9 @@ class TLStoryConfiguration: NSObject {
     public static let minTextWeight:CGFloat = 12
     //默认字体大小
     public static let defaultTextWeight:CGFloat = 30
+    
+    //导出水印
+    public static let watermarkImage:UIImage? = UIImage.init(named: "watermark")
+    //导出水印位置
+    public static let watermarkPosition:UIEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 10, right: 10)
 }

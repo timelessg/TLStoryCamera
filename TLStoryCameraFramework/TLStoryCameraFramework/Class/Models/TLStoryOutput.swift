@@ -105,7 +105,8 @@ class TLStoryOutput: NSObject {
                 cImg = self.image
             }
             
-            let resultImg = cImg!.imageMontage(img: container,bgColor: UIColor.black,size: TLStoryConfiguration.outputPhotoSize)
+            let resultImg = cImg!.imageMontage(img: container,bgColor: UIColor.black,size: TLStoryConfiguration.outputPhotoSize).addWatermark(img: TLStoryConfiguration.watermarkImage, p: TLStoryConfiguration.watermarkPosition)
+            
             let imgData = UIImageJPEGRepresentation(resultImg, 1)
             
             guard let exportUrl = TLStoryOutput.outputFilePath(type: .photo, isTemp: false) else {
@@ -148,20 +149,13 @@ class TLStoryOutput: NSObject {
         
         movieWriter = GPUImageMovieWriter.init(movieURL: exportUrl, size: TLStoryConfiguration.outputVideoSize)
         
-        let tracks = asset.tracks(withMediaType: AVMediaType.video)
-        
-        let t = tracks.first!.preferredTransform
-        
-        let img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
-        
         if audioEnable {
             movieWriter?.shouldPassthroughAudio = audioEnable
             movieFile?.audioEncodingTarget = movieWriter
         }
-        
         movieFile?.enableSynchronizedEncoding(using: movieWriter)
         
-        let imgview = UIImageView.init(image: img)
+        let imgview = UIImageView.init(image: container.addWatermark(img: TLStoryConfiguration.watermarkImage, p: TLStoryConfiguration.watermarkPosition))
         
         let uielement = GPUImageUIElement.init(view: imgview)
         
@@ -173,7 +167,6 @@ class TLStoryOutput: NSObject {
         movieFillFilter.addTarget(progressFilter as! GPUImageInput)
         progressFilter.addTarget(landBlendFilter)
         uielement?.addTarget(landBlendFilter)
-        
         landBlendFilter.addTarget(movieWriter!)
         
         progressFilter.frameProcessingCompletionBlock = { output, time in
