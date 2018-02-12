@@ -16,8 +16,6 @@ class TLStoryVideoPlayerView: UIView {
     
     public var audioEnable:Bool = true
     
-    fileprivate var asset:AVAsset? = nil;
-    
     fileprivate var gpuView:GPUImageView? = nil
     
     fileprivate var theAudioPlayer:AVPlayer? = nil
@@ -26,15 +24,18 @@ class TLStoryVideoPlayerView: UIView {
     
     fileprivate var filter:GPUImageCustomLookupFilter? = nil
     
+    fileprivate var movieFillFilter:TLGPUImageMovieFillFiter? = TLGPUImageMovieFillFiter.init()
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
         didEnterBackground()
+        movieFillFilter?.removeAllTargets()
         filter?.removeAllTargets()
         gpuView?.removeFromSuperview()
         filter = nil
+        movieFillFilter = nil
         theAudioPlayer = nil
         gpuView = nil
-        asset = nil
         url = nil
     }
     
@@ -43,15 +44,12 @@ class TLStoryVideoPlayerView: UIView {
         
         self.url = url
         
-        self.asset = AVAsset.init(url: url)
-        
         theAudioPlayer = AVPlayer.init(url: url)
         
         gpuView = GPUImageView.init(frame: self.bounds)
         gpuView?.fillMode = .preserveAspectRatio
         self.addSubview(gpuView!)
         
-        repairVideoDirection()
         initImageMovie()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -85,13 +83,14 @@ class TLStoryVideoPlayerView: UIView {
             }
         }
         
-        gpuMovie!.addTarget(gpuView)
+        gpuMovie?.addTarget(movieFillFilter)
+        movieFillFilter?.addTarget(gpuView)
         gpuMovie!.startProcessing()
     }
     
     public func config(filter:GPUImageCustomLookupFilter?) {
-        gpuMovie?.removeAllTargets()
-        
+        self.gpuMovie?.removeAllTargets()
+
         self.filter = filter
         if let f = filter {
             gpuMovie?.addTarget(f)
@@ -99,7 +98,6 @@ class TLStoryVideoPlayerView: UIView {
         }else {
             gpuMovie?.addTarget(gpuView)
         }
-        repairVideoDirection()
     }
     
     public func audio(enable:Bool) {
@@ -110,23 +108,6 @@ class TLStoryVideoPlayerView: UIView {
             theAudioPlayer!.volume = 0
         }
         audioEnable = enable
-    }
-    
-    fileprivate func repairVideoDirection() {
-        let tracks = self.asset!.tracks(withMediaType: AVMediaType.video)
-        
-        if tracks.count > 0 {
-            let track = tracks.first
-            let t = track!.preferredTransform
-            
-            if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
-                gpuView?.setInputRotation(GPUImageRotationMode.rotateRight, at: 0)
-            }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
-                gpuView?.setInputRotation(GPUImageRotationMode.rotateLeft, at: 0)
-            }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
-                gpuView?.setInputRotation(GPUImageRotationMode.flipVertical, at: 0)
-            }
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {

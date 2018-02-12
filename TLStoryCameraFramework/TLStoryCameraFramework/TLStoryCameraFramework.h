@@ -20,4 +20,5 @@ FOUNDATION_EXPORT const unsigned char TLStoryCameraFrameworkVersionString[];
 #import "TLGPUImageAlphaBlendFilter.h"
 #import "TLStoryTextLayoutManager.h"
 #import "TLGPUImageMovie.h"
+#import "TLGPUImageMovieFillFiter.h"
 

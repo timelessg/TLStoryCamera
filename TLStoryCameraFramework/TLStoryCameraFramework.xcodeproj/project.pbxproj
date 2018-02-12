@@ -46,6 +46,8 @@
 		4B58E8F2202824B700C29299 /* TLStoryOverlayEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B58E8CB202824B700C29299 /* TLStoryOverlayEditView.swift */; };
 		4B58E8F72028254800C29299 /* TLStoryConfiguration.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8AF202824B700C29299 /* TLStoryConfiguration.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B58E8F82028254E00C29299 /* TLStoryViewController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B58E8B8202824B700C29299 /* TLStoryViewController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		4B595E862031844D00DCCE67 /* TLGPUImageMovieFillFiter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B595E842031844D00DCCE67 /* TLGPUImageMovieFillFiter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4B595E872031844D00DCCE67 /* TLGPUImageMovieFillFiter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B595E852031844D00DCCE67 /* TLGPUImageMovieFillFiter.m */; };
 		4B828445202AAB820073749B /* UIDevice+TLStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B828444202AAB820073749B /* UIDevice+TLStory.swift */; };
 		4B9CF3AC202C2F5E00ABAD66 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CF3AA202C2F4F00ABAD66 /* GPUImage.framework */; };
 		4B9CF3BB202C31B200ABAD66 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9CF3B8202C318300ABAD66 /* MBProgressHUD.framework */; };
@@ -120,6 +122,8 @@
 		4B58E8C9202824B700C29299 /* TLStoryCapturePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryCapturePreviewView.swift; sourceTree = "<group>"; };
 		4B58E8CA202824B700C29299 /* TLStoryBottomImagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryBottomImagePickerView.swift; sourceTree = "<group>"; };
 		4B58E8CB202824B700C29299 /* TLStoryOverlayEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStoryOverlayEditView.swift; sourceTree = "<group>"; };
+		4B595E842031844D00DCCE67 /* TLGPUImageMovieFillFiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLGPUImageMovieFillFiter.h; sourceTree = "<group>"; };
+		4B595E852031844D00DCCE67 /* TLGPUImageMovieFillFiter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLGPUImageMovieFillFiter.m; sourceTree = "<group>"; };
 		4B828444202AAB820073749B /* UIDevice+TLStory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+TLStory.swift"; sourceTree = "<group>"; };
 		4B9CF3A1202C2F4E00ABAD66 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = TLStoryCameraFramework/GPUImageFramework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		4B9CF3AF202C318300ABAD66 /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = TLStoryCameraFramework/MBProgressHUDFramework/MBProgressHUD.xcodeproj; sourceTree = "<group>"; };
@@ -212,8 +216,8 @@
 		4B58E8A2202824B700C29299 /* TextLayoutManager */ = {
 			isa = PBXGroup;
 			children = (
-				4B58E8A3202824B700C29299 /* TLStoryTextLayoutManager.m */,
 				4B58E8A4202824B700C29299 /* TLStoryTextLayoutManager.h */,
+				4B58E8A3202824B700C29299 /* TLStoryTextLayoutManager.m */,
 			);
 			path = TextLayoutManager;
 			sourceTree = "<group>";
@@ -221,11 +225,13 @@
 		4B58E8A5202824B700C29299 /* GPUImageFilter */ = {
 			isa = PBXGroup;
 			children = (
-				4B58E8A6202824B700C29299 /* GPUImageBeautifyFilter.m */,
-				4B58E8A7202824B700C29299 /* TLGPUImageAlphaBlendFilter.m */,
 				4B58E8A8202824B700C29299 /* GPUImageCustomLookupFilter.swift */,
-				4B58E8A9202824B700C29299 /* TLGPUImageAlphaBlendFilter.h */,
 				4B58E8AA202824B700C29299 /* GPUImageBeautifyFilter.h */,
+				4B58E8A6202824B700C29299 /* GPUImageBeautifyFilter.m */,
+				4B58E8A9202824B700C29299 /* TLGPUImageAlphaBlendFilter.h */,
+				4B58E8A7202824B700C29299 /* TLGPUImageAlphaBlendFilter.m */,
+				4B595E842031844D00DCCE67 /* TLGPUImageMovieFillFiter.h */,
+				4B595E852031844D00DCCE67 /* TLGPUImageMovieFillFiter.m */,
 			);
 			path = GPUImageFilter;
 			sourceTree = "<group>";
@@ -233,8 +239,8 @@
 		4B58E8AB202824B700C29299 /* GPUImageExtension */ = {
 			isa = PBXGroup;
 			children = (
-				4B58E8AC202824B700C29299 /* TLGPUImageMovie.m */,
 				4B58E8AD202824B700C29299 /* TLGPUImageMovie.h */,
+				4B58E8AC202824B700C29299 /* TLGPUImageMovie.m */,
 			);
 			path = GPUImageExtension;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				4B58E8D8202824B700C29299 /* TLGPUImageMovie.h in Headers */,
 				4B58E8D6202824B700C29299 /* GPUImageBeautifyFilter.h in Headers */,
 				4B58E8D1202824B700C29299 /* TLStoryTextLayoutManager.h in Headers */,
+				4B595E862031844D00DCCE67 /* TLGPUImageMovieFillFiter.h in Headers */,
 				4B58E8D5202824B700C29299 /* TLGPUImageAlphaBlendFilter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,6 +442,7 @@
 				4B58E8EF202824B700C29299 /* TLStoryOverlayImagePicker.swift in Sources */,
 				4B58E8E5202824B700C29299 /* TLStoryPhotoPreviewView.swift in Sources */,
 				4B58E8E0202824B700C29299 /* TLStoryViewController.swift in Sources */,
+				4B595E872031844D00DCCE67 /* TLGPUImageMovieFillFiter.m in Sources */,
 				4B58E8EE202824B700C29299 /* TLStoryEditContainerView.swift in Sources */,
 				4B58E8D7202824B700C29299 /* TLGPUImageMovie.m in Sources */,
 				4B58E8E7202824B700C29299 /* TLStoryOverlayControlView.swift in Sources */,

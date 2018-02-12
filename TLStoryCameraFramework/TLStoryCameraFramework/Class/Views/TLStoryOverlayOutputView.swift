@@ -92,6 +92,7 @@ class TLStoryOverlayOutputView: UIView {
         photoPreview?.removeFromSuperview()
         videoPlayer = nil
         photoPreview = nil
+        filterIndex = 0
     }
     
     required init?(coder aDecoder: NSCoder) {

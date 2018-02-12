@@ -137,6 +137,10 @@ class TLStoryOutput: NSObject {
         movieFile = GPUImageMovie.init(asset: asset)
         movieFile?.runBenchmark = false
         
+        let movieFillFilter = TLGPUImageMovieFillFiter.init()
+        movieFillFilter.fillMode = .preserveAspectRatio
+        movieFile?.addTarget(movieFillFilter)
+        
         guard let exportUrl = TLStoryOutput.outputFilePath(type: .video, isTemp: false) else {
             callback(nil, .video)
             return
@@ -147,14 +151,6 @@ class TLStoryOutput: NSObject {
         let tracks = asset.tracks(withMediaType: AVMediaType.video)
         
         let t = tracks.first!.preferredTransform
-        
-        if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
-            movieWriter?.setInputRotation(GPUImageRotationMode.rotateRight, at: 0)
-        }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
-            movieWriter?.setInputRotation(GPUImageRotationMode.rotateLeft, at: 0)
-        }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
-            movieWriter?.setInputRotation(GPUImageRotationMode.flipVertical, at: 0)
-        }
         
         let img = container.rotate(by: -CGFloat(acosf(Float(t.a))))
         
@@ -174,7 +170,7 @@ class TLStoryOutput: NSObject {
         
         let progressFilter = filterNamed == "" ? GPUImageFilter.init() : GPUImageCustomLookupFilter.init(lookupImageNamed: filterNamed)
         
-        movieFile?.addTarget(progressFilter as! GPUImageInput)
+        movieFillFilter.addTarget(progressFilter as! GPUImageInput)
         progressFilter.addTarget(landBlendFilter)
         uielement?.addTarget(landBlendFilter)
         
@@ -193,9 +189,11 @@ class TLStoryOutput: NSObject {
                 return
             }
             
+            movieFillFilter.removeAllTargets()
             landBlendFilter.removeAllTargets()
             progressFilter.removeAllTargets()
             uielement?.removeAllTargets()
+            
             strongSelf.movieFile?.removeAllTargets()
             strongSelf.movieWriter?.finishRecording()
             strongSelf.movieFile?.audioEncodingTarget = nil
