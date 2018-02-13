@@ -3,6 +3,7 @@ TLStoryCamera
 <center><img src="./ScreenShot/Logo.png"></center>
 
 # TODO
+* Support CocoaPods
 * Fix bugs
 
 # Introduce
@@ -11,8 +12,8 @@ TLStoryCamera
 
 # Requirements
 * iOS 8.0 or later
+* Swift 4.0 or later
 * Xcode 8.0 or later
-
 
 # Character
 * 基本实现WeiboStory的大部分功能
@@ -25,8 +26,8 @@ TLStoryCamera
 * Support long press to shoot a video or short press to take a photo
 * 支持相册选择图片&视频
 * Support import video or photo from album
-* 使用Swift 3开发
-* Using Swift3
+* 支持添加导出视频水印
+* Support watermark of output movie
 
 # Depend on framwork
 * GPUImage
@@ -66,14 +67,15 @@ extension ViewController:TLStoryViewDelegate {
 * [GPUImage·issues·#52](https://github.com/BradLarson/GPUImage/issues/52)
 
 * **CVOpenGLESTextureCacheRef leak when I'm using GPUImageMovieWriter**
-* [GPUImage·issues·##2500](https://github.com/BradLarson/GPUImage/issues/2500)
+* [GPUImage·issues·#2500](https://github.com/BradLarson/GPUImage/issues/2500)
+
+* **How to build this project**
+* https://timelessg.cn/index.php/archives/3/
 
 
 # Warning！
 * 项目部分图片素材来自WeiBo，请替换后使用！
 * Partial resourse come frome Weibo, please use after replacing
-* 目前项目尚处于开发阶段，不建议直接在企业项目中使用。
-* Deprecated using in project directly cause of development stage
 
 
 # Images
