@@ -173,7 +173,7 @@ public class TLStoryViewController: UIViewController {
                 self.cameraStart()
             }
             if micAuthorization {
-                captureView!.configAudioRecording()
+                captureView!.enableAudio()
             }
             controlView!.isHidden = false
         }else {
@@ -242,8 +242,8 @@ extension TLStoryViewController: TLStoryOverlayControlDelegate {
 
     internal func storyOverlayCameraRecordingStart() {
         captureView!.configVideoRecording()
-        self.captureView!.startRecording()
         captureView!.configAudioRecording()
+        captureView!.startRecording()
     }
     
     internal func storyOverlayCameraSwitch() {
@@ -402,7 +402,7 @@ extension TLStoryViewController: TLStoryBottomImagePickerViewDelegate {
 
 extension TLStoryViewController: TLStoryAuthorizedDelegate {
     internal func requestMicAuthorizeSuccess() {
-        captureView!.configAudioRecording()
+        captureView!.enableAudio()
     }
     
     internal func requestCameraAuthorizeSuccess() {

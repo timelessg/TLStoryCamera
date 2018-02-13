@@ -105,13 +105,17 @@ class TLStoryCapturePreviewView: GPUImageView {
         currentVideoPath = TLStoryOutput.outputFilePath(type: .video, isTemp: true)
         let size = CGSize.init(width: TLStoryConfiguration.videoSetting["AVVideoWidthKey"] as! Int, height: TLStoryConfiguration.videoSetting["AVVideoHeightKey"] as! Int)
         self.movieWriter = GPUImageMovieWriter.init(movieURL: self.currentVideoPath, size: size, fileType: TLStoryConfiguration.videoFileType, outputSettings: TLStoryConfiguration.videoSetting)
-        self.beautifyFilter?.addTarget(self.movieWriter!)
         self.movieWriter?.encodingLiveVideo = true
+        self.movieWriter?.shouldPassthroughAudio = true
+        self.beautifyFilter?.addTarget(self.movieWriter!)
     }
     
     public func configAudioRecording() {
         movieWriter?.setHasAudioTrack(true, audioSettings: TLStoryConfiguration.audioSetting)
         videoCamera?.audioEncodingTarget = movieWriter
+    }
+    
+    public func enableAudio() {
         videoCamera?.addAudioInputsAndOutputs()
     }
     
