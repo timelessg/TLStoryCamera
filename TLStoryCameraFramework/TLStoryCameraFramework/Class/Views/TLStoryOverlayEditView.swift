@@ -169,6 +169,7 @@ class TLStoryOverlayEditView: UIView {
     }
     
     public func dispaly() {
+        self.layer.removeAllAnimations()
         self.isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.alpha = 1
