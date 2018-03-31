@@ -193,6 +193,17 @@ class TLStoryTextView: UITextView {
         
     }
     
+    override var frame: CGRect {
+        didSet {
+            for v in self.subviews {
+                if v.isKind(of: NSClassFromString("_UITextContainerView")!) {
+                    v.frame = self.bounds
+                    break
+                }
+            }
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
