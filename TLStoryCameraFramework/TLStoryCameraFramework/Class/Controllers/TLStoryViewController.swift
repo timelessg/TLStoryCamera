@@ -52,6 +52,7 @@ public class TLStoryViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.black
         self.view.isUserInteractionEnabled = true
+        self.automaticallyAdjustsScrollViewInsets = false
         
         bottomImagePicker = TLStoryBottomImagePickerView.init(frame: CGRect.init(x: 0, y: self.view.safeRect.height - 165, width: self.view.safeRect.width, height: 165))
         bottomImagePicker?.delegate = self

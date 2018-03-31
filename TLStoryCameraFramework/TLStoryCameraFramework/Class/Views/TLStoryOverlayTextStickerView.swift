@@ -88,7 +88,7 @@ class TLStoryOverlayTextStickerView: UIView {
         textBgColorBtn.center = CGPoint.init(x: self.width / 2, y: textAlignmentBtn.centerY)
         textBgColorBtn.isHidden = true
         
-        confrimBtn.addTarget(self, action: #selector(competeEdit), for: .touchUpInside)
+        confrimBtn.addTarget(self, action: #selector(completeEdit), for: .touchUpInside)
         self.addSubview(confrimBtn)
         confrimBtn.bounds = CGRect.init(x: 0, y: 0, width: 55, height: 55)
         confrimBtn.center = CGPoint.init(x: self.width - confrimBtn.width / 2, y:confrimBtn.height / 2)
@@ -124,7 +124,7 @@ class TLStoryOverlayTextStickerView: UIView {
         
         editingSticker?.textView.becomeFirstResponder()
         
-        tap = UITapGestureRecognizer.init(target: self, action: #selector(competeEdit))
+        tap = UITapGestureRecognizer.init(target: self, action: #selector(completeEdit))
         tap!.delegate = self
         self.addGestureRecognizer(tap!)
     }
@@ -209,8 +209,8 @@ class TLStoryOverlayTextStickerView: UIView {
         self.setTextAttribute()
     }
     
-    @objc fileprivate func competeEdit() {
-        self.editingSticker!.textView.resignFirstResponder()
+    @objc fileprivate func completeEdit() {
+        self.editingSticker?.textView.resignFirstResponder()
         if let t = tap {
             self.removeGestureRecognizer(t)
         }
