@@ -12,251 +12,182 @@ protocol TLStoryDoodleViewDelegate: NSObjectProtocol{
     func storyDoodleView(drawing:Bool)
 }
 
+class TLStoryDoodleBezierPath: UIBezierPath {
+    private static let maxPointCount:Int = 5
+    
+    private var points = [CGPoint](repeating: CGPoint.zero, count: 5)
+    private var pointCount : Int = 0
+    
+    private var startPoint : CGPoint = CGPoint.zero
+    
+    private var isBengin = false
+    
+    fileprivate func burshBegin(at point:CGPoint) {
+        self.move(to: point)
+        startPoint = point
+        points[0] = point
+        pointCount = 1
+    }
+    fileprivate func appendPoint(point:CGPoint) -> Bool {
+        points[pointCount] = point
+        pointCount += 1
+        if pointCount == TLStoryDoodleBezierPath.maxPointCount {
+            
+            isBengin = true
+            
+            points[3] = CGPoint.init(x: (points[2].x + points[4].x) / 2, y: (points[2].y + points[4].y) / 2)
+            
+            self.move(to: points[0])
+            self.addCurve(to: points[3], controlPoint1: points[1], controlPoint2: points[2])
+            
+            points[0] = points[3]
+            points[1] = points[4]
+            pointCount = 2
+            
+            return true
+        }
+        return false
+    }
+    
+    fileprivate func end() {
+        switch pointCount {
+        case 1:
+            if !self.isBengin {
+                self.addArc(withCenter: self.startPoint, radius: self.lineWidth / 2, startAngle: 0, endAngle: CGFloat(Float.pi * 2.0), clockwise: false)
+            }
+            break
+        case 2:
+            self.addLine(to: points[1])
+            break
+        case 3:
+            self.addQuadCurve(to: points[2], controlPoint: points[1])
+            break
+        case 4:
+            self.addCurve(to: points[3], controlPoint1: points[1], controlPoint2: points[2])
+            break
+        default:
+            break
+            
+        }
+    }
+}
+
+class TLStoryDoodleLayer: CAShapeLayer {
+    private var currentPath = TLStoryDoodleBezierPath.init()
+    
+    override init() {
+        super.init()
+        
+        self.lineCap = kCALineCapRound
+        self.lineJoin = kCALineJoinRound
+        self.fillColor = UIColor.clear.cgColor
+    }
+    
+    fileprivate func begin(at point:CGPoint) {
+        currentPath.burshBegin(at: point)
+    }
+    
+    fileprivate func move(at point:CGPoint) {
+        if currentPath.appendPoint(point: point) {
+            self.path = self.currentPath.cgPath
+        }
+    }
+    
+    fileprivate func end() {
+        currentPath.end()
+        self.path = currentPath.cgPath
+    }
+    
+    override func action(forKey event: String) -> CAAction? {
+        if event == "path" || event == "contents" {
+            return nil
+        }
+        return super.action(forKey: event);
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class TLStoryDoodleView: UIView {
-    public weak var delegate:TLStoryDoodleViewDelegate?
-    fileprivate var lines = [[Any]]()
-    fileprivate var purePoints = [Any]()
-    fileprivate var previousPoint:CGPoint?
-    fileprivate var previousPreviousPoint:CGPoint?
-    fileprivate var currentPoint:CGPoint?
-    fileprivate let distanceForDraw:CGFloat = 25
-    fileprivate var isEnd = false
-    fileprivate var isUndo = false
-    fileprivate var isErase = false
-    public      var lineWidth:CGFloat = TLStoryConfiguration.defaultDrawLineWeight
-    public      var lineColor:UIColor = UIColor.white
+    public var lineColor : UIColor = UIColor.white
+    public var lineWidth : CGFloat = TLStoryConfiguration.defaultDrawLineWeight
+    
+    public var delegate : TLStoryDoodleViewDelegate?
+    
+    private var shapeLayers = [TLStoryDoodleLayer]()
+    private var currenShapeLayer : TLStoryDoodleLayer?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
-        
-        isUserInteractionEnabled = true
-        isExclusiveTouch = true
-        isMultipleTouchEnabled = true
+        self.backgroundColor = UIColor.clear
+        self.isMultipleTouchEnabled = false
     }
     
     public func undo() {
-        guard lines.count > 0 else {
+        if self.shapeLayers.count == 0 {
             return
         }
-        isUndo = true
-        lines.removeLast()
-        setNeedsDisplay()
+        
+        let layer = self.shapeLayers.last
+        layer?.removeFromSuperlayer()
+        self.shapeLayers.removeLast()
     }
     
     public func erase() {
-        isErase = true
-        lines.removeAll()
-        purePoints.removeAll()
-        setNeedsDisplay()
-    }
-    
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        self.layer.render(in: context!)
-        
-        if isUndo {
-            isUndo = false
-            var j = 0
-            while j < lines.count {
-                let points = lines[j]
-                if points.count % 2 == 0 {
-                    continue
-                }
-                drawLine(context: context, lins: points)
-                j += 1
-            }
-            
-            return
+        self.shapeLayers.forEach { (layer) in
+            layer.removeFromSuperlayer()
         }
-        
-        if isErase {
-            isErase = false
-            context?.clear(self.bounds)
-        }
-        
-        guard purePoints.count != 0 else {
-            return
-        }
-        
-        guard purePoints.count % 2 != 0 else {
-            return
-        }
-        
-        drawLine(context: context, lins: purePoints)
-    }
-    
-    fileprivate func drawLine(context:CGContext?,lins:[Any]) {
-        let arr = lins
-        let width = (arr[0] as! [Any])[0] as! CGFloat
-        let color = (arr[0] as! [Any])[1] as! CGColor
-        
-        context?.setLineWidth(width)
-        context?.setLineCap(.round)
-        context?.beginPath()
-        context?.setStrokeColor(color)
-        
-        let count = (arr.count - 1) / 2
-        
-        var point_c:CGPoint?
-        var point_p:CGPoint?
-        
-        var i = 0
-        while i < count {
-            let x = arr[2 * i + 1] as! CGFloat
-            let y = arr[2 * i + 2] as! CGFloat
-            
-            if i == 0 {
-                point_c = CGPoint.init(x: x, y: y)
-                
-                context?.move(to: point_c!)
-                
-                if count == 1 {
-                    context?.addQuadCurve(to: point_c!, control: point_c!)
-                }
-            }else if (i == count - 1) && isEnd {
-                point_p = point_c
-                point_c = CGPoint.init(x: x, y: y)
-                
-                context?.addQuadCurve(to: point_c!, control: point_p!)
-            }else {
-                point_p = point_c
-                point_c = CGPoint.init(x: x, y: y)
-                
-                let mid2 = midPoint(p1: point_c!, p2: point_p!)
-                context?.addQuadCurve(to: mid2, control: point_p!)
-            }
-            
-            i += 1
-        }
-        
-        context?.strokePath()
-    }
-    
-    fileprivate func midPoint(p1:CGPoint, p2:CGPoint) -> CGPoint {
-        return CGPoint.init(x: (p1.x + p2.x) * 0.5, y: (p1.y + p2.y) * 0.5)
-    }
-    
-    fileprivate func distanceBetweenP1(p1:CGPoint, p2:CGPoint) -> CGFloat {
-        return CGFloat(powf(Float((p1.x - p2.x)), 2) + powf(Float((p1.y - p2.y)), 2))
-    }
-    
-    fileprivate func getCurImageFromBounds(_ bounds:CGRect) {
-        var drawBox = bounds
-        drawBox.origin.x     -= lineWidth * 2;
-        drawBox.origin.y     -= lineWidth * 2;
-        drawBox.size.width   += lineWidth * 4;
-        drawBox.size.height  += lineWidth * 4;
-        
-        if #available(iOS 10.0, *) {
-            let renderer = UIGraphicsImageRenderer(size: drawBox.size)
-            renderer.image { (context) in
-                UIGraphicsBeginImageContext(size)
-                self.layer.render(in: context.cgContext)
-                UIGraphicsEndImageContext()
-            }
-        } else {
-            UIGraphicsBeginImageContext(size)
-            let context = UIGraphicsGetCurrentContext()
-            self.layer.render(in: context!)
-            UIGraphicsEndImageContext()
-        }
-        
-        self.setNeedsDisplay(drawBox)
+        self.shapeLayers.removeAll()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        purePoints.removeAll()
         let touch = (touches as NSSet).anyObject() as! UITouch
-        previousPoint = touch.previousLocation(in: self)
-        previousPreviousPoint = touch.previousLocation(in: self)
-        currentPoint = touch.location(in: self)
+        let point = touch.location(in: self)
         
-        purePoints.append([lineWidth,lineColor.cgColor])
-        purePoints.append(currentPoint?.x ?? 0)
-        purePoints.append(currentPoint?.y ?? 0)
+        currenShapeLayer = TLStoryDoodleLayer.init()
+        currenShapeLayer?.frame = bounds
+        currenShapeLayer?.strokeColor = lineColor.cgColor
+        currenShapeLayer?.lineWidth = 10
         
-        isEnd = false
+        self.layer.addSublayer(currenShapeLayer!)
+        self.shapeLayers.append(currenShapeLayer!)
         
-        self.delegate?.storyDoodleView(drawing: true)
+        currenShapeLayer?.begin(at: point)
+        
+        if let d = delegate {
+            d.storyDoodleView(drawing: true)
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = (touches as NSSet).anyObject() as! UITouch
-        
         let point = touch.location(in: self)
         
-        let dx = point.x - (currentPoint?.x)!
-        let dy = point.y - (currentPoint?.y)!
+        currenShapeLayer?.move(at: point)
         
-        if ((dx * dx + dy * dy) < distanceForDraw) {
-            return
-        }
-        
-        previousPreviousPoint = previousPoint
-        previousPoint = currentPoint
-        currentPoint = touch.location(in: self)
-        
-        let mid1 = midPoint(p1: previousPoint!, p2: previousPreviousPoint!)
-        let mid2 = midPoint(p1: currentPoint!, p2: previousPoint!)
-        
-        let path_ = CGMutablePath()
-        path_.move(to: mid1)
-        path_.addQuadCurve(to: mid2, control: previousPoint!)
-        
-        purePoints.append(currentPoint?.x ?? 0)
-        purePoints.append(currentPoint?.y ?? 0)
-        
-        getCurImageFromBounds(path_.boundingBox)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesCancelOrEnd(touches, with: event)
+        self.touchEndOrCancel()
+        
+        if let d = delegate {
+            d.storyDoodleView(drawing: false)
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesCancelOrEnd(touches, with: event)
+        self.touchEndOrCancel()
+        
+        if let d = delegate {
+            d.storyDoodleView(drawing: false)
+        }
     }
     
-    fileprivate func touchesCancelOrEnd(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard purePoints.count % 2 != 0 else {
-            return
-        }
-        
-        let touch = (touches as NSSet).anyObject() as! UITouch
-        
-        previousPreviousPoint = previousPoint
-        previousPoint = currentPoint
-        currentPoint = touch.location(in: self)
-        
-        let mid1 = midPoint(p1: previousPoint!, p2: previousPreviousPoint!)
-        
-        let path_ = CGMutablePath()
-        path_.move(to: mid1)
-        path_.addQuadCurve(to: currentPoint!, control: previousPoint!)
-        
-        var needAddPoints = true
-        if purePoints.count == 3 {
-            let p1 = CGPoint.init(x: purePoints[1] as! CGFloat, y: purePoints[2] as! CGFloat)
-            let distance = distanceBetweenP1(p1: p1, p2: currentPoint!)
-            
-            if distance < distanceForDraw {
-                needAddPoints = false
-            }
-        }
-        
-        if needAddPoints,let p = currentPoint {
-            purePoints.append(p.x)
-            purePoints.append(p.y)
-        }
-        
-        lines.append(purePoints)
-        
-        isEnd = true
-        
-        getCurImageFromBounds(path_.boundingBox)
-        
-        self.delegate?.storyDoodleView(drawing: false)
+    private func touchEndOrCancel() {
+        currenShapeLayer?.end()
+        currenShapeLayer = nil
     }
     
     required init?(coder aDecoder: NSCoder) {
